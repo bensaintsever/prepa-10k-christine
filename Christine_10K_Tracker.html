@@ -3,114 +3,202 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1E1022">
+<meta name="theme-color" content="#0F0814">
 <meta name="description" content="Tracker 11 semaines — cocher chaque séance, progression automatique. Objectif 59'30.">
 <title>Tracker 10 km · Christine · Octobre Rose 2026</title>
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
+<!-- View Transitions API for modern page loads -->
+<meta name="view-transition" content="same-origin">
 <style>
-  /* ===== TRACKER BAR (sticky below shell) ===== */
-  .tracker-bar{
-    position:sticky; top:var(--shell-h); z-index:40;
-    background:var(--bg); border-bottom:1px solid var(--line);
-    box-shadow:0 1px 4px rgba(30,16,34,.08);
+  /* ===== TRACKER BAR (sticky below shell, glassmorphism) ===== */
+  .tracker-bar {
+    position: sticky; top: var(--shell-h); z-index: 40;
+    background: rgba(15, 8, 20, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
   }
-  .tracker-bar-inner{
-    display:flex; align-items:center; gap:12px;
-    padding:8px 16px; max-width:1000px; margin:0 auto;
+  .tracker-bar-inner {
+    display: flex; align-items: center; gap: 16px;
+    padding: 10px 16px; max-width: 1000px; margin: 0 auto;
   }
-  .tracker-lbl{
-    font-family:"Oswald","Arial Narrow",sans-serif; font-weight:700;
-    color:var(--brand-dk); font-size:15px; white-space:nowrap;
+  
+  .tracker-lbl {
+    font-family: var(--font-disp); font-weight: 700;
+    color: var(--txt); font-size: 16px; white-space: nowrap;
   }
-  .tracker-progress{
-    flex:1; min-width:80px; height:10px;
-    background:var(--tint2); border-radius:20px; overflow:hidden;
+  
+  /* NEON PROGRESS BAR */
+  .tracker-progress {
+    flex: 1; min-width: 80px; height: 10px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px; overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
   }
-  .tracker-progress i{
-    display:block; height:100%; width:0;
-    background:linear-gradient(120deg,var(--brand),var(--hot));
-    transition:width .3s;
+  .tracker-progress i {
+    display: block; height: 100%; width: 0;
+    background: linear-gradient(90deg, var(--brand), var(--hot));
+    box-shadow: 0 0 10px var(--glow-pink);
+    border-radius: 20px;
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  .tracker-week{
-    font-family:"Oswald","Arial Narrow",sans-serif; font-weight:700;
-    font-size:12px; text-transform:uppercase; letter-spacing:.06em;
-    color:var(--muted); white-space:nowrap;
+  
+  .tracker-week {
+    font-family: var(--font-disp); font-weight: 600;
+    font-size: 13px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--brand-dk); white-space: nowrap;
   }
 
   /* ===== FLASH (test result) ===== */
-  .flash{background:var(--ink); color:#fff; border-radius:10px; padding:11px 16px; margin:12px 0; font-size:14px;}
-  .flash b{color:var(--hot);}
+  .flash {
+    background: linear-gradient(135deg, rgba(214,0,108,0.15), transparent);
+    border: 1px solid rgba(255,61,127,0.3);
+    color: var(--txt); border-radius: var(--radius-sm);
+    padding: 14px 18px; margin: 16px 0; font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  .flash b { color: var(--hot); }
 
   /* ===== CUES (repères) ===== */
-  .cues{display:grid; grid-template-columns:1fr; gap:10px; margin:12px 0;}
-  .cue{background:var(--tint); border-left:3px solid var(--brand); border-radius:8px; padding:10px 13px; font-size:13.5px;}
-  .cue b{display:block; color:var(--brand-dk); font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.03em; font-size:12.5px; margin-bottom:2px;}
+  .cues { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+  .cue {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--brand);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px; font-size: 14px;
+    transition: transform 0.2s;
+  }
+  .cue:hover { transform: translateX(4px); border-left-color: var(--hot); background: var(--surface-hover); }
+  .cue b {
+    display: block; color: #fff; font-family: var(--font-disp);
+    text-transform: uppercase; letter-spacing: .04em; font-size: 13px; margin-bottom: 2px;
+  }
 
   /* ===== ACTIONS (save/restore) ===== */
-  .actions{display:flex; gap:8px; margin:14px 0; flex-wrap:wrap;}
-  .actions button{
-    border:1px solid var(--line); background:#fff; color:var(--muted);
-    border-radius:8px; padding:8px 16px; min-height:40px;
-    font-size:13.5px; cursor:pointer; transition:border-color .15s, color .15s;
+  .actions { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+  .actions button {
+    background: var(--surface); color: var(--txt);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 18px; min-height: 44px;
+    font-family: var(--font-body); font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
   }
-  .actions button:hover{border-color:var(--brand); color:var(--brand-dk);}
-  #save{border-color:var(--brand); color:var(--brand-dk); font-weight:600;}
-
-  /* ===== WEEK GRID ===== */
-  .grid{display:grid; grid-template-columns:1fr; gap:14px;}
-  .wk{background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; box-shadow:0 1px 3px rgba(30,16,34,.05); transition:border-color .2s, box-shadow .2s;}
-  .wk.current{border-color:var(--brand); border-width:2px; box-shadow:0 2px 12px rgba(214,0,108,.15);}
-  .wk.past-done{opacity:.7;}
-
-  .wh{display:flex; align-items:stretch; background:var(--grey); border-bottom:2px solid var(--brand);}
-  .wc{font-family:"Oswald","Arial Narrow",sans-serif; background:linear-gradient(150deg,var(--brand),var(--hot)); color:#fff; font-weight:800; font-size:18px; display:flex; align-items:center; justify-content:center; width:46px;}
-  .wk.current .wc{background:linear-gradient(150deg,var(--ink),var(--brand));}
-  .wf{flex:1; padding:8px 10px; font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; font-weight:700; font-size:13.5px; color:var(--ink); display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
-  .wf .tg{background:var(--brand); color:#fff; font-size:10px; padding:1px 7px; border-radius:20px; letter-spacing:.03em;}
-  .wf .now{background:var(--ink); color:#fff; font-size:10px; padding:1px 7px; border-radius:20px; letter-spacing:.03em;}
-  .wt{font-family:"Oswald","Arial Narrow",sans-serif; font-weight:700; color:var(--brand-dk); font-size:15px; display:flex; align-items:center; padding:0 12px;}
-
-  /* ===== SESSION LABELS ===== */
-  label.s{display:flex; align-items:center; gap:11px; padding:11px 13px; min-height:46px; border-top:1px solid #EFEAF2; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:background .1s;}
-  label.s:first-child{border-top:none;}
-  label.s:active{background:var(--grey);}
-  label.s.key{background:var(--tint);}
-  label.s input{width:22px; height:22px; accent-color:var(--brand); flex:none; cursor:pointer;}
-  label.s .dy{width:60px; font-weight:700; font-size:13.5px; flex:none;}
-  label.s .sh{flex:1; font-size:14.5px;}
-  label.s.key .sh{font-weight:700; color:var(--brand-dk);}
-  label.s .km{color:var(--brand-dk); font-weight:700; font-size:13px; flex:none;}
-  label.s.done .sh{text-decoration:line-through; color:var(--muted);}
-  label.s.done.key .sh{color:var(--muted);}
-
-  /* ===== FOOTER ===== */
-  .foot{color:var(--muted); font-size:12.5px; margin-top:16px;}
-  .foot .leg span{display:inline-block; width:11px; height:11px; border:1.6px solid var(--ink); border-radius:2px; vertical-align:-1px; margin-right:4px;}
-  .foot .leg em{background:var(--tint); border-left:3px solid var(--brand); font-style:normal;}
-
-  /* ===== RESET BUTTON (de-emphasized, separated) ===== */
-  .btn-reset{
-    display:inline-block; margin-top:14px; padding:6px 14px;
-    background:none; border:1px solid transparent; border-radius:6px;
-    color:var(--muted); font-size:12.5px; cursor:pointer;
-    transition:color .15s, border-color .15s, background .15s;
+  .actions button:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.2); }
+  #save {
+    background: rgba(214,0,108,0.1); border-color: rgba(214,0,108,0.3);
+    color: var(--hot); font-weight: 600;
   }
-  .btn-reset:hover{color:#C0392B; border-color:#E6B0AA; background:rgba(192,57,43,.06);}
+  #save:hover { background: rgba(214,0,108,0.2); border-color: var(--hot); }
+
+  /* ===== BENTO WEEK GRID ===== */
+  .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .wk {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  .wk:hover { border-color: rgba(255,255,255,0.15); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  
+  .wk.current {
+    border-color: rgba(255,61,127,0.5);
+    background: linear-gradient(180deg, rgba(214,0,108,0.05), var(--surface));
+    box-shadow: 0 8px 32px rgba(214,0,108,0.15);
+  }
+  .wk.current:hover { border-color: var(--hot); }
+  .wk.past-done { opacity: 0.6; filter: grayscale(40%); }
+  .wk.past-done:hover { opacity: 1; filter: grayscale(0%); }
+
+  /* Week Header */
+  .wh { display: flex; align-items: stretch; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--border); }
+  .wc {
+    font-family: var(--font-disp); background: rgba(255,255,255,0.03); color: var(--muted);
+    font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; width: 50px;
+  }
+  .wk.current .wc { background: linear-gradient(135deg, var(--brand), var(--hot)); color: #fff; }
+  .wk.past-done .wc { color: #fff; background: rgba(255,255,255,0.1); }
+  
+  .wf {
+    flex: 1; padding: 10px 12px; font-family: var(--font-body); text-transform: uppercase;
+    font-weight: 600; font-size: 12px; letter-spacing: .05em; color: var(--txt);
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .wf .tg { background: rgba(255,255,255,0.1); color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; }
+  .wf .now { background: var(--hot); color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; box-shadow: 0 0 8px var(--glow-pink); }
+  .wt { font-family: var(--font-disp); font-weight: 700; color: var(--brand-dk); font-size: 16px; display: flex; align-items: center; padding: 0 16px; }
+
+  /* ===== SATISFYING CUSTOM CHECKBOXES ===== */
+  label.s {
+    display: flex; align-items: center; gap: 14px; padding: 12px 16px; min-height: 52px;
+    border-top: 1px solid var(--border-light); cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s;
+  }
+  label.s:first-child { border-top: none; }
+  label.s:hover { background: rgba(255,255,255,0.02); }
+  label.s:active { background: rgba(255,255,255,0.04); transform: scale(0.99); }
+  label.s.key { background: rgba(214,0,108,0.05); }
+
+  /* Hide native input */
+  label.s input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+  
+  /* Custom checkmark circle */
+  .chk {
+    position: relative; flex: none; width: 24px; height: 24px;
+    border: 2px solid rgba(255,255,255,0.2); border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  /* The SVG check inside */
+  .chk svg {
+    position: absolute; top: 4px; left: 4px; width: 12px; height: 12px;
+    fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 16; stroke-dashoffset: 16; /* Hidden initially */
+    transition: stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+  }
+  
+  /* Checked State */
+  label.s input:checked ~ .chk {
+    background: linear-gradient(135deg, var(--brand), var(--hot));
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(255,61,127,0.4);
+    transform: scale(1.1);
+  }
+  label.s input:checked ~ .chk svg { stroke-dashoffset: 0; /* Draw checkmark */ }
+
+  /* Focus ring for accessibility */
+  label.s input:focus-visible ~ .chk { outline: 2px solid var(--hot); outline-offset: 2px; }
+
+  label.s .dy { width: 64px; font-weight: 600; font-size: 14px; flex: none; color: var(--muted); }
+  label.s .sh { flex: 1; font-size: 15px; transition: color 0.2s; }
+  label.s.key .sh { font-weight: 600; color: #fff; }
+  label.s .km { font-family: var(--font-disp); color: var(--hot); font-weight: 700; font-size: 15px; flex: none; }
+  
+  /* Dim text when done */
+  label.s.done .sh { color: rgba(255,255,255,0.25); text-decoration: line-through; }
+  label.s.done .dy { color: rgba(255,255,255,0.2); }
+  label.s.done .km { color: rgba(255,61,127,0.3); }
+
+  /* ===== FOOTER & RESET ===== */
+  .foot { color: var(--muted); font-size: 13px; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .foot .leg span { display: inline-block; width: 12px; height: 12px; border: 1.6px solid rgba(255,255,255,0.3); border-radius: 50%; vertical-align: -2px; margin-right: 6px; }
+  .foot .leg em { background: rgba(214,0,108,0.1); border-left: 2px solid var(--brand); font-style: normal; }
+
+  .btn-reset {
+    display: inline-block; margin-top: 16px; padding: 8px 16px;
+    background: rgba(255,255,255,0.03); border: 1px solid transparent; border-radius: 8px;
+    color: var(--muted); font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-reset:hover { color: #FF4757; border-color: rgba(255,71,87,0.3); background: rgba(255,71,87,0.08); }
 
   /* ===== DESKTOP ===== */
   @media (min-width:720px){
-    .wrap{padding:18px 18px 70px;}
-    .cues{grid-template-columns:repeat(3,1fr);}
-    .grid{grid-template-columns:1fr 1fr;}
-    label.s{min-height:0; padding:8px 12px;}
-    label.s input{width:18px; height:18px;}
-    .tracker-bar-inner{padding:8px 20px;}
-  }
-  @media print{
-    .tracker-bar{display:none;} .actions{display:none;} .btn-reset{display:none;}
-    .grid{grid-template-columns:1fr 1fr;}
+    .cues { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    label.s { min-height: 48px; padding: 10px 16px; }
+    .tracker-bar-inner { padding: 12px 24px; }
   }
 </style>
 </head>
@@ -137,8 +225,9 @@
 
 <div class="wrap">
   <div class="hero">
+    <div class="k">Dimanche 4 octobre 2026</div>
     <h1>Objectif 59'30</h1>
-    <p>10 km sous une heure · Octobre Rose · dimanche 4 octobre 2026 · repli 1 h 02</p>
+    <p>10 km sous une heure · Octobre Rose · repli 1 h 02</p>
   </div>
 
   <div class="flash">&#10003; <b>Test du 23 juillet :</b> 5 km en 30'40, les 4 derniers kilomètres à 5'48/km (FC 164, cadence 167). Déjà plus rapide que l'allure objectif, le sous-1h est en ligne de mire.</div>
@@ -159,13 +248,12 @@
 
   <div class="foot">
     <div class="leg"><span></span> coche chaque séance faite &nbsp;·&nbsp; <span><em>&nbsp;&nbsp;&nbsp;</em></span> séance clé (test, Hyrox, verdict, course)</div>
-    <p>Les cases sont mémorisées dans <b>ce</b> navigateur (localStorage), pas de compte, pas de serveur. Pour passer d'un appareil à l'autre ou faire une sauvegarde, utilise <b>Sauvegarder</b> (télécharge un fichier) puis <b>Restaurer</b> sur l'autre appareil.</p>
-    <button class="btn-reset" id="reset">Réinitialiser toute la progression…</button>
+    <p style="margin-top:12px;">Les cases sont mémorisées localement. Pour passer d'un appareil à l'autre, utilise <b>Sauvegarder</b> (télécharge un fichier) puis <b>Restaurer</b> sur l'autre appareil.</p>
+    <button class="btn-reset" id="reset">Réinitialiser la progression…</button>
   </div>
 </div>
 
 <script>
-/* ===== DONNÉES DES SEMAINES ===== */
 var W = [
  ["S0","21–23 juil.","15","Semaine repère · test fait","",
   [["Mar. 21","EF 4 km ✓","4",1],["Jeu. 23","TEST 5 km ✓ · 30'40","5",1],["Dim.","EF 6 km facile","6",0]]],
@@ -191,19 +279,10 @@ var W = [
   [["Mar.","5 × 500 m à 6'00","7",0],["Jeu.","EF 4 km + 6 accél.","4",0],["Ven.","Repos","",0],["Sam.","EF 4 km + gammes","4",0],["Dim. 4","COURSE 10 KM","10",1]]]
 ];
 
-/* ===== DATES DE DÉBUT DE CHAQUE SEMAINE (lundi) ===== */
 var WEEK_STARTS = [
-  new Date(2026, 6, 21),   // S0  – 21 juillet
-  new Date(2026, 6, 27),   // S1  – 27 juillet
-  new Date(2026, 7, 3),    // S2  – 3 août
-  new Date(2026, 7, 10),   // S3  – 10 août
-  new Date(2026, 7, 17),   // S4  – 17 août
-  new Date(2026, 7, 24),   // S5  – 24 août
-  new Date(2026, 7, 31),   // S6  – 31 août
-  new Date(2026, 8, 7),    // S7  – 7 septembre
-  new Date(2026, 8, 14),   // S8  – 14 septembre
-  new Date(2026, 8, 21),   // S9  – 21 septembre
-  new Date(2026, 8, 28)    // S10 – 28 septembre
+  new Date(2026, 6, 21), new Date(2026, 6, 27), new Date(2026, 7, 3), new Date(2026, 7, 10),
+  new Date(2026, 7, 17), new Date(2026, 7, 24), new Date(2026, 7, 31), new Date(2026, 8, 7),
+  new Date(2026, 8, 14), new Date(2026, 8, 21), new Date(2026, 8, 28)
 ];
 var RACE_DAY = new Date(2026, 9, 4);
 
@@ -211,13 +290,10 @@ function getCurrentWeek() {
   var today = new Date();
   today.setHours(0,0,0,0);
   if (today > RACE_DAY) return -1;
-  for (var i = WEEK_STARTS.length - 1; i >= 0; i--) {
-    if (today >= WEEK_STARTS[i]) return i;
-  }
+  for (var i = WEEK_STARTS.length - 1; i >= 0; i--) { if (today >= WEEK_STARTS[i]) return i; }
   return -1;
 }
 
-/* ===== PERSISTENCE ===== */
 var KEY = "tracker10k_christine";
 var LS = null;
 try { var t = "__t"; localStorage.setItem(t, "1"); localStorage.removeItem(t); LS = localStorage; } catch(e) { LS = null; }
@@ -225,48 +301,40 @@ var state = {};
 try { state = JSON.parse((LS && LS.getItem(KEY)) || "{}") || {}; } catch(e) { state = {}; }
 function persist() { if (!LS) return; try { LS.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
 
-/* ===== BUILD GRID ===== */
 var grid = document.getElementById('grid');
 var total = 0;
 var currentWeek = getCurrentWeek();
 var currentWeekEl = null;
 
+var svgCheck = '<svg viewBox="0 0 16 16"><polyline points="3 8 7 12 13 4"></polyline></svg>';
+
 W.forEach(function(w, wi) {
   var code = w[0], dates = w[1], tot = w[2], foc = w[3], tag = w[4], sess = w[5];
-  var card = document.createElement('div');
-  card.className = 'wk';
-
+  var card = document.createElement('div'); card.className = 'wk';
   var isCurrent = (wi === currentWeek);
-  if (isCurrent) {
-    card.classList.add('current');
-    card.id = 'current-week';
-    currentWeekEl = card;
-  }
+  
+  if (isCurrent) { card.classList.add('current'); card.id = 'current-week'; currentWeekEl = card; }
 
   var h = '<div class="wh"><div class="wc">' + code + '</div><div class="wf">' +
-    foc.toUpperCase() +
-    (tag ? ' <span class="tg">' + tag + '</span>' : '') +
+    foc.toUpperCase() + (tag ? ' <span class="tg">' + tag + '</span>' : '') +
     (isCurrent ? ' <span class="now">En cours</span>' : '') +
     '</div><div class="wt">' + tot + ' km</div></div>';
 
   sess.forEach(function(s, si) {
     var day = s[0], sh = s[1], km = s[2], key = s[3];
-    var id = wi + '_' + si;
-    total++;
+    var id = wi + '_' + si; total++;
     var on = state[id] ? 'checked' : '';
     var dclass = state[id] ? ' done' : '';
     h += '<label class="s' + (key ? ' key' : '') + dclass + '" data-id="' + id + '">' +
       '<input type="checkbox" ' + on + '>' +
+      '<span class="chk">' + svgCheck + '</span>' +
       '<span class="dy">' + day + '</span>' +
       '<span class="sh">' + sh + '</span>' +
       '<span class="km">' + (km ? km + ' km' : '') + '</span></label>';
   });
-
-  card.innerHTML = h;
-  grid.appendChild(card);
+  card.innerHTML = h; grid.appendChild(card);
 });
 
-/* ===== PROGRESS ===== */
 var pl = document.getElementById('pl'), pi = document.getElementById('pi');
 var cwEl = document.getElementById('cw');
 
@@ -275,13 +343,9 @@ function refresh() {
   pl.textContent = done + ' / ' + total;
   pi.style.width = (total ? (done / total * 100) : 0) + '%';
   if (cwEl) {
-    if (currentWeek >= 0) {
-      cwEl.textContent = W[currentWeek][0] + ' en cours';
-    } else if (new Date() > RACE_DAY) {
-      cwEl.textContent = 'Course passée';
-    } else {
-      cwEl.textContent = 'Début le 21 juil.';
-    }
+    if (currentWeek >= 0) cwEl.textContent = W[currentWeek][0] + ' en cours';
+    else if (new Date() > RACE_DAY) cwEl.textContent = 'Course passée';
+    else cwEl.textContent = 'Début 21 juil.';
   }
 }
 
@@ -291,7 +355,6 @@ function applyToDom() {
     l.querySelector('input').checked = on;
     l.classList.toggle('done', on);
   });
-  /* Dim past fully-completed weeks */
   document.querySelectorAll('.wk').forEach(function(wk, wi) {
     if (wi < currentWeek) {
       var labels = wk.querySelectorAll('label.s');
@@ -303,42 +366,32 @@ function applyToDom() {
   refresh();
 }
 
-/* ===== CHECKBOX HANDLING ===== */
 grid.addEventListener('change', function(e) {
-  var lab = e.target.closest('label.s');
-  if (!lab) return;
+  var lab = e.target.closest('label.s'); if (!lab) return;
   var id = lab.dataset.id;
   if (e.target.checked) { state[id] = 1; lab.classList.add('done'); }
   else { delete state[id]; lab.classList.remove('done'); }
   persist(); applyToDom();
 });
 
-/* ===== RESET (de-emphasized, in footer) ===== */
 document.getElementById('reset').addEventListener('click', function() {
-  if (!confirm('Décocher toutes les séances ? Cette action est irréversible.')) return;
-  state = {};
-  if (LS) { try { LS.removeItem(KEY); } catch(e) {} }
-  applyToDom();
+  if (!confirm('Décocher toutes les séances ? Action irréversible.')) return;
+  state = {}; if (LS) { try { LS.removeItem(KEY); } catch(e) {} } applyToDom();
 });
 
-/* ===== SAVE / RESTORE ===== */
 document.getElementById('save').addEventListener('click', function() {
   var payload = { app: "tracker10k", date: new Date().toISOString(), state: state };
   var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = "tracker-10k-progression.json";
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = "tracker-10k-christine.json";
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
 });
 
-document.getElementById('load').addEventListener('click', function() {
-  document.getElementById('file').click();
-});
+document.getElementById('load').addEventListener('click', function() { document.getElementById('file').click(); });
 
 document.getElementById('file').addEventListener('change', function(e) {
-  var f = e.target.files[0];
-  if (!f) return;
+  var f = e.target.files[0]; if (!f) return;
   var r = new FileReader();
   r.onload = function() {
     try {
@@ -347,32 +400,25 @@ document.getElementById('file').addEventListener('change', function(e) {
       if (typeof st !== "object" || st === null) throw 0;
       state = st; persist(); applyToDom();
       alert("Progression restaurée ✓");
-    } catch(x) { alert("Fichier illisible ou invalide."); }
+    } catch(x) { alert("Fichier invalide."); }
     e.target.value = "";
   };
   r.readAsText(f);
 });
 
-/* ===== LS WARNING ===== */
 if (!LS) {
-  var w = document.createElement('p');
-  w.style.cssText = "color:#A8004F;font-size:12.5px;margin-top:6px;";
-  w.textContent = "Ce navigateur bloque le stockage local (navigation privée ?). Les cases ne seront pas mémorisées, utilise Sauvegarder pour garder ta progression dans un fichier.";
+  var w = document.createElement('p'); w.style.cssText = "color:var(--hot);font-size:12.5px;margin-top:6px;";
+  w.textContent = "Navigation privée : progression non mémorisée (utilise Sauvegarder).";
   document.querySelector('.foot').appendChild(w);
 }
 
-/* ===== INITIAL STATE ===== */
 applyToDom();
 
-/* ===== AUTO-SCROLL TO CURRENT WEEK ===== */
 if (currentWeekEl) {
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   setTimeout(function() {
-    currentWeekEl.scrollIntoView({
-      behavior: prefersReducedMotion ? 'auto' : 'smooth',
-      block: 'center'
-    });
-  }, 120);
+    currentWeekEl.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'center' });
+  }, 150);
 }
 </script>
 </body>

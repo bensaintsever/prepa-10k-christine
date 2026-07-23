@@ -3,69 +3,113 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1E1022">
+<meta name="theme-color" content="#0F0814">
 <meta name="description" content="Carnet de préparation 10 km — cadence, allures, muscu, foulée, sécurité. Plan 11 semaines.">
 <title>Carnet 10 km · Christine · Octobre Rose 2026</title>
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
+<!-- View Transitions API -->
+<meta name="view-transition" content="same-origin">
 <style>
-  /* ===== TOC BAR (anchor nav, sticky below shell) ===== */
-  .toc-bar{
-    position:sticky; top:var(--shell-h); z-index:40;
-    background:var(--ink); box-shadow:0 2px 8px rgba(30,16,34,.2);
+  /* ===== TOC BAR (anchor nav, glassmorphism) ===== */
+  .toc-bar {
+    position: sticky; top: var(--shell-h); z-index: 40;
+    background: rgba(15, 8, 20, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
   }
-  .toc-nav{
-    display:flex; gap:8px; overflow-x:auto; padding:0 16px 10px;
-    scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch;
-    scrollbar-width:none; max-width:1000px; margin:0 auto;
+  .toc-nav {
+    display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px;
+    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; max-width: 1000px; margin: 0 auto;
   }
-  .toc-nav::-webkit-scrollbar{display:none;}
-  .toc-nav a{
-    scroll-snap-align:start; flex:0 0 auto;
-    display:inline-flex; align-items:center; min-height:34px;
-    padding:0 14px; border-radius:20px;
-    background:rgba(255,255,255,.14); color:rgba(255,255,255,.78);
-    text-decoration:none; font-size:13.5px; font-weight:600; white-space:nowrap;
-    transition:background .15s, color .15s;
+  .toc-nav::-webkit-scrollbar { display: none; }
+  .toc-nav a {
+    scroll-snap-align: start; flex: 0 0 auto;
+    display: inline-flex; align-items: center; min-height: 34px;
+    padding: 0 16px; border-radius: 20px;
+    background: rgba(255,255,255,0.05); color: var(--muted);
+    border: 1px solid transparent;
+    text-decoration: none; font-size: 13.5px; font-weight: 600; white-space: nowrap;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .toc-nav a:active{background:var(--brand);}
-  .toc-nav a.on{background:linear-gradient(120deg,var(--brand),var(--hot)); color:#fff;}
+  .toc-nav a:hover { background: rgba(255,255,255,0.1); color: var(--txt); }
+  .toc-nav a:active { transform: scale(0.96); }
+  .toc-nav a.on {
+    background: linear-gradient(120deg, rgba(214,0,108,0.15), rgba(255,61,127,0.15));
+    color: var(--hot); border-color: rgba(255,61,127,0.3);
+    box-shadow: 0 0 12px rgba(255,61,127,0.1) inset;
+  }
 
   /* ===== CONTENT ===== */
-  .wrap{max-width:860px;}
-  .lead{font-size:17px; margin:18px 2px;}
-  .lead b{color:var(--ink);}
+  .lead { font-size: 17px; margin: 24px 2px; color: rgba(255,255,255,0.85); font-weight: 400; line-height: 1.7; }
+  .lead b { color: #fff; font-weight: 600; }
 
   /* ===== SECTIONS ===== */
-  section{
-    scroll-margin-top:calc(var(--shell-h) + 48px);
-    background:var(--card); border-radius:14px; padding:4px 16px 18px;
-    margin:14px 0; box-shadow:0 1px 3px rgba(30,16,34,.06);
+  section {
+    scroll-margin-top: calc(var(--shell-h) + 60px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px 24px;
+    margin: 24px 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   }
-  .sech{display:flex; align-items:baseline; gap:10px; border-bottom:2px solid var(--brand); padding:16px 0 8px; margin-bottom:12px;}
-  .sech .num{font-family:"Oswald","Arial Narrow",sans-serif; color:var(--brand); font-weight:800; font-size:24px; line-height:1;}
-  .sech h2{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.02em; color:var(--ink); font-size:20px; margin:0; font-weight:700;}
-  h3{color:var(--brand-dk); font-size:17px; margin:20px 0 6px;}
-  h3::before{content:""; display:inline-block; width:10px; height:10px; background:var(--brand); margin-right:8px; vertical-align:1px; border-radius:2px;}
+  
+  .sech {
+    display: flex; align-items: baseline; gap: 12px;
+    border-bottom: 1px solid var(--border-light);
+    padding: 16px 0 12px; margin-bottom: 16px;
+  }
+  .sech .num {
+    font-family: var(--font-disp); color: rgba(255,61,127,0.8);
+    font-weight: 900; font-size: 32px; line-height: 1;
+    text-shadow: 0 0 12px rgba(255,61,127,0.2);
+  }
+  .sech h2 {
+    font-family: var(--font-disp); text-transform: uppercase;
+    letter-spacing: .02em; color: #fff; font-size: 22px; margin: 0; font-weight: 700;
+  }
+  
+  h3 { color: var(--hot); font-size: 17px; margin: 28px 0 12px; font-weight: 600; }
+  h3::before {
+    content: ""; display: inline-block; width: 6px; height: 16px;
+    background: linear-gradient(180deg, var(--hot), var(--brand));
+    margin-right: 10px; vertical-align: -1px; border-radius: 4px;
+  }
 
   /* ===== RAPPELS ===== */
-  .rems{display:grid; grid-template-columns:1fr; gap:12px; margin:12px 0 4px;}
-  .rem{background:var(--grey); border-top:3px solid var(--brand); border-radius:0 0 10px 10px; padding:14px;}
-  .rem .n{font-family:"Oswald","Arial Narrow",sans-serif; color:var(--brand); font-weight:800; font-size:24px; line-height:1;}
-  .rem b{display:block; margin:5px 0 4px;}
-  .closing{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.03em; color:var(--ink); font-size:19px; margin:24px 0 8px; font-weight:700;}
+  .rems { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 24px 0; }
+  .rem {
+    background: var(--surface); border: 1px solid var(--border);
+    border-top: 4px solid var(--brand); border-radius: var(--radius-sm);
+    padding: 20px; transition: transform 0.2s;
+  }
+  .rem:hover { transform: translateY(-2px); border-top-color: var(--hot); background: var(--surface-hover); }
+  .rem .n {
+    font-family: var(--font-disp); color: var(--brand-dk); font-weight: 900;
+    font-size: 36px; line-height: 1; float: right; opacity: 0.3;
+  }
+  .rem b { display: block; margin-bottom: 8px; color: #fff; font-size: 16px; }
+  
+  .closing {
+    font-family: var(--font-disp); text-transform: uppercase;
+    letter-spacing: .05em; color: var(--brand-dk); font-size: 20px;
+    margin: 40px 0 16px; font-weight: 800; text-align: center;
+  }
 
   /* ===== DESKTOP ===== */
-  @media (min-width:720px){
-    .wrap{padding:0 20px 80px;}
-    .toc-nav{padding:0 20px 10px;}
-    section{padding:6px 28px 22px;}
-    .sech h2{font-size:23px;} .sech .num{font-size:26px;}
-    .rems{grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media (min-width: 720px) {
+    .toc-nav { padding: 12px 24px; }
+    section { padding: 24px 40px 32px; }
+    .sech h2 { font-size: 26px; } .sech .num { font-size: 36px; }
+    .rems { grid-template-columns: repeat(3, 1fr); gap: 20px; }
   }
-  @media print{
-    .toc-bar{display:none;} section{box-shadow:none; padding:0 0 10px;}
+  
+  @media print {
+    .toc-bar { display: none; } section { box-shadow: none; padding: 0 0 16px; border: none; }
   }
 </style>
 </head>
@@ -92,9 +136,9 @@
 <div class="wrap">
 
   <div class="hero">
-    <div class="k">Christine · Carnet de préparation</div>
-    <h1>10 km sous 1 heure</h1>
-    <p>Octobre Rose · dimanche 4 octobre 2026. Le pourquoi du plan, à lire une fois au calme. Le planning à cocher est sur la feuille « Tracker ».</p>
+    <div class="k">Carnet de préparation</div>
+    <h1>Le pourquoi</h1>
+    <p>Octobre Rose 2026. À lire une fois au calme. Le planning à cocher est sur la feuille « Tracker ».</p>
   </div>
 
   <p class="lead">Une seule idée porte tout le plan : <b>faire tourner les jambes de 160 à 171 pas/min en gardant la même longueur de foulée</b>. Ça donne 6'00/km, soit 10 km en 59'59, sans apprendre aucun geste nouveau. Et c'est le même réglage qui protège l'aponévrose plantaire et la bandelette. Le reste explique pourquoi, et comment ne pas se blesser en chemin.</p>
@@ -103,12 +147,14 @@
     <div class="sech"><span class="num disp">01</span><h2>Pourquoi la cadence, et pas plus de kilomètres</h2></div>
     <p>Le 3 juillet, elle a couru son 10 km en 65 min (6'32/km), à 160 pas/min × 96 cm de foulée, allure parfaitement régulière du premier au dernier kilomètre. Le chrono n'est donc pas un problème de gestion de course : c'est un problème de mécanique. Pour passer à 6'00/km il faut 166,7 m/min, soit <b>171 × 97,5 cm</b>, +7 % de cadence, +1,5 cm d'amplitude. C'est tout.</p>
     <p>Le test du 23 juillet le confirme : 5 km en 30'40, mais surtout <b>les quatre derniers kilomètres tenus à 5'48/km</b> à FC 164, déjà plus rapide que l'allure objectif. Projeté sur 10 km, cela situe aujourd'hui autour de 62 min. Autrement dit, le point de départ est meilleur qu'au 3 juillet, et le sous-1h n'est plus un pari : c'est le travail des onze semaines qui suivent.</p>
+    
     <div class="co">
       <h4>Un seul réglage, trois bénéfices</h4>
       <p>Aponévrose : cadence plus haute = contact au sol plus court = moins de tension, moins longtemps.</p>
       <p>Bandelette (TFL) : foulée plus courte = moins d'adduction de hanche = moins de contrainte. C'est le traitement documenté.</p>
       <p>Chrono : la voie la moins coûteuse en fatigue vers 6'00/km.</p>
     </div>
+    
     <h3>Installer la cadence sans se blesser</h3>
     <ul>
       <li><b>Progressif :</b> 160 → 165 sur S1–S6, puis 165 → 171 dès la S7. Jamais +10 % d'un coup.</li>
@@ -120,6 +166,7 @@
   <section id="s2">
     <div class="sech"><span class="num disp">02</span><h2>Ce que disent la montre et le pied</h2></div>
     <p>Deux ruptures nettes dans les données de la Pixel Watch (mi-mars, fin juin) sont des <b>recalibrages logiciels</b>, pas des changements physiques : on ne compare que des séances de la même période, et la référence reste le 10 km du 3 juillet. L'export ne donne pas l'équilibre gauche/droite du contact, cette asymétrie se suit chez le podologue.</p>
+    
     <div class="tw"><table>
       <thead>
       <tr><th>Métrique</th><th class="ctr">3 juil.</th><th class="ctr">Cible oct.</th><th>Lecture</th></tr>
@@ -132,6 +179,7 @@
       <tr><td class="l" data-label="Métrique">FC moyenne</td><td class="ctr" data-label="3 juil.">167</td><td class="ctr pk" data-label="Cible oct.">dérive &lt; 4 %</td><td data-label="Lecture">Dérive 5,5 % : base aérobie encore à construire.</td></tr>
       </tbody>
     </table></div>
+    
     <h3>Le pied (analyse zebris)</h3>
     <p><b>L'aponévrose amortit seule</b>, 163 % du poids de corps sur l'avant-pied contre 75–79 % au talon, bascule en 0,01–0,02 s. Couplé aux 314 ms de contact, la tension est longue, ~10 400 fois par 10 km. <b>L'arche s'affaisse en charge</b> (~55 % de la force passe par le médio-pied) : les semelles la tiennent passivement, l'excentrique de mollet activement. <b>L'ouverture de pas droite (8,6°) est fonctionnelle</b> puisque l'EOS est normale, donc corrigeable, et probablement de la même racine que le TFL : un seul axe de renfo traite les deux.</p>
   </section>
@@ -139,6 +187,7 @@
   <section id="s3">
     <div class="sech"><span class="num disp">03</span><h2>Les allures</h2></div>
     <p>Calibrées sur le 10 km du 3 juillet et le 5 km du 23 juillet. À réviser après le test de la S4.</p>
+    
     <div class="tw"><table>
       <thead>
       <tr><th>Zone</th><th class="ctr">Allure</th><th class="ctr">FC</th><th>Sensation</th></tr>
@@ -157,6 +206,7 @@
   <section id="s4">
     <div class="sech"><span class="num disp">04</span><h2>Muscu : les 3 points à vérifier</h2></div>
     <p>Elle a déjà un programme spécifique : rien à changer, juste s'assurer que ces trois choses y figurent, vu le TFL et l'aponévrose.</p>
+    
     <div class="tw"><table>
       <thead>
       <tr><th>À vérifier dans le programme</th><th class="ctr">Dose</th><th>Pourquoi ici</th></tr>
@@ -166,7 +216,9 @@
       <tr><td class="l" data-label="Exercice">Contrôle rotationnel de hanche (rot. interne élastique, SDT unipodal)</td><td class="ctr pk" data-label="Dose">2–3 × / sem.</td><td data-label="Pourquoi">Cible l'angle de Fick droit, fonctionnel puisque l'EOS est normale. Seul point à la fois anormal et corrigeable.</td></tr>
       </tbody>
     </table></div>
+    
     <div class="tip"><b>Hyperlaxité :</b> ne pas étirer davantage, le problème est le contrôle, pas l'amplitude. Surtout pas de rouleau ni d'étirement passif sur la bandelette (ça ne traite pas la cause et peut irriter). Tempo lent et contrôlé.</div>
+    
     <h3>Hyrox : deux ateliers à surveiller</h3>
     <ul>
       <li><b>Traîneau &amp; fentes chargées :</b> chargent la hanche en latéral et le quadriceps en excentrique, c'est ce qui réveille le TFL. Alléger sur les deux reprises de fin août, et laisser la partenaire en prendre le gros au Doubles du 19.</li>
@@ -231,7 +283,9 @@
 
 </div>
 
-<button id="top-btn" aria-label="Revenir en haut">&#8593;</button>
+<button id="top-btn" aria-label="Revenir en haut">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
 
 <script>
   /* Anchor nav: highlight current section */
