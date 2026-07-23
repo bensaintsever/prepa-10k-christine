@@ -1,0 +1,27 @@
+# --- OS / éditeurs ---
+.DS_Store
+Thumbs.db
+*~
+.idea/
+.vscode/
+
+# --- Python (si tu ajoutes un script de génération) ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# --- Données médicales / santé perso — hors dépôt ---
+# (bilan podologique, traces de course : à garder en local uniquement)
+data/
+
+# --- Ne JAMAIS committer l'export brut Google Takeout ---
+# (1,9 Go, des milliers de fichiers, données santé sensibles)
+Takeout/
+Google Health/
+*Takeout*.zip
+*_GoogleData/
+
+# --- PDF/gros fichiers temporaires de génération ---
+/tmp/
+*.tmp

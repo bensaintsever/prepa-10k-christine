@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tracker 10 km — Christine · Octobre Rose 2026</title>
+<style>
+  :root{
+    --ink:#1E1022; --ink2:#4A0E33;
+    --brand:#D6006C; --brand-dk:#A8004F; --hot:#FF3D7F;
+    --tint:#FBE3EE; --tint2:#F6CFE0; --grey:#F6F4F7; --line:#E7DEEB;
+    --txt:#241826; --muted:#6C6472; --bg:#F4F1F6; --card:#fff;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:1.4;}
+  .disp{font-family:"Oswald","Roboto Condensed","Arial Narrow",Impact,sans-serif; font-weight:700;}
+  .wrap{max-width:1000px; margin:0 auto; padding:18px 18px 70px;}
+
+  .top{background:linear-gradient(120deg,var(--brand-dk),var(--hot)); color:#fff; border-radius:14px; padding:20px 24px;}
+  .top h1{font-family:"Oswald","Arial Narrow",Impact,sans-serif; text-transform:uppercase; font-weight:800; font-size:clamp(26px,6vw,38px); margin:0; line-height:1;}
+  .top .d{opacity:.95; margin-top:6px; font-size:15px;}
+  .top .lnk{margin-top:8px; font-size:13.5px;}
+  .top .lnk a{color:#FFE0EC; font-weight:600;}
+
+  .flash{background:var(--ink); color:#fff; border-radius:10px; padding:11px 16px; margin:12px 0; font-size:14px;}
+  .flash b{color:var(--hot);}
+
+  .cues{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:12px 0;}
+  .cue{background:var(--tint); border-left:3px solid var(--brand); border-radius:8px; padding:10px 13px; font-size:13.5px;}
+  .cue b{display:block; color:var(--brand-dk); font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.03em; font-size:12.5px; margin-bottom:2px;}
+
+  .prog{display:flex; align-items:center; gap:12px; margin:14px 0; flex-wrap:wrap;}
+  .prog .bar{flex:1; min-width:180px; height:12px; background:var(--tint2); border-radius:20px; overflow:hidden;}
+  .prog .bar i{display:block; height:100%; width:0; background:linear-gradient(120deg,var(--brand),var(--hot)); transition:width .3s;}
+  .prog .lbl{font-family:"Oswald","Arial Narrow",sans-serif; font-weight:700; color:var(--brand-dk); font-size:15px;}
+  .prog button{border:1px solid var(--line); background:#fff; color:var(--muted); border-radius:8px; padding:6px 12px; font-size:13px; cursor:pointer;}
+  .prog button:hover{border-color:var(--brand); color:var(--brand-dk);}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .wk{background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; box-shadow:0 1px 3px rgba(30,16,34,.05);}
+  .wh{display:flex; align-items:stretch; background:var(--grey); border-bottom:2px solid var(--brand);}
+  .wc{font-family:"Oswald","Arial Narrow",sans-serif; background:linear-gradient(150deg,var(--brand),var(--hot)); color:#fff; font-weight:800; font-size:18px; display:flex; align-items:center; justify-content:center; width:46px;}
+  .wf{flex:1; padding:8px 10px; font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; font-weight:700; font-size:13.5px; color:var(--ink); display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+  .wf .tg{background:var(--brand); color:#fff; font-size:10px; padding:1px 7px; border-radius:20px; letter-spacing:.03em;}
+  .wt{font-family:"Oswald","Arial Narrow",sans-serif; font-weight:700; color:var(--brand-dk); font-size:15px; display:flex; align-items:center; padding:0 12px;}
+  label.s{display:flex; align-items:center; gap:10px; padding:8px 12px; border-top:1px solid #EFEAF2; cursor:pointer;}
+  label.s:first-child{border-top:none;}
+  label.s.key{background:var(--tint);}
+  label.s input{width:17px; height:17px; accent-color:var(--brand); flex:none; cursor:pointer;}
+  label.s .dy{width:58px; font-weight:700; font-size:13px; flex:none;}
+  label.s .sh{flex:1; font-size:14px;}
+  label.s.key .sh{font-weight:700; color:var(--brand-dk);}
+  label.s .km{color:var(--brand-dk); font-weight:700; font-size:13px; flex:none;}
+  label.s.done .sh{text-decoration:line-through; color:var(--muted);}
+  label.s.done.key .sh{color:var(--muted);}
+
+  .foot{color:var(--muted); font-size:12.5px; margin-top:16px;}
+  .foot .leg span{display:inline-block; width:11px; height:11px; border:1.6px solid var(--ink); border-radius:2px; vertical-align:-1px; margin-right:4px;}
+  .foot .leg em{background:var(--tint); border-left:3px solid var(--brand); font-style:normal;}
+
+  @media (max-width:680px){ .grid{grid-template-columns:1fr;} .cues{grid-template-columns:1fr;} }
+  @media print{ body{background:#fff;} .prog button{display:none;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Objectif 59'30</h1>
+    <div class="d">10 km sous une heure · Octobre Rose · dimanche 4 octobre 2026 · repli 1 h 02</div>
+    <div class="lnk">📘 Le pourquoi de chaque séance : <a href="Christine_10K_Carnet.html">ouvrir le carnet</a></div>
+  </div>
+
+  <div class="flash">✓ <b>Test du 23 juillet :</b> 5 km en 30'40, les 4 derniers kilomètres à 5'48/km (FC 164, cadence 167). Déjà plus rapide que l'allure objectif — le sous-1h est en ligne de mire.</div>
+
+  <div class="cues">
+    <div class="cue"><b>Allure objectif</b>6'00/km — répétée dès la S7</div>
+    <div class="cue"><b>Cadence</b>160 → 171 pas/min (métronome en EF)</div>
+    <div class="cue"><b>Règle des 24 h</b>voûte douloureuse le lendemain = repos</div>
+  </div>
+
+  <div class="prog">
+    <span class="lbl" id="pl">0 / 0</span>
+    <div class="bar"><i id="pi"></i></div>
+    <button id="reset">Réinitialiser</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="foot">
+    <div class="leg"><span></span> coche chaque séance faite &nbsp;·&nbsp; <span><em>&nbsp;&nbsp;&nbsp;</em></span> séance clé (test, Hyrox, verdict, course)</div>
+    <p>Christine · préparation 10 km. Les cases cochées sont mémorisées dans ce navigateur (elles ne partent pas si tu fermes l'onglet).</p>
+  </div>
+</div>
+
+<script>
+const W = [
+ ["S0","21–23 juil.","15","Semaine repère · test fait","",[["Mar. 21","EF 4 km ✓","4",1],["Jeu. 23","TEST 5 km ✓ · 30'40","5",1],["Dim.","EF 6 km facile","6",0]]],
+ ["S1","27 juil.–2 août","20","Bloc 1 · Base & cadence","",[["Mar.","VMA 8 × (30/30)","6",0],["Jeu.","EF 6 km + métronome","6",0],["Dim.","Sortie longue 8 km","8",0]]],
+ ["S2","3–9 août","22","Passage à 4 sorties","",[["Mar.","VMA 10 × (30/30)","6",0],["Jeu.","EF 5 km + 8 accél.","5",0],["Ven.","EF 4 km facile","4",0],["Dim.","Sortie longue 7 km","7",0]]],
+ ["S3","10–16 août","25","Bloc 1 · Volume","",[["Mar.","VMA 8 × 400 m","7",0],["Jeu.","EF 5 km + éduc.","5",0],["Ven.","EF 4 km facile","4",0],["Dim.","Sortie longue 9 km","9",0]]],
+ ["S4","17–23 août","19","Relâche + recalibration","",[["Mar.","EF 6 km + 6 accél.","6",0],["Jeu.","EF 5 km facile","5",0],["Sam.","TEST 5 km chrono","8",1]]],
+ ["S5","24–30 août","24","Bloc 2 · Seuil · reprise Hyrox","Hyrox",[["Mar.","Seuil 2 × 8'","7",0],["Jeu.","HYROX (allégé)","",1],["Sam.","EF 6 km récup.","6",0],["Dim.","Sortie longue 11 km","11",0]]],
+ ["S6","31 août–6 sept.","15","Déplacement 3–6 · allégée","",[["Mar. 1","Seuil 3 × 8' (avant départ)","8",0],["Jeu. 3","EF 4 km (si possible)","4",0],["Dim. 6","EF 3 km (si possible)","3",0]]],
+ ["S7","7–13 sept.","27","Pic · point de contrôle mardi","Hyrox",[["Mar. 8","4 × 1000 m à 6'00 · relevé","9",1],["Jeu. 10","HYROX","",1],["Sam.","EF 5 km facile","5",0],["Dim.","Sortie longue 13 km","13",0]]],
+ ["S8","14–20 sept.","15","Hyrox Doubles sam. 19 · affûtage","Événement",[["Mar. 15","6 × 500 m à 6'00","7",0],["Jeu. 17","EF 4 km + 4 × 100 m","4",0],["Ven. 18","Repos","",0],["Sam. 19","HYROX DOUBLES ⚑","4",1],["Dim. 20","Repos","",0]]],
+ ["S9","21–27 sept.","26","Verdict jeudi · plus de Hyrox","",[["Mar. 22","EF 5 km récup.","5",0],["Jeu. 24","VERDICT 5 × 1000 m à 6'00","9",1],["Sam. 26","EF 4 km facile","4",0],["Dim. 27","Sortie longue 8 km","8",0]]],
+ ["S10","28 sept.–4 oct.","15","Affûtage → course","Jour J",[["Mar.","5 × 500 m à 6'00","7",0],["Jeu.","EF 4 km + 6 accél.","4",0],["Ven.","Repos","",0],["Sam.","EF 4 km + gammes","4",0],["Dim. 4","COURSE 10 KM ★","10",1]]],
+];
+const KEY="tracker10k_christine";
+let state={};
+try{ state=JSON.parse(localStorage.getItem(KEY)||"{}"); }catch(e){ state={}; }
+
+const grid=document.getElementById('grid');
+let total=0;
+W.forEach((w,wi)=>{
+  const [code,dates,tot,foc,tag,sess]=w;
+  const card=document.createElement('div'); card.className='wk';
+  let h=`<div class="wh"><div class="wc">${code}</div><div class="wf">${foc.toUpperCase()}${tag?` <span class="tg">${tag}</span>`:''}</div><div class="wt">${tot} km</div></div>`;
+  sess.forEach((s,si)=>{
+    const [day,sh,km,key]=s; const id=`${wi}_${si}`; total++;
+    const on=state[id]?'checked':''; const dclass=state[id]?' done':'';
+    h+=`<label class="s${key?' key':''}${dclass}" data-id="${id}"><input type="checkbox" ${on}><span class="dy">${day}</span><span class="sh">${sh}</span><span class="km">${km?km+' km':''}</span></label>`;
+  });
+  card.innerHTML=h; grid.appendChild(card);
+});
+
+const pl=document.getElementById('pl'), pi=document.getElementById('pi');
+function refresh(){
+  const done=Object.values(state).filter(Boolean).length;
+  pl.textContent=`${done} / ${total}`;
+  pi.style.width=(total? (done/total*100):0)+'%';
+}
+grid.addEventListener('change',e=>{
+  const lab=e.target.closest('label.s'); if(!lab) return;
+  const id=lab.dataset.id;
+  if(e.target.checked){ state[id]=1; lab.classList.add('done'); } else { delete state[id]; lab.classList.remove('done'); }
+  try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){}
+  refresh();
+});
+document.getElementById('reset').addEventListener('click',()=>{
+  if(!confirm('Décocher toutes les séances ?')) return;
+  state={}; try{ localStorage.removeItem(KEY); }catch(e){}
+  document.querySelectorAll('label.s').forEach(l=>{ l.classList.remove('done'); l.querySelector('input').checked=false; });
+  refresh();
+});
+refresh();
+</script>
+</body>
+</html>
