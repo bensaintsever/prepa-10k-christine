@@ -3,10 +3,6 @@
 Objectif : **10 km en moins d'une heure** le dimanche 4 octobre 2026 (cible 59'30, repli 1 h 02).
 Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et des données Pixel Watch 4.
 
-> ⚠️ **Confidentialité.** Ce dépôt contient des données médicales et sportives personnelles
-> (bilan podologique, métriques de course). **Garde le dépôt privé.** S'il doit devenir public,
-> retire d'abord le dossier `data/`.
-
 ## Contenu
 
 | Fichier | Rôle |
