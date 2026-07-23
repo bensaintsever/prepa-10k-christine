@@ -344,12 +344,20 @@ tr.hi td.l, tr.hi .pk { color: var(--hot); }
 .tip {
   background: rgba(255,255,255,0.04);
   border-color: var(--border-light);
-  display: flex;
-  gap: 12px;
+  position: relative;
+  padding-left: 50px;
 }
 .tip::before {
   content: '💡';
   font-size: 18px;
+  line-height: 1;
+  position: absolute;
+  left: 18px;
+  top: 18px;
+}
+.tip b {
+  display: block;
+  margin-bottom: 3px;
 }
 
 /* ===== SITE FOOTER ===== */
