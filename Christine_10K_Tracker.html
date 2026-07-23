@@ -2,8 +2,9 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tracker 10 km — Christine · Octobre Rose 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E1022">
+<title>Tracker 10 km · Christine · Octobre Rose 2026</title>
 <style>
   :root{
     --ink:#1E1022; --ink2:#4A0E33;
@@ -13,9 +14,10 @@
   }
   *{box-sizing:border-box;}
   body{margin:0; background:var(--bg); color:var(--txt);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:1.4;}
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:1.4;
+    -webkit-text-size-adjust:100%;}
   .disp{font-family:"Oswald","Roboto Condensed","Arial Narrow",Impact,sans-serif; font-weight:700;}
-  .wrap{max-width:1000px; margin:0 auto; padding:18px 18px 70px;}
+  .wrap{max-width:1000px; margin:0 auto; padding:14px 14px calc(70px + env(safe-area-inset-bottom));}
 
   .top{background:linear-gradient(120deg,var(--brand-dk),var(--hot)); color:#fff; border-radius:14px; padding:20px 24px;}
   .top h1{font-family:"Oswald","Arial Narrow",Impact,sans-serif; text-transform:uppercase; font-weight:800; font-size:clamp(26px,6vw,38px); margin:0; line-height:1;}
@@ -26,7 +28,7 @@
   .flash{background:var(--ink); color:#fff; border-radius:10px; padding:11px 16px; margin:12px 0; font-size:14px;}
   .flash b{color:var(--hot);}
 
-  .cues{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:12px 0;}
+  .cues{display:grid; grid-template-columns:1fr; gap:10px; margin:12px 0;}
   .cue{background:var(--tint); border-left:3px solid var(--brand); border-radius:8px; padding:10px 13px; font-size:13.5px;}
   .cue b{display:block; color:var(--brand-dk); font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.03em; font-size:12.5px; margin-bottom:2px;}
 
@@ -34,22 +36,24 @@
   .prog .bar{flex:1; min-width:180px; height:12px; background:var(--tint2); border-radius:20px; overflow:hidden;}
   .prog .bar i{display:block; height:100%; width:0; background:linear-gradient(120deg,var(--brand),var(--hot)); transition:width .3s;}
   .prog .lbl{font-family:"Oswald","Arial Narrow",sans-serif; font-weight:700; color:var(--brand-dk); font-size:15px;}
-  .prog button{border:1px solid var(--line); background:#fff; color:var(--muted); border-radius:8px; padding:6px 12px; font-size:13px; cursor:pointer;}
+  .prog button{border:1px solid var(--line); background:#fff; color:var(--muted); border-radius:8px; padding:8px 12px; min-height:40px; font-size:13px; cursor:pointer;}
   .prog button:hover{border-color:var(--brand); color:var(--brand-dk);}
+  .prog #save{border-color:var(--brand); color:var(--brand-dk); font-weight:600;}
 
-  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .grid{display:grid; grid-template-columns:1fr; gap:14px;}
   .wk{background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; box-shadow:0 1px 3px rgba(30,16,34,.05);}
   .wh{display:flex; align-items:stretch; background:var(--grey); border-bottom:2px solid var(--brand);}
   .wc{font-family:"Oswald","Arial Narrow",sans-serif; background:linear-gradient(150deg,var(--brand),var(--hot)); color:#fff; font-weight:800; font-size:18px; display:flex; align-items:center; justify-content:center; width:46px;}
   .wf{flex:1; padding:8px 10px; font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; font-weight:700; font-size:13.5px; color:var(--ink); display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
   .wf .tg{background:var(--brand); color:#fff; font-size:10px; padding:1px 7px; border-radius:20px; letter-spacing:.03em;}
   .wt{font-family:"Oswald","Arial Narrow",sans-serif; font-weight:700; color:var(--brand-dk); font-size:15px; display:flex; align-items:center; padding:0 12px;}
-  label.s{display:flex; align-items:center; gap:10px; padding:8px 12px; border-top:1px solid #EFEAF2; cursor:pointer;}
+  label.s{display:flex; align-items:center; gap:11px; padding:11px 13px; min-height:46px; border-top:1px solid #EFEAF2; cursor:pointer; -webkit-tap-highlight-color:transparent;}
   label.s:first-child{border-top:none;}
+  label.s:active{background:var(--grey);}
   label.s.key{background:var(--tint);}
-  label.s input{width:17px; height:17px; accent-color:var(--brand); flex:none; cursor:pointer;}
-  label.s .dy{width:58px; font-weight:700; font-size:13px; flex:none;}
-  label.s .sh{flex:1; font-size:14px;}
+  label.s input{width:22px; height:22px; accent-color:var(--brand); flex:none; cursor:pointer;}
+  label.s .dy{width:60px; font-weight:700; font-size:13.5px; flex:none;}
+  label.s .sh{flex:1; font-size:14.5px;}
   label.s.key .sh{font-weight:700; color:var(--brand-dk);}
   label.s .km{color:var(--brand-dk); font-weight:700; font-size:13px; flex:none;}
   label.s.done .sh{text-decoration:line-through; color:var(--muted);}
@@ -59,8 +63,16 @@
   .foot .leg span{display:inline-block; width:11px; height:11px; border:1.6px solid var(--ink); border-radius:2px; vertical-align:-1px; margin-right:4px;}
   .foot .leg em{background:var(--tint); border-left:3px solid var(--brand); font-style:normal;}
 
-  @media (max-width:680px){ .grid{grid-template-columns:1fr;} .cues{grid-template-columns:1fr;} }
-  @media print{ body{background:#fff;} .prog button{display:none;} }
+  /* ≥ 720px : deux colonnes de semaines + repères sur une ligne */
+  @media (min-width:720px){
+    body{font-size:15px;}
+    .wrap{padding:18px 18px 70px;}
+    .cues{grid-template-columns:repeat(3,1fr);}
+    .grid{grid-template-columns:1fr 1fr;}
+    label.s{min-height:0; padding:8px 12px;}
+    label.s input{width:18px; height:18px;}
+  }
+  @media print{ body{background:#fff;} .prog button{display:none;} .grid{grid-template-columns:1fr 1fr;} }
 </style>
 </head>
 <body>
@@ -71,10 +83,10 @@
     <div class="lnk">📘 Le pourquoi de chaque séance : <a href="Christine_10K_Carnet.html">ouvrir le carnet</a></div>
   </div>
 
-  <div class="flash">✓ <b>Test du 23 juillet :</b> 5 km en 30'40, les 4 derniers kilomètres à 5'48/km (FC 164, cadence 167). Déjà plus rapide que l'allure objectif — le sous-1h est en ligne de mire.</div>
+  <div class="flash">✓ <b>Test du 23 juillet :</b> 5 km en 30'40, les 4 derniers kilomètres à 5'48/km (FC 164, cadence 167). Déjà plus rapide que l'allure objectif, le sous-1h est en ligne de mire.</div>
 
   <div class="cues">
-    <div class="cue"><b>Allure objectif</b>6'00/km — répétée dès la S7</div>
+    <div class="cue"><b>Allure objectif</b>6'00/km, répétée dès la S7</div>
     <div class="cue"><b>Cadence</b>160 → 171 pas/min (métronome en EF)</div>
     <div class="cue"><b>Règle des 24 h</b>voûte douloureuse le lendemain = repos</div>
   </div>
@@ -82,14 +94,17 @@
   <div class="prog">
     <span class="lbl" id="pl">0 / 0</span>
     <div class="bar"><i id="pi"></i></div>
+    <button id="save">💾 Sauvegarder</button>
+    <button id="load">📂 Restaurer</button>
     <button id="reset">Réinitialiser</button>
+    <input type="file" id="file" accept="application/json,.json" hidden>
   </div>
 
   <div class="grid" id="grid"></div>
 
   <div class="foot">
     <div class="leg"><span></span> coche chaque séance faite &nbsp;·&nbsp; <span><em>&nbsp;&nbsp;&nbsp;</em></span> séance clé (test, Hyrox, verdict, course)</div>
-    <p>Christine · préparation 10 km. Les cases cochées sont mémorisées dans ce navigateur (elles ne partent pas si tu fermes l'onglet).</p>
+    <p>Les cases sont mémorisées dans <b>ce</b> navigateur (localStorage), pas de compte, pas de serveur. Pour passer d'un appareil à l'autre ou faire une sauvegarde, utilise <b>Sauvegarder</b> (télécharge un fichier) puis <b>Restaurer</b> sur l'autre appareil.</p>
   </div>
 </div>
 
@@ -108,8 +123,12 @@ const W = [
  ["S10","28 sept.–4 oct.","15","Affûtage → course","Jour J",[["Mar.","5 × 500 m à 6'00","7",0],["Jeu.","EF 4 km + 6 accél.","4",0],["Ven.","Repos","",0],["Sam.","EF 4 km + gammes","4",0],["Dim. 4","COURSE 10 KM ★","10",1]]],
 ];
 const KEY="tracker10k_christine";
+// localStorage dispo ? (échoue en navigation privée sur certains navigateurs)
+let LS=null;
+try{ const t="__t"; localStorage.setItem(t,"1"); localStorage.removeItem(t); LS=localStorage; }catch(e){ LS=null; }
 let state={};
-try{ state=JSON.parse(localStorage.getItem(KEY)||"{}"); }catch(e){ state={}; }
+try{ state=JSON.parse((LS&&LS.getItem(KEY))||"{}")||{}; }catch(e){ state={}; }
+function persist(){ if(!LS) return; try{ LS.setItem(KEY,JSON.stringify(state)); }catch(e){} }
 
 const grid=document.getElementById('grid');
 let total=0;
@@ -131,19 +150,59 @@ function refresh(){
   pl.textContent=`${done} / ${total}`;
   pi.style.width=(total? (done/total*100):0)+'%';
 }
+function applyToDom(){
+  document.querySelectorAll('label.s').forEach(l=>{
+    const on=!!state[l.dataset.id];
+    l.querySelector('input').checked=on;
+    l.classList.toggle('done',on);
+  });
+  refresh();
+}
 grid.addEventListener('change',e=>{
   const lab=e.target.closest('label.s'); if(!lab) return;
   const id=lab.dataset.id;
   if(e.target.checked){ state[id]=1; lab.classList.add('done'); } else { delete state[id]; lab.classList.remove('done'); }
-  try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){}
-  refresh();
+  persist(); refresh();
 });
 document.getElementById('reset').addEventListener('click',()=>{
   if(!confirm('Décocher toutes les séances ?')) return;
-  state={}; try{ localStorage.removeItem(KEY); }catch(e){}
-  document.querySelectorAll('label.s').forEach(l=>{ l.classList.remove('done'); l.querySelector('input').checked=false; });
-  refresh();
+  state={}; if(LS){ try{ LS.removeItem(KEY); }catch(e){} }
+  applyToDom();
 });
+
+// --- Sauvegarde / restauration (pas de BDD : on passe par un fichier .json) ---
+document.getElementById('save').addEventListener('click',()=>{
+  const payload={app:"tracker10k",date:new Date().toISOString(),state:state};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download="tracker-10k-progression.json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+});
+document.getElementById('load').addEventListener('click',()=>document.getElementById('file').click());
+document.getElementById('file').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result);
+      const st=d && d.state ? d.state : d;              // accepte les deux formats
+      if(typeof st!=="object"||st===null) throw 0;
+      state=st; persist(); applyToDom();
+      alert("Progression restaurée ✓");
+    }catch(x){ alert("Fichier illisible ou invalide."); }
+    e.target.value="";
+  };
+  r.readAsText(f);
+});
+
+if(!LS){
+  const w=document.createElement('p');
+  w.style.cssText="color:#A8004F;font-size:12.5px;margin-top:6px;";
+  w.textContent="⚠ Ce navigateur bloque le stockage local (navigation privée ?). Les cases ne seront pas mémorisées, utilise Sauvegarder pour garder ta progression dans un fichier.";
+  document.querySelector('.foot').appendChild(w);
+}
 refresh();
 </script>
 </body>

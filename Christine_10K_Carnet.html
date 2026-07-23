@@ -2,119 +2,153 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carnet 10 km — Christine · Octobre Rose 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E1022">
+<title>Carnet 10 km · Christine · Octobre Rose 2026</title>
 <style>
   :root{
     --ink:#1E1022; --ink2:#4A0E33;
     --brand:#D6006C; --brand-dk:#A8004F; --hot:#FF3D7F;
     --tint:#FBE3EE; --tint2:#F6CFE0; --grey:#F6F4F7; --line:#E7DEEB;
-    --txt:#241826; --muted:#6C6472; --card:#ffffff; --bg:#F4F1F6;
+    --txt:#241826; --muted:#6C6472; --card:#fff; --bg:#F4F1F6;
+    --bar-h:104px;               /* hauteur barre sticky (mobile, avec nav) */
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
+
+  /* ---------- BASE = MOBILE ---------- */
   body{
     margin:0; background:var(--bg); color:var(--txt);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    font-size:17px; line-height:1.62;
+    font-size:16px; line-height:1.6;
+    -webkit-text-size-adjust:100%;
   }
   .disp{font-family:"Oswald","Roboto Condensed","Arial Narrow",Impact,sans-serif; font-weight:700; letter-spacing:.01em;}
   a{color:var(--brand-dk);}
-  .wrap{max-width:860px; margin:0 auto; padding:0 20px 80px;}
+  .wrap{padding:14px 14px 90px; max-width:860px; margin:0 auto;}
 
-  /* barre sticky */
-  .bar{position:sticky; top:0; z-index:10; background:rgba(30,16,34,.96); backdrop-filter:saturate(1.2) blur(4px); color:#fff;}
-  .bar .in{max-width:860px; margin:0 auto; padding:10px 20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
-  .bar b{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.12em; font-size:14px;}
+  /* ---------- BARRE STICKY + NAV ANCRES (tactile) ---------- */
+  .bar{position:sticky; top:0; z-index:20; background:var(--ink); color:#fff;
+       padding:env(safe-area-inset-top) 0 0; box-shadow:0 2px 10px rgba(30,16,34,.25);}
+  .bar .row{display:flex; align-items:center; gap:10px; padding:9px 14px;}
+  .bar b{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.1em; font-size:14px; white-space:nowrap;}
   .bar .chip{background:linear-gradient(120deg,var(--brand),var(--hot)); color:#fff; font-weight:700; font-size:12px; padding:3px 10px; border-radius:20px;}
-  .bar nav{margin-left:auto; display:flex; gap:2px; flex-wrap:wrap;}
-  .bar nav a{color:#E6D6E2; text-decoration:none; font-size:12.5px; padding:4px 8px; border-radius:6px;}
-  .bar nav a:hover{background:rgba(255,255,255,.12); color:#fff;}
+  .bar .switch{margin-left:auto; display:inline-flex; align-items:center; min-height:36px; padding:0 14px; border-radius:20px; background:#fff; color:var(--brand-dk); text-decoration:none; font-weight:700; font-size:13px; white-space:nowrap;}
+  .bar .switch:active{background:var(--tint);}
+  /* nav défilable horizontalement : chaque item est une grosse cible tactile */
+  nav.toc{display:flex; gap:8px; overflow-x:auto; padding:0 14px 10px; scroll-snap-type:x proximity;
+          -webkit-overflow-scrolling:touch; scrollbar-width:none;}
+  nav.toc::-webkit-scrollbar{display:none;}
+  nav.toc a{scroll-snap-align:start; flex:0 0 auto; display:inline-flex; align-items:center; min-height:38px;
+            padding:0 14px; border-radius:20px; background:rgba(255,255,255,.10); color:#F0E1EA;
+            text-decoration:none; font-size:14px; font-weight:600; white-space:nowrap;}
+  nav.toc a:active{background:var(--brand);}
+  nav.toc a.on{background:linear-gradient(120deg,var(--brand),var(--hot)); color:#fff;}
 
-  /* hero */
-  .hero{background:linear-gradient(120deg,var(--brand-dk),var(--hot)); color:#fff; border-radius:16px; padding:34px 30px; margin:26px 0 8px;}
-  .hero .k{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.26em; font-size:13px; opacity:.9;}
-  .hero h1{font-family:"Oswald","Arial Narrow",Impact,sans-serif; text-transform:uppercase; font-weight:800; font-size:clamp(30px,7vw,46px); line-height:1; margin:8px 0 10px;}
-  .hero p{margin:0; font-size:16px; opacity:.95; max-width:60ch;}
+  /* décalage d'ancrage : le titre ne passe pas sous la barre */
+  section{scroll-margin-top:var(--bar-h);}
 
-  .lead{font-size:18.5px; margin:22px 0 6px;}
+  /* ---------- HERO ---------- */
+  .hero{background:linear-gradient(120deg,var(--brand-dk),var(--hot)); color:#fff; border-radius:14px; padding:24px 20px; margin:14px 0 10px;}
+  .hero .k{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.22em; font-size:12px; opacity:.9;}
+  .hero h1{font-family:"Oswald","Arial Narrow",Impact,sans-serif; text-transform:uppercase; font-weight:800; font-size:clamp(28px,9vw,46px); line-height:1; margin:8px 0 10px;}
+  .hero p{margin:0; font-size:15px; opacity:.95;}
+
+  .lead{font-size:17px; margin:18px 2px;}
   .lead b{color:var(--ink);}
 
-  /* sections */
-  section{background:var(--card); border-radius:14px; padding:6px 28px 22px; margin:18px 0; box-shadow:0 1px 3px rgba(30,16,34,.06);}
-  .sech{display:flex; align-items:baseline; gap:12px; border-bottom:2px solid var(--brand); padding:18px 0 8px; margin-bottom:14px;}
-  .sech .num{font-family:"Oswald","Arial Narrow",sans-serif; color:var(--brand); font-weight:800; font-size:26px; line-height:1;}
-  .sech h2{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.02em; color:var(--ink); font-size:23px; margin:0; font-weight:700;}
-  h3{color:var(--brand-dk); font-size:18px; margin:22px 0 6px;}
-  h3::before{content:""; display:inline-block; width:10px; height:10px; background:var(--brand); margin-right:9px; vertical-align:1px; border-radius:2px;}
+  /* ---------- SECTIONS ---------- */
+  section{background:var(--card); border-radius:14px; padding:4px 16px 18px; margin:14px 0; box-shadow:0 1px 3px rgba(30,16,34,.06);}
+  .sech{display:flex; align-items:baseline; gap:10px; border-bottom:2px solid var(--brand); padding:16px 0 8px; margin-bottom:12px;}
+  .sech .num{font-family:"Oswald","Arial Narrow",sans-serif; color:var(--brand); font-weight:800; font-size:24px; line-height:1;}
+  .sech h2{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.02em; color:var(--ink); font-size:20px; margin:0; font-weight:700;}
+  h3{color:var(--brand-dk); font-size:17px; margin:20px 0 6px;}
+  h3::before{content:""; display:inline-block; width:10px; height:10px; background:var(--brand); margin-right:8px; vertical-align:1px; border-radius:2px;}
   p{margin:0 0 12px;}
-  ul{margin:0 0 14px; padding-left:22px;}
-  li{margin-bottom:8px;} li::marker{color:var(--brand);}
+  ul{margin:0 0 14px; padding-left:20px;}
+  li{margin-bottom:9px;} li::marker{color:var(--brand);}
 
-  /* tables */
-  .tw{overflow-x:auto; margin:14px 0;}
-  table{border-collapse:collapse; width:100%; min-width:460px; font-size:15.5px;}
-  th{background:var(--ink); color:#fff; text-align:left; padding:10px 12px; font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.05em; font-size:13px; font-weight:600;}
-  td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  /* ---------- TABLES (défilables sur mobile) ---------- */
+  .tw{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:14px -16px; padding:0 16px;}
+  table{border-collapse:collapse; width:100%; min-width:520px; font-size:15px;}
+  th{background:var(--ink); color:#fff; text-align:left; padding:9px 11px; font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.05em; font-size:12.5px; font-weight:600;}
+  td{padding:9px 11px; border-bottom:1px solid var(--line); vertical-align:top;}
   tr:nth-child(even) td{background:var(--grey);}
   td.l{font-weight:700;} .ctr{text-align:center;} .pk{color:var(--brand-dk); font-weight:700;}
   tr.hi td{background:var(--tint);} tr.hi td:first-child{border-left:3px solid var(--brand);} tr.hi td.l,tr.hi .pk{color:var(--brand-dk);}
 
-  /* callouts */
-  .co,.co-dark{border-left:6px solid var(--brand); border-radius:10px; padding:16px 20px; margin:16px 0;}
+  /* ---------- CALLOUTS ---------- */
+  .co,.co-dark{border-left:6px solid var(--brand); border-radius:10px; padding:14px 16px; margin:14px 0;}
   .co{background:var(--tint);}
   .co h4{margin:0 0 8px; color:var(--brand-dk); font-size:16px;}
   .co-dark{background:linear-gradient(120deg,var(--ink),var(--ink2)); color:#F0E6EE; border-left-color:var(--hot);}
   .co-dark h4{margin:0 0 8px; color:#fff; font-size:16px;}
-  .co p,.co-dark p{margin:0 0 8px; font-size:15.5px;}
+  .co p,.co-dark p{margin:0 0 8px; font-size:15px;}
   .co p:last-child,.co-dark p:last-child{margin-bottom:0;}
-  .tip{background:var(--tint); border-radius:10px; padding:14px 20px; margin:16px 0; font-size:15.5px;}
+  .tip{background:var(--tint); border-radius:10px; padding:13px 16px; margin:14px 0; font-size:15px;}
   .tip b{color:var(--brand-dk);}
 
-  /* rappels */
-  .rems{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:12px 0 4px;}
-  .rem{background:var(--grey); border-top:3px solid var(--brand); border-radius:0 0 10px 10px; padding:16px;}
-  .rem .n{font-family:"Oswald","Arial Narrow",sans-serif; color:var(--brand); font-weight:800; font-size:26px; line-height:1;}
-  .rem b{display:block; margin:6px 0 4px;}
-  .closing{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.03em; color:var(--ink); font-size:20px; margin:26px 0 8px; font-weight:700;}
+  /* ---------- RAPPELS ---------- */
+  .rems{display:grid; grid-template-columns:1fr; gap:12px; margin:12px 0 4px;}
+  .rem{background:var(--grey); border-top:3px solid var(--brand); border-radius:0 0 10px 10px; padding:14px;}
+  .rem .n{font-family:"Oswald","Arial Narrow",sans-serif; color:var(--brand); font-weight:800; font-size:24px; line-height:1;}
+  .rem b{display:block; margin:5px 0 4px;}
+  .closing{font-family:"Oswald","Arial Narrow",sans-serif; text-transform:uppercase; letter-spacing:.03em; color:var(--ink); font-size:19px; margin:24px 0 8px; font-weight:700;}
 
-  footer{color:var(--muted); font-size:13px; text-align:center; margin-top:30px;}
+  footer{color:var(--muted); font-size:13px; text-align:center; margin-top:26px;}
 
-  @media (max-width:620px){
-    body{font-size:16px;}
-    section{padding:4px 18px 18px;}
-    .rems{grid-template-columns:1fr;}
-    .bar nav{display:none;}
+  /* ---------- BOUTON "HAUT" flottant (tactile) ---------- */
+  #top{position:fixed; right:14px; bottom:calc(14px + env(safe-area-inset-bottom)); z-index:30;
+       width:48px; height:48px; border-radius:50%; border:none; cursor:pointer;
+       background:var(--ink); color:#fff; font-size:20px; box-shadow:0 3px 10px rgba(30,16,34,.35);
+       opacity:0; pointer-events:none; transition:opacity .25s;}
+  #top.show{opacity:.94; pointer-events:auto;}
+
+  /* ---------- ≥ 720px : ENRICHISSEMENT DESKTOP ---------- */
+  @media (min-width:720px){
+    :root{--bar-h:60px;}
+    body{font-size:17px;}
+    .wrap{padding:0 20px 80px;}
+    .bar .row{padding:10px 20px;}
+    .bar{display:flex; flex-direction:column;}
+    nav.toc{padding:0 20px 10px;}
+    .hero{padding:34px 30px; margin:26px 0 8px;}
+    .hero p{font-size:16px;}
+    section{padding:6px 28px 22px;}
+    .sech h2{font-size:23px;} .sech .num{font-size:26px;}
+    .tw{margin:14px 0;} table{min-width:460px;}
+    .rems{grid-template-columns:repeat(3,1fr); gap:14px;}
   }
+
   @media print{
-    body{background:#fff;} .bar{display:none;} section{box-shadow:none; padding:0 0 10px;} .wrap{max-width:none;}
+    .bar,#top{display:none;} body{background:#fff;} section{box-shadow:none; padding:0 0 10px;}
   }
 </style>
 </head>
 <body>
 
-<div class="bar"><div class="in">
-  <b>Carnet 10 km</b><span class="chip">Objectif&nbsp;59'30</span>
-  <nav>
+<header class="bar">
+  <div class="row"><b>Carnet 10 km</b><span class="chip">Objectif&nbsp;59'30</span><a class="switch" href="Christine_10K_Tracker.html">📋 Planning →</a></div>
+  <nav class="toc" aria-label="Aller à une section">
     <a href="#s1">Cadence</a><a href="#s2">Données</a><a href="#s3">Allures</a>
     <a href="#s4">Muscu</a><a href="#s5">Foulée</a><a href="#s6">Contrôles</a><a href="#s7">Sécurité</a>
   </nav>
-</div></div>
+</header>
 
 <div class="wrap">
 
   <div class="hero">
     <div class="k">Christine · Carnet de préparation</div>
     <h1>10 km sous 1 heure</h1>
-    <p>Octobre Rose — dimanche 4 octobre 2026. Le pourquoi du plan, à lire une fois au calme. Le planning semaine par semaine, à cocher, est sur la feuille « Tracker ».</p>
+    <p>Octobre Rose · dimanche 4 octobre 2026. Le pourquoi du plan, à lire une fois au calme. Le planning à cocher est sur la feuille « Tracker ».</p>
   </div>
 
-  <p class="lead">Une seule idée porte tout le plan : <b>faire tourner les jambes de 160 à 171 pas/min en gardant la même longueur de foulée</b>. Ça donne 6'00/km, soit 10 km en 59'59 — sans apprendre aucun geste nouveau. Et c'est le même réglage qui protège l'aponévrose plantaire et la bandelette. Le reste explique pourquoi, et comment ne pas se blesser en chemin.</p>
+  <p class="lead">Une seule idée porte tout le plan : <b>faire tourner les jambes de 160 à 171 pas/min en gardant la même longueur de foulée</b>. Ça donne 6'00/km, soit 10 km en 59'59, sans apprendre aucun geste nouveau. Et c'est le même réglage qui protège l'aponévrose plantaire et la bandelette. Le reste explique pourquoi, et comment ne pas se blesser en chemin.</p>
 
   <section id="s1">
     <div class="sech"><span class="num disp">01</span><h2>Pourquoi la cadence, et pas plus de kilomètres</h2></div>
-    <p>Le 3 juillet, elle a couru son 10 km en 65 min (6'32/km), à 160 pas/min × 96 cm de foulée, allure parfaitement régulière du premier au dernier kilomètre. Le chrono n'est donc pas un problème de gestion de course : c'est un problème de mécanique. Pour passer à 6'00/km il faut 166,7 m/min, soit <b>171 × 97,5 cm</b> — +7 % de cadence, +1,5 cm d'amplitude. C'est tout.</p>
-    <p>Le test du 23 juillet le confirme : 5 km en 30'40, mais surtout <b>les quatre derniers kilomètres tenus à 5'48/km</b> à FC 164 — déjà plus rapide que l'allure objectif. Projeté sur 10 km, cela situe aujourd'hui autour de 62 min. Autrement dit, le point de départ est meilleur qu'au 3 juillet, et le sous-1h n'est plus un pari : c'est le travail des onze semaines qui suivent.</p>
+    <p>Le 3 juillet, elle a couru son 10 km en 65 min (6'32/km), à 160 pas/min × 96 cm de foulée, allure parfaitement régulière du premier au dernier kilomètre. Le chrono n'est donc pas un problème de gestion de course : c'est un problème de mécanique. Pour passer à 6'00/km il faut 166,7 m/min, soit <b>171 × 97,5 cm</b>, +7 % de cadence, +1,5 cm d'amplitude. C'est tout.</p>
+    <p>Le test du 23 juillet le confirme : 5 km en 30'40, mais surtout <b>les quatre derniers kilomètres tenus à 5'48/km</b> à FC 164, déjà plus rapide que l'allure objectif. Projeté sur 10 km, cela situe aujourd'hui autour de 62 min. Autrement dit, le point de départ est meilleur qu'au 3 juillet, et le sous-1h n'est plus un pari : c'est le travail des onze semaines qui suivent.</p>
     <div class="co">
       <h4>Un seul réglage, trois bénéfices</h4>
       <p>Aponévrose : cadence plus haute = contact au sol plus court = moins de tension, moins longtemps.</p>
@@ -125,13 +159,13 @@
     <ul>
       <li><b>Progressif :</b> 160 → 165 sur S1–S6, puis 165 → 171 dès la S7. Jamais +10 % d'un coup.</li>
       <li><b>Métronome, en EF seulement :</b> 2 × 8 à 10 min par sortie facile. Jamais sur les séances dures.</li>
-      <li><b>Surveiller la longueur de pas :</b> si elle tombe sous 94 cm à l'allure objectif, le gain est nul — ralentir la montée.</li>
+      <li><b>Surveiller la longueur de pas :</b> si elle tombe sous 94 cm à l'allure objectif, le gain est nul, ralentir la montée.</li>
     </ul>
   </section>
 
   <section id="s2">
     <div class="sech"><span class="num disp">02</span><h2>Ce que disent la montre et le pied</h2></div>
-    <p>Deux ruptures nettes dans les données de la Pixel Watch (mi-mars, fin juin) sont des <b>recalibrages logiciels</b>, pas des changements physiques : on ne compare que des séances de la même période, et la référence reste le 10 km du 3 juillet. L'export ne donne pas l'équilibre gauche/droite du contact — cette asymétrie se suit chez le podologue.</p>
+    <p>Deux ruptures nettes dans les données de la Pixel Watch (mi-mars, fin juin) sont des <b>recalibrages logiciels</b>, pas des changements physiques : on ne compare que des séances de la même période, et la référence reste le 10 km du 3 juillet. L'export ne donne pas l'équilibre gauche/droite du contact, cette asymétrie se suit chez le podologue.</p>
     <div class="tw"><table>
       <tr><th>Métrique</th><th class="ctr">3 juil.</th><th class="ctr">Cible oct.</th><th>Lecture</th></tr>
       <tr><td class="l">Cadence</td><td class="ctr">160 /min</td><td class="ctr pk">170–172</td><td>Levier n° 1 : chrono, fascia ET bandelette.</td></tr>
@@ -142,7 +176,7 @@
       <tr><td class="l">FC moyenne</td><td class="ctr">167</td><td class="ctr pk">dérive &lt; 4 %</td><td>Dérive 5,5 % : base aérobie encore à construire.</td></tr>
     </table></div>
     <h3>Le pied (analyse zebris)</h3>
-    <p><b>L'aponévrose amortit seule</b> — 163 % du poids de corps sur l'avant-pied contre 75–79 % au talon, bascule en 0,01–0,02 s. Couplé aux 314 ms de contact, la tension est longue, ~10 400 fois par 10 km. <b>L'arche s'affaisse en charge</b> (~55 % de la force passe par le médio-pied) : les semelles la tiennent passivement, l'excentrique de mollet activement. <b>L'ouverture de pas droite (8,6°) est fonctionnelle</b> puisque l'EOS est normale — donc corrigeable, et probablement de la même racine que le TFL : un seul axe de renfo traite les deux.</p>
+    <p><b>L'aponévrose amortit seule</b>, 163 % du poids de corps sur l'avant-pied contre 75–79 % au talon, bascule en 0,01–0,02 s. Couplé aux 314 ms de contact, la tension est longue, ~10 400 fois par 10 km. <b>L'arche s'affaisse en charge</b> (~55 % de la force passe par le médio-pied) : les semelles la tiennent passivement, l'excentrique de mollet activement. <b>L'ouverture de pas droite (8,6°) est fonctionnelle</b> puisque l'EOS est normale, donc corrigeable, et probablement de la même racine que le TFL : un seul axe de renfo traite les deux.</p>
   </section>
 
   <section id="s3">
@@ -153,7 +187,7 @@
       <tr><td class="l">Endurance fondamentale</td><td class="ctr pk">7'30–8'00/km</td><td class="ctr">125–142</td><td>Parler en phrases complètes. 75 % du plan.</td></tr>
       <tr><td class="l">Seuil</td><td class="ctr pk">6'05–6'20/km</td><td class="ctr">158–165</td><td>Confortablement dur. 3–4 mots à la fois.</td></tr>
       <tr><td class="l">10 km du 3 juillet</td><td class="ctr pk">6'32/km</td><td class="ctr">167</td><td>Premier repère.</td></tr>
-      <tr><td class="l">5 km du 23 juillet</td><td class="ctr pk">6'08/km</td><td class="ctr">164</td><td>Test récent — fin à 5'48/km.</td></tr>
+      <tr><td class="l">5 km du 23 juillet</td><td class="ctr pk">6'08/km</td><td class="ctr">164</td><td>Test récent, fin à 5'48/km.</td></tr>
       <tr class="hi"><td class="l">Allure objectif</td><td class="ctr pk">6'00/km</td><td class="ctr">165–172</td><td>À répéter en S7–S10. 59'59 sur 10 km.</td></tr>
       <tr><td class="l">VMA</td><td class="ctr pk">5'25–5'40/km</td><td class="ctr">175+</td><td>Tenable 5–6 min maxi.</td></tr>
     </table></div>
@@ -161,27 +195,27 @@
   </section>
 
   <section id="s4">
-    <div class="sech"><span class="num disp">04</span><h2>Muscu — les 3 points à vérifier</h2></div>
+    <div class="sech"><span class="num disp">04</span><h2>Muscu : les 3 points à vérifier</h2></div>
     <p>Elle a déjà un programme spécifique : rien à changer, juste s'assurer que ces trois choses y figurent, vu le TFL et l'aponévrose.</p>
     <div class="tw"><table>
       <tr><th>À vérifier dans le programme</th><th class="ctr">Dose</th><th>Pourquoi ici</th></tr>
       <tr><td class="l">Abducteurs de hanche unilatéral + contrôle chute du bassin</td><td class="ctr pk">3 × / sem.</td><td>Facteur n° 1 du TFL. Traite la blessure de mai et l'ouverture de pas droite. Le point à ne pas manquer.</td></tr>
-      <tr><td class="l">Excentrique de mollet, orteils en extension (Rathleff)</td><td class="ctr pk">3×12, 1j/2</td><td>Spécifique à l'aponévrose. Ce sont les orteils en extension qui chargent le fascia — rare dans un programme général.</td></tr>
+      <tr><td class="l">Excentrique de mollet, orteils en extension (Rathleff)</td><td class="ctr pk">3×12, 1j/2</td><td>Spécifique à l'aponévrose. Ce sont les orteils en extension qui chargent le fascia, rare dans un programme général.</td></tr>
       <tr><td class="l">Contrôle rotationnel de hanche (rot. interne élastique, SDT unipodal)</td><td class="ctr pk">2–3 × / sem.</td><td>Cible l'angle de Fick droit, fonctionnel puisque l'EOS est normale. Seul point à la fois anormal et corrigeable.</td></tr>
     </table></div>
-    <div class="tip"><b>Hyperlaxité :</b> ne pas étirer davantage — le problème est le contrôle, pas l'amplitude. Surtout pas de rouleau ni d'étirement passif sur la bandelette (ça ne traite pas la cause et peut irriter). Tempo lent et contrôlé.</div>
+    <div class="tip"><b>Hyperlaxité :</b> ne pas étirer davantage, le problème est le contrôle, pas l'amplitude. Surtout pas de rouleau ni d'étirement passif sur la bandelette (ça ne traite pas la cause et peut irriter). Tempo lent et contrôlé.</div>
     <h3>Hyrox : deux ateliers à surveiller</h3>
     <ul>
-      <li><b>Traîneau &amp; fentes chargées :</b> chargent la hanche en latéral et le quadriceps en excentrique — c'est ce qui réveille le TFL. Alléger sur les deux reprises de fin août, et laisser la partenaire en prendre le gros au Doubles du 19.</li>
+      <li><b>Traîneau &amp; fentes chargées :</b> chargent la hanche en latéral et le quadriceps en excentrique, c'est ce qui réveille le TFL. Alléger sur les deux reprises de fin août, et laisser la partenaire en prendre le gros au Doubles du 19.</li>
       <li><b>Wall balls &amp; burpee broad jumps :</b> charge répétée sur mollet et voûte. Si la voûte tire le lendemain, ça vient de là.</li>
     </ul>
   </section>
 
   <section id="s5">
     <div class="sech"><span class="num disp">05</span><h2>Foulée</h2></div>
-    <p>Raccourcir le contact et baisser le pic de charge, <b>sans changer l'attaque de pied</b> (passer talon déplacerait la contrainte vers le genou — mauvaise idée avec un TFL).</p>
+    <p>Raccourcir le contact et baisser le pic de charge, <b>sans changer l'attaque de pied</b> (passer talon déplacerait la contrainte vers le genou, mauvaise idée avec un TFL).</p>
     <ul>
-      <li><b>La cadence d'abord</b> — 80 % du travail technique.</li>
+      <li><b>La cadence d'abord</b>, 80 % du travail technique.</li>
       <li><b>Un seul repère par sortie :</b> « les pieds tournent sous le bassin ».</li>
       <li><b>Ne pas croiser la ligne médiane :</b> courir « sur deux rails », pas « sur un fil ».</li>
       <li><b>Lignes droites 6–8 × 20 s</b> et éducatifs 10 min × 2/sem, après échauffement.</li>
@@ -200,8 +234,8 @@
   </section>
 
   <section id="s7">
-    <div class="sech"><span class="num disp">07</span><h2>Sécurité — les signaux d'alerte</h2></div>
-    <h3>TFL — douleur externe du genou</h3>
+    <div class="sech"><span class="num disp">07</span><h2>Sécurité : les signaux d'alerte</h2></div>
+    <h3>TFL : douleur externe du genou</h3>
     <p>Apparaît après un temps de course constant, pire en descente, part à l'arrêt.</p>
     <ul>
       <li><b>1re fois :</b> finir en marchant. Deux séances suivantes en EF courte et plate.</li>
@@ -209,7 +243,7 @@
       <li><b>Entre le 1er et le 19 sept. :</b> renoncer au Hyrox Doubles ou le faire sans traîneau ni fentes.</li>
       <li><b>Douleur au repos / en descendant l'escalier :</b> consultation, sans attendre.</li>
     </ul>
-    <h3>Aponévrose — règle des 24 h</h3>
+    <h3>Aponévrose : règle des 24 h</h3>
     <p>Douleur de voûte &gt; 3/10 en courant, ou encore là le lendemain matin → séance suivante EF facile ou repos. La douleur aux premiers pas du matin est le signal cardinal : si elle revient, stop progression et podologue.</p>
   </section>
 
@@ -221,14 +255,34 @@
   </div>
 
   <div class="co-dark">
-    <h4>Le jour J — 4 octobre</h4>
+    <h4>Le jour J · 4 octobre</h4>
     <p>Refaire ce qu'elle sait déjà faire (allure régulière, prouvé le 3 juillet), un cran plus vite.</p>
     <p>km 1–3 à 6'05 · km 4–8 à 6'00 · km 9–10 sur ce qui reste. Ne pas se faire emmener par le peloton au départ.</p>
     <p>Semelles en place, chaussures rodées, rien de neuf le jour J. Et 59'59 vaut 59'00.</p>
   </div>
 
-  <footer>Plan 10 km · Octobre Rose 2026 — Christine · version consultable. Sources : zebris 20/08/2025, export Google Health / Pixel Watch 4, test 5 km du 23/07/2026.</footer>
+  <footer>Plan 10 km · Octobre Rose 2026 · Christine. Sources : zebris 20/08/2025, export Google Health / Pixel Watch 4, tests 3 juil. &amp; 23 juil. 2026.</footer>
 
 </div>
+
+<button id="top" aria-label="Revenir en haut">↑</button>
+
+<script>
+  var links={}; document.querySelectorAll('nav.toc a').forEach(function(a){ links[a.getAttribute('href').slice(1)]=a; });
+  var top=document.getElementById('top');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          Object.keys(links).forEach(function(k){ links[k].classList.remove('on'); });
+          var l=links[e.target.id]; if(l){ l.classList.add('on'); l.scrollIntoView({inline:'center',block:'nearest'}); }
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px'});
+    document.querySelectorAll('section[id]').forEach(function(s){ io.observe(s); });
+  }
+  window.addEventListener('scroll',function(){ top.classList.toggle('show', window.scrollY>500); },{passive:true});
+  top.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+</script>
 </body>
 </html>
