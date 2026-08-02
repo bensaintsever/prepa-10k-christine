@@ -25,3 +25,9 @@ Google Health/
 # --- PDF/gros fichiers temporaires de génération ---
 /tmp/
 *.tmp
+
+# --- Secrets & données personnelles de config ---
+# Le dépôt est public : adresses mail, clés et tokens restent hors dépôt.
+*.local.sql
+.env.local
+.env

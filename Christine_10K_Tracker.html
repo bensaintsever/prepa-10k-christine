@@ -1,509 +1,1019 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0F0814">
-<meta name="description" content="Tracker 11 semaines — cocher chaque séance, progression automatique. Objectif 59'30.">
-<title>Tracker 10 km · Christine · Octobre Rose 2026</title>
-<link rel="stylesheet" href="style.v2.css">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<!-- View Transitions API for modern page loads -->
-<meta name="view-transition" content="same-origin">
-<style>
-  /* ===== TRACKER BAR (sticky below shell, glassmorphism) ===== */
-  .tracker-bar {
-    position: sticky; top: var(--shell-h); z-index: 40;
-    background: rgba(15, 8, 20, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  .tracker-bar-inner {
-    display: flex; align-items: center; gap: 16px;
-    padding: 10px 16px; max-width: 1000px; margin: 0 auto;
-  }
-  
-  .tracker-lbl {
-    font-family: var(--font-disp); font-weight: 700;
-    color: var(--txt); font-size: 16px; white-space: nowrap;
-  }
-  
-  /* NEON PROGRESS BAR */
-  .tracker-progress {
-    flex: 1; min-width: 80px; height: 10px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 20px; overflow: hidden;
-    position: relative;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-  }
-  .tracker-progress i {
-    display: block; height: 100%; width: 0;
-    background: linear-gradient(90deg, var(--brand), var(--hot));
-    box-shadow: 0 0 10px var(--glow-pink);
-    border-radius: 20px;
-    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  
-  .tracker-week {
-    font-family: var(--font-disp); font-weight: 600;
-    font-size: 13px; text-transform: uppercase; letter-spacing: .08em;
-    color: var(--brand-dk); white-space: nowrap;
-  }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0F0814">
+  <meta name="description"
+    content="Tracker 11 semaines — cocher chaque séance, progression automatique. Objectif 59'30.">
+  <title>Tracker 10 km · Christine · Octobre Rose 2026</title>
+  <link rel="stylesheet" href="style.v2.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <!-- View Transitions API for modern page loads -->
+  <meta name="view-transition" content="same-origin">
+  <style>
+    /* ===== TRACKER BAR (sticky below shell, glassmorphism) ===== */
+    .tracker-bar {
+      position: sticky;
+      top: var(--shell-h);
+      z-index: 40;
+      background: rgba(15, 8, 20, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
 
-  /* ===== FLASH (test result) ===== */
-  .flash {
-    background: linear-gradient(135deg, rgba(214,0,108,0.15), transparent);
-    border: 1px solid rgba(255,61,127,0.3);
-    color: var(--txt); border-radius: var(--radius-sm);
-    padding: 14px 18px; margin: 16px 0; font-size: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  }
-  .flash b { color: var(--hot); }
+    .tracker-bar-inner {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 16px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
 
-  /* ===== CUES (repères) ===== */
-  .cues { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
-  .cue {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--brand);
-    border-radius: var(--radius-sm);
-    padding: 12px 16px; font-size: 14px;
-    transition: transform 0.2s;
-  }
-  .cue:hover { transform: translateX(4px); border-left-color: var(--hot); background: var(--surface-hover); }
-  .cue b {
-    display: block; color: #fff; font-family: var(--font-disp);
-    text-transform: uppercase; letter-spacing: .04em; font-size: 13px; margin-bottom: 2px;
-  }
+    .tracker-lbl {
+      font-family: var(--font-disp);
+      font-weight: 700;
+      color: var(--txt);
+      font-size: 16px;
+      white-space: nowrap;
+    }
 
-  /* ===== ACTIONS (save/restore) ===== */
-  .actions { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
-  .actions button {
-    background: var(--surface); color: var(--txt);
-    border: 1px solid var(--border);
-    border-radius: 8px; padding: 10px 18px; min-height: 44px;
-    font-family: var(--font-body); font-size: 14px; font-weight: 500;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .actions button:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.2); }
-  #save {
-    background: rgba(214,0,108,0.1); border-color: rgba(214,0,108,0.3);
-    color: var(--hot); font-weight: 600;
-  }
-  #save:hover { background: rgba(214,0,108,0.2); border-color: var(--hot); }
+    /* NEON PROGRESS BAR */
+    .tracker-progress {
+      flex: 1;
+      min-width: 80px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
 
-  /* ===== BENTO WEEK GRID ===== */
-  .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-  .wk {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
-  .wk:hover { border-color: rgba(255,255,255,0.15); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-  
-  .wk.current {
-    border-color: rgba(255,61,127,0.5);
-    background: linear-gradient(180deg, rgba(214,0,108,0.05), var(--surface));
-    box-shadow: 0 8px 32px rgba(214,0,108,0.15);
-  }
-  .wk.current:hover { border-color: var(--hot); }
-  .wk.past-done { opacity: 0.6; filter: grayscale(40%); }
-  .wk.past-done:hover { opacity: 1; filter: grayscale(0%); }
+    .tracker-progress i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--brand), var(--hot));
+      box-shadow: 0 0 10px var(--glow-pink);
+      border-radius: 20px;
+      transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
 
-  /* Week Header */
-  .wh { display: flex; align-items: stretch; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--border); }
-  .wc {
-    font-family: var(--font-disp); background: rgba(255,255,255,0.03); color: var(--muted);
-    font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; width: 50px;
-  }
-  .wk.current .wc { background: linear-gradient(135deg, var(--brand), var(--hot)); color: #fff; }
-  .wk.past-done .wc { color: #fff; background: rgba(255,255,255,0.1); }
-  
-  .wf {
-    flex: 1; padding: 10px 12px; font-family: var(--font-body); text-transform: uppercase;
-    font-weight: 600; font-size: 12px; letter-spacing: .05em; color: var(--txt);
-    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-  }
-  .wf .tg { background: rgba(255,255,255,0.1); color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; }
-  .wf .now { background: var(--hot); color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; box-shadow: 0 0 8px var(--glow-pink); }
-  .wt { font-family: var(--font-disp); font-weight: 700; color: var(--brand-dk); font-size: 16px; display: flex; align-items: center; padding: 0 16px; }
+    .tracker-week {
+      font-family: var(--font-disp);
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--brand-dk);
+      white-space: nowrap;
+    }
 
-  /* ===== SATISFYING CUSTOM CHECKBOXES ===== */
-  @keyframes checkPop {
-    0% { transform: scale(1); }
-    40% { transform: scale(1.3); box-shadow: 0 4px 16px rgba(255,61,127,0.6); }
-    100% { transform: scale(1.1); box-shadow: 0 2px 8px rgba(255,61,127,0.4); }
-  }
-  @keyframes burst {
-    0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
-    50% { opacity: 1; }
-    100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty) + 60px)) scale(0) rotate(var(--rot)); opacity: 0; }
-  }
-  @keyframes rowFlash {
-    0% { background: rgba(255,61,127,0.3); }
-    100% { background: transparent; }
-  }
+    /* ===== SYNC INDICATOR ===== */
+    .sync-chip {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      font-family: var(--font-disp);
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      padding: 4px 9px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      cursor: default;
+    }
 
-  .particle {
-    position: fixed; width: 6px; height: 6px; border-radius: 50%;
-    pointer-events: none; z-index: 100;
-    animation: burst 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  }
-  .particle.sq { border-radius: 2px; }
+    .sync-chip.on {
+      display: inline-flex;
+    }
 
-  label.s {
-    display: flex; align-items: center; gap: 14px; padding: 12px 16px; min-height: 52px;
-    border-top: 1px solid var(--border-light); cursor: pointer; -webkit-tap-highlight-color: transparent;
-    transition: background 0.15s;
-  }
-  label.s:first-child { border-top: none; }
-  label.s:hover { background: rgba(255,255,255,0.02); }
-  label.s:active { background: rgba(255,255,255,0.04); transform: scale(0.99); }
-  label.s.key { background: rgba(214,0,108,0.05); }
+    .sync-chip::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex: none;
+    }
 
-  /* Hide native input */
-  label.s input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
-  
-  /* Custom checkmark circle */
-  .chk {
-    position: relative; flex: none; width: 24px; height: 24px;
-    border: 2px solid rgba(255,255,255,0.2); border-radius: 50%;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  /* The SVG check inside */
-  .chk svg {
-    position: absolute; top: 4px; left: 4px; width: 12px; height: 12px;
-    fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
-    stroke-dasharray: 16; stroke-dashoffset: 16; /* Hidden initially */
-    transition: stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
-  }
-  
-  /* Checked State */
-  label.s input:checked ~ .chk {
-    background: linear-gradient(135deg, var(--brand), var(--hot));
-    border-color: transparent;
-    animation: checkPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  }
-  label.s input:checked ~ .chk svg { stroke-dashoffset: 0; /* Draw checkmark */ }
+    .sync-chip[data-state="synced"] {
+      color: #4ADE80;
+    }
 
-  /* Focus ring for accessibility */
-  label.s input:focus-visible ~ .chk { outline: 2px solid var(--hot); outline-offset: 2px; }
+    .sync-chip[data-state="syncing"] {
+      color: var(--brand);
+    }
 
-  label.s .dy { width: 64px; font-weight: 600; font-size: 14px; flex: none; color: var(--muted); }
-  label.s .sh { flex: 1; font-size: 15px; transition: color 0.2s; }
-  label.s.key .sh { font-weight: 600; color: #fff; }
-  label.s .km { font-family: var(--font-disp); color: var(--hot); font-weight: 700; font-size: 15px; flex: none; }
-  
-  /* Dim text when done */
-  label.s.done .sh { color: rgba(255,255,255,0.25); text-decoration: line-through; }
-  label.s.done .dy { color: rgba(255,255,255,0.2); }
-  label.s.done .km { color: rgba(255,61,127,0.3); }
+    .sync-chip[data-state="syncing"]::before {
+      animation: syncPulse 1s ease-in-out infinite;
+    }
 
-  /* ===== FOOTER & RESET ===== */
-  .foot { color: var(--muted); font-size: 13px; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
-  .foot .leg span { display: inline-block; width: 12px; height: 12px; border: 1.6px solid rgba(255,255,255,0.3); border-radius: 50%; vertical-align: -2px; margin-right: 6px; }
-  .foot .leg em { background: rgba(214,0,108,0.1); border-left: 2px solid var(--brand); font-style: normal; }
+    .sync-chip[data-state="offline"] {
+      color: #FBBF24;
+    }
 
-  .btn-reset {
-    display: inline-block; margin-top: 16px; padding: 8px 16px;
-    background: rgba(255,255,255,0.03); border: 1px solid transparent; border-radius: 8px;
-    color: var(--muted); font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-reset:hover { color: #FF4757; border-color: rgba(255,71,87,0.3); background: rgba(255,71,87,0.08); }
+    .sync-chip[data-state="error"] {
+      color: var(--hot);
+    }
 
-  /* ===== DESKTOP ===== */
-  @media (min-width:720px){
-    .cues { grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .grid { grid-template-columns: 1fr 1fr; gap: 20px; }
-    label.s { min-height: 48px; padding: 10px 16px; }
-    .tracker-bar-inner { padding: 12px 24px; }
-  }
-</style>
+    .sync-chip[data-state="auth-error"] {
+      color: var(--hot);
+      cursor: pointer;
+    }
+
+    .sync-chip[data-state="signed-out"] {
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .sync-chip[data-state="signed-out"]:hover,
+    .sync-chip[data-state="auth-error"]:hover {
+      color: var(--txt);
+      border-color: var(--brand);
+    }
+
+    @keyframes syncPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .25;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sync-chip[data-state="syncing"]::before {
+        animation: none;
+      }
+    }
+
+    /* ===== SIGN-IN PANEL ===== */
+    .auth-panel {
+      display: none;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 12px 16px 14px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(214, 0, 108, 0.06);
+    }
+
+    .auth-panel.on {
+      display: block;
+    }
+
+    .auth-panel p {
+      margin: 0 0 10px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .auth-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .auth-row input {
+      flex: 1;
+      min-width: 180px;
+      padding: 9px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--txt);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+
+    .auth-row input:focus {
+      outline: none;
+      border-color: var(--brand);
+    }
+
+    .auth-row button {
+      padding: 9px 16px;
+      font-size: 13px;
+      font-family: var(--font-disp);
+      font-weight: 600;
+      letter-spacing: .03em;
+      color: #fff;
+      background: var(--brand);
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+
+    .auth-row button:hover {
+      background: var(--hot);
+    }
+
+    .auth-row button:disabled {
+      opacity: .5;
+      cursor: default;
+    }
+
+    .auth-msg {
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: var(--brand-dk);
+    }
+
+    @media (max-width: 719px) {
+      .sync-chip {
+        padding: 3px 7px;
+        font-size: 10.5px;
+      }
+    }
+
+    /* ===== FLASH (test result) ===== */
+    .flash {
+      background: linear-gradient(135deg, rgba(214, 0, 108, 0.15), transparent);
+      border: 1px solid rgba(255, 61, 127, 0.3);
+      color: var(--txt);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .flash b {
+      color: var(--hot);
+    }
+
+    /* ===== CUES (repères) ===== */
+    .cues {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .cue {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--brand);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+
+    .cue:hover {
+      transform: translateX(4px);
+      border-left-color: var(--hot);
+      background: var(--surface-hover);
+    }
+
+    .cue b {
+      display: block;
+      color: #fff;
+      font-family: var(--font-disp);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    /* ===== BENTO WEEK GRID ===== */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .wk {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .wk:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .wk.current {
+      border-color: rgba(255, 61, 127, 0.5);
+      background: linear-gradient(180deg, rgba(214, 0, 108, 0.05), var(--surface));
+      box-shadow: 0 8px 32px rgba(214, 0, 108, 0.15);
+    }
+
+    .wk.current:hover {
+      border-color: var(--hot);
+    }
+
+    .wk.past-done {
+      opacity: 0.6;
+      filter: grayscale(40%);
+    }
+
+    .wk.past-done:hover {
+      opacity: 1;
+      filter: grayscale(0%);
+    }
+
+    /* Week Header */
+    .wh {
+      display: flex;
+      align-items: stretch;
+      background: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .wc {
+      font-family: var(--font-disp);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+    }
+
+    .wk.current .wc {
+      background: linear-gradient(135deg, var(--brand), var(--hot));
+      color: #fff;
+    }
+
+    .wk.past-done .wc {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .wf {
+      flex: 1;
+      padding: 10px 12px;
+      font-family: var(--font-body);
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: .05em;
+      color: var(--txt);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .wf .tg {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 700;
+    }
+
+    .wf .now {
+      background: var(--hot);
+      color: #fff;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 700;
+      box-shadow: 0 0 8px var(--glow-pink);
+    }
+
+    .wt {
+      font-family: var(--font-disp);
+      font-weight: 700;
+      color: var(--brand-dk);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+    }
+
+    /* ===== SATISFYING CUSTOM CHECKBOXES ===== */
+    @keyframes checkPop {
+      0% {
+        transform: scale(1);
+      }
+
+      40% {
+        transform: scale(1.3);
+        box-shadow: 0 4px 16px rgba(255, 61, 127, 0.6);
+      }
+
+      100% {
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(255, 61, 127, 0.4);
+      }
+    }
+
+    @keyframes burst {
+      0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty) + 60px)) scale(0) rotate(var(--rot));
+        opacity: 0;
+      }
+    }
+
+    @keyframes rowFlash {
+      0% {
+        background: rgba(255, 61, 127, 0.3);
+      }
+
+      100% {
+        background: transparent;
+      }
+    }
+
+    .particle {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 100;
+      animation: burst 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    .particle.sq {
+      border-radius: 2px;
+    }
+
+    label.s {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      min-height: 52px;
+      border-top: 1px solid var(--border-light);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
+    }
+
+    label.s:first-child {
+      border-top: none;
+    }
+
+    label.s:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    label.s:active {
+      background: rgba(255, 255, 255, 0.04);
+      transform: scale(0.99);
+    }
+
+    label.s.key {
+      background: rgba(214, 0, 108, 0.05);
+    }
+
+    /* Hide native input */
+    label.s input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    /* Custom checkmark circle */
+    .chk {
+      position: relative;
+      flex: none;
+      width: 24px;
+      height: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* The SVG check inside */
+    .chk svg {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 16;
+      stroke-dashoffset: 16;
+      /* Hidden initially */
+      transition: stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+    }
+
+    /* Checked State */
+    label.s input:checked~.chk {
+      background: linear-gradient(135deg, var(--brand), var(--hot));
+      border-color: transparent;
+      animation: checkPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    label.s input:checked~.chk svg {
+      stroke-dashoffset: 0;
+      /* Draw checkmark */
+    }
+
+    /* Focus ring for accessibility */
+    label.s input:focus-visible~.chk {
+      outline: 2px solid var(--hot);
+      outline-offset: 2px;
+    }
+
+    label.s .dy {
+      width: 64px;
+      font-weight: 600;
+      font-size: 14px;
+      flex: none;
+      color: var(--muted);
+    }
+
+    label.s .sh {
+      flex: 1;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+
+    label.s.key .sh {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    label.s .km {
+      font-family: var(--font-disp);
+      color: var(--hot);
+      font-weight: 700;
+      font-size: 15px;
+      flex: none;
+    }
+
+    /* Dim text when done */
+    label.s.done .sh {
+      color: rgba(255, 255, 255, 0.25);
+      text-decoration: line-through;
+    }
+
+    label.s.done .dy {
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    label.s.done .km {
+      color: rgba(255, 61, 127, 0.3);
+    }
+
+    /* ===== FOOTER & RESET ===== */
+    .foot {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .foot .leg span {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 1.6px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      vertical-align: -2px;
+      margin-right: 6px;
+    }
+
+    .foot .leg em {
+      background: rgba(214, 0, 108, 0.1);
+      border-left: 2px solid var(--brand);
+      font-style: normal;
+    }
+
+    .btn-reset {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+      color: #FF4757;
+      border-color: rgba(255, 71, 87, 0.3);
+      background: rgba(255, 71, 87, 0.08);
+    }
+
+    /* ===== DESKTOP ===== */
+    @media (min-width:720px) {
+      .cues {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      label.s {
+        min-height: 48px;
+        padding: 10px 16px;
+      }
+
+      .tracker-bar-inner {
+        padding: 12px 24px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header class="shell">
-  <div class="shell-inner">
-    <a class="shell-brand" href="index.html">10K Christine</a>
-    <nav class="shell-nav" aria-label="Navigation">
-      <a href="index.html" class="shell-tab">Accueil</a>
-      <a href="Christine_10K_Tracker.html" class="shell-tab active">Tracker</a>
-      <a href="Christine_10K_Carnet.html" class="shell-tab">Carnet</a>
-    </nav>
-  </div>
-</header>
+  <header class="shell">
+    <div class="shell-inner">
+      <a class="shell-brand" href="index.html">10K Christine</a>
+      <nav class="shell-nav" aria-label="Navigation">
+        <a href="index.html" class="shell-tab">Accueil</a>
+        <a href="Christine_10K_Tracker.html" class="shell-tab active">Tracker</a>
+        <a href="Christine_10K_Carnet.html" class="shell-tab">Carnet</a>
+      </nav>
+    </div>
+  </header>
 
-<div class="tracker-bar">
-  <div class="tracker-bar-inner">
-    <span class="tracker-lbl" id="pl">0 / 0</span>
-    <div class="tracker-progress"><i id="pi"></i></div>
-    <span class="tracker-week" id="cw"></span>
-  </div>
-</div>
-
-<div class="wrap">
-  <div class="hero">
-    <div class="k">Dimanche 4 octobre 2026</div>
-    <h1>Objectif 59'30</h1>
-    <p>10 km sous une heure · Octobre Rose · repli 1 h 02</p>
-  </div>
-
-  <div class="flash">&#10003; <b>Test du 23 juillet :</b> 5 km en 30'40, les 4 derniers kilomètres à 5'48/km (FC 164, cadence 167). Déjà plus rapide que l'allure objectif, le sous-1h est en ligne de mire.</div>
-
-  <div class="cues">
-    <div class="cue"><b>Allure objectif</b>6'00/km, répétée dès la S7</div>
-    <div class="cue"><b>Cadence</b>160 → 171 pas/min (métronome en EF)</div>
-    <div class="cue"><b>Règle des 24 h</b>voûte douloureuse le lendemain = repos</div>
+  <div class="tracker-bar">
+    <div class="tracker-bar-inner">
+      <span class="tracker-lbl" id="pl">0 / 0</span>
+      <div class="tracker-progress"><i id="pi"></i></div>
+      <span class="tracker-week" id="cw"></span>
+      <span class="sync-chip" id="sync" role="status" aria-live="polite"></span>
+    </div>
+    <div class="auth-panel" id="auth">
+      <p>Connecte-toi pour synchroniser la progression entre tes appareils.</p>
+      <div class="auth-row">
+        <input type="email" id="auth-email" placeholder="ton@email.fr" autocomplete="username" inputmode="email">
+        <input type="password" id="auth-pass" placeholder="mot de passe" autocomplete="current-password">
+        <button type="button" id="auth-send">Se connecter</button>
+      </div>
+      <div class="auth-msg" id="auth-msg" role="status" aria-live="polite"></div>
+    </div>
   </div>
 
-  <div class="actions">
-    <button id="save">Sauvegarder</button>
-    <button id="load">Restaurer</button>
-    <input type="file" id="file" accept="application/json,.json" hidden>
+  <div class="wrap">
+    <div class="hero">
+      <div class="k">Dimanche 4 octobre 2026</div>
+      <h1>Objectif 59'30</h1>
+      <p>10 km sous une heure · Octobre Rose · repli 1 h 02</p>
+    </div>
+
+    <div class="flash">&#10003; <b>Test du 23 juillet :</b> 5 km en 30'40, les 4 derniers kilomètres à 5'48/km (FC 164,
+      cadence 167). Déjà plus rapide que l'allure objectif, le sous-1h est en ligne de mire.</div>
+
+    <div class="cues">
+      <div class="cue"><b>Allure objectif</b>6'00/km, répétée dès la S7</div>
+      <div class="cue"><b>Cadence</b>160 → 171 pas/min (métronome en EF)</div>
+      <div class="cue"><b>Règle des 24 h</b>voûte douloureuse le lendemain = repos</div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="foot">
+      <div class="leg"><span></span> coche chaque séance faite &nbsp;·&nbsp; <span><em>&nbsp;&nbsp;&nbsp;</em></span>
+        séance clé (test, Hyrox, verdict, course)</div>
+      <p style="margin-top:12px;">Les cases sont synchronisées entre tes appareils dès que tu es connectée. Sans réseau,
+        elles sont mémorisées sur place et remontent au retour de la connexion.</p>
+      <button class="btn-reset" id="reset">Réinitialiser la progression…</button>
+    </div>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="sync.js"></script>
+  <script>
+    var W = [
+      ["S0", "21–23 juil.", "15", "Semaine repère · test fait", "",
+        [["Mar. 21", "EF 4 km ✓", "4", 1], ["Jeu. 23", "TEST 5 km ✓ · 30'40", "5", 1], ["Dim.", "EF 6 km facile", "6", 0]]],
+      ["S1", "27 juil.–2 août", "20", "Bloc 1 · Base & cadence", "",
+        [["Mar.", "VMA 8 × (30/30)", "6", 0], ["Jeu.", "EF 6 km + métronome", "6", 0], ["Dim.", "Sortie longue 8 km", "8", 0]]],
+      ["S2", "3–9 août", "22", "Passage à 4 sorties", "",
+        [["Mar.", "VMA 10 × (30/30)", "6", 0], ["Jeu.", "EF 5 km + 8 accél.", "5", 0], ["Ven.", "EF 4 km facile", "4", 0], ["Dim.", "Sortie longue 7 km", "7", 0]]],
+      ["S3", "10–16 août", "25", "Bloc 1 · Volume", "",
+        [["Mar.", "VMA 8 × 400 m", "7", 0], ["Jeu.", "EF 5 km + éduc.", "5", 0], ["Ven.", "EF 4 km facile", "4", 0], ["Dim.", "Sortie longue 9 km", "9", 0]]],
+      ["S4", "17–23 août", "19", "Relâche + recalibration", "",
+        [["Mar.", "EF 6 km + 6 accél.", "6", 0], ["Jeu.", "EF 5 km facile", "5", 0], ["Sam.", "TEST 5 km chrono", "8", 1]]],
+      ["S5", "24–30 août", "24", "Bloc 2 · Seuil · reprise Hyrox", "Hyrox",
+        [["Mar.", "Seuil 2 × 8'", "7", 0], ["Jeu.", "HYROX (allégé)", "", 1], ["Sam.", "EF 6 km récup.", "6", 0], ["Dim.", "Sortie longue 11 km", "11", 0]]],
+      ["S6", "31 août–6 sept.", "15", "Déplacement 3–6 · allégée", "",
+        [["Mar. 1", "Seuil 3 × 8' (avant départ)", "8", 0], ["Jeu. 3", "EF 4 km (si possible)", "4", 0], ["Dim. 6", "EF 3 km (si possible)", "3", 0]]],
+      ["S7", "7–13 sept.", "27", "Pic · point de contrôle mardi", "Hyrox",
+        [["Mar. 8", "4 × 1000 m à 6'00 · relevé", "9", 1], ["Jeu. 10", "HYROX", "", 1], ["Sam.", "EF 5 km facile", "5", 0], ["Dim.", "Sortie longue 13 km", "13", 0]]],
+      ["S8", "14–20 sept.", "15", "Hyrox Doubles sam. 19 · affûtage", "Événement",
+        [["Mar. 15", "6 × 500 m à 6'00", "7", 0], ["Jeu. 17", "EF 4 km + 4 × 100 m", "4", 0], ["Ven. 18", "Repos", "", 0], ["Sam. 19", "HYROX DOUBLES", "4", 1], ["Dim. 20", "Repos", "", 0]]],
+      ["S9", "21–27 sept.", "26", "Verdict jeudi · plus de Hyrox", "",
+        [["Mar. 22", "EF 5 km récup.", "5", 0], ["Jeu. 24", "VERDICT 5 × 1000 m à 6'00", "9", 1], ["Sam. 26", "EF 4 km facile", "4", 0], ["Dim. 27", "Sortie longue 8 km", "8", 0]]],
+      ["S10", "28 sept.–4 oct.", "15", "Affûtage → course", "Jour J",
+        [["Mar.", "5 × 500 m à 6'00", "7", 0], ["Jeu.", "EF 4 km + 6 accél.", "4", 0], ["Ven.", "Repos", "", 0], ["Sam.", "EF 4 km + gammes", "4", 0], ["Dim. 4", "COURSE 10 KM", "10", 1]]]
+    ];
 
-  <div class="foot">
-    <div class="leg"><span></span> coche chaque séance faite &nbsp;·&nbsp; <span><em>&nbsp;&nbsp;&nbsp;</em></span> séance clé (test, Hyrox, verdict, course)</div>
-    <p style="margin-top:12px;">Les cases sont mémorisées localement. Pour passer d'un appareil à l'autre, utilise <b>Sauvegarder</b> (télécharge un fichier) puis <b>Restaurer</b> sur l'autre appareil.</p>
-    <button class="btn-reset" id="reset">Réinitialiser la progression…</button>
-  </div>
-</div>
+    var WEEK_STARTS = [
+      new Date(2026, 6, 21), new Date(2026, 6, 27), new Date(2026, 7, 3), new Date(2026, 7, 10),
+      new Date(2026, 7, 17), new Date(2026, 7, 24), new Date(2026, 7, 31), new Date(2026, 8, 7),
+      new Date(2026, 8, 14), new Date(2026, 8, 21), new Date(2026, 8, 28)
+    ];
+    var RACE_DAY = new Date(2026, 9, 4);
 
-<script>
-var W = [
- ["S0","21–23 juil.","15","Semaine repère · test fait","",
-  [["Mar. 21","EF 4 km ✓","4",1],["Jeu. 23","TEST 5 km ✓ · 30'40","5",1],["Dim.","EF 6 km facile","6",0]]],
- ["S1","27 juil.–2 août","20","Bloc 1 · Base & cadence","",
-  [["Mar.","VMA 8 × (30/30)","6",0],["Jeu.","EF 6 km + métronome","6",0],["Dim.","Sortie longue 8 km","8",0]]],
- ["S2","3–9 août","22","Passage à 4 sorties","",
-  [["Mar.","VMA 10 × (30/30)","6",0],["Jeu.","EF 5 km + 8 accél.","5",0],["Ven.","EF 4 km facile","4",0],["Dim.","Sortie longue 7 km","7",0]]],
- ["S3","10–16 août","25","Bloc 1 · Volume","",
-  [["Mar.","VMA 8 × 400 m","7",0],["Jeu.","EF 5 km + éduc.","5",0],["Ven.","EF 4 km facile","4",0],["Dim.","Sortie longue 9 km","9",0]]],
- ["S4","17–23 août","19","Relâche + recalibration","",
-  [["Mar.","EF 6 km + 6 accél.","6",0],["Jeu.","EF 5 km facile","5",0],["Sam.","TEST 5 km chrono","8",1]]],
- ["S5","24–30 août","24","Bloc 2 · Seuil · reprise Hyrox","Hyrox",
-  [["Mar.","Seuil 2 × 8'","7",0],["Jeu.","HYROX (allégé)","",1],["Sam.","EF 6 km récup.","6",0],["Dim.","Sortie longue 11 km","11",0]]],
- ["S6","31 août–6 sept.","15","Déplacement 3–6 · allégée","",
-  [["Mar. 1","Seuil 3 × 8' (avant départ)","8",0],["Jeu. 3","EF 4 km (si possible)","4",0],["Dim. 6","EF 3 km (si possible)","3",0]]],
- ["S7","7–13 sept.","27","Pic · point de contrôle mardi","Hyrox",
-  [["Mar. 8","4 × 1000 m à 6'00 · relevé","9",1],["Jeu. 10","HYROX","",1],["Sam.","EF 5 km facile","5",0],["Dim.","Sortie longue 13 km","13",0]]],
- ["S8","14–20 sept.","15","Hyrox Doubles sam. 19 · affûtage","Événement",
-  [["Mar. 15","6 × 500 m à 6'00","7",0],["Jeu. 17","EF 4 km + 4 × 100 m","4",0],["Ven. 18","Repos","",0],["Sam. 19","HYROX DOUBLES","4",1],["Dim. 20","Repos","",0]]],
- ["S9","21–27 sept.","26","Verdict jeudi · plus de Hyrox","",
-  [["Mar. 22","EF 5 km récup.","5",0],["Jeu. 24","VERDICT 5 × 1000 m à 6'00","9",1],["Sam. 26","EF 4 km facile","4",0],["Dim. 27","Sortie longue 8 km","8",0]]],
- ["S10","28 sept.–4 oct.","15","Affûtage → course","Jour J",
-  [["Mar.","5 × 500 m à 6'00","7",0],["Jeu.","EF 4 km + 6 accél.","4",0],["Ven.","Repos","",0],["Sam.","EF 4 km + gammes","4",0],["Dim. 4","COURSE 10 KM","10",1]]]
-];
-
-var WEEK_STARTS = [
-  new Date(2026, 6, 21), new Date(2026, 6, 27), new Date(2026, 7, 3), new Date(2026, 7, 10),
-  new Date(2026, 7, 17), new Date(2026, 7, 24), new Date(2026, 7, 31), new Date(2026, 8, 7),
-  new Date(2026, 8, 14), new Date(2026, 8, 21), new Date(2026, 8, 28)
-];
-var RACE_DAY = new Date(2026, 9, 4);
-
-function getCurrentWeek() {
-  var today = new Date();
-  today.setHours(0,0,0,0);
-  if (today > RACE_DAY) return -1;
-  for (var i = WEEK_STARTS.length - 1; i >= 0; i--) { if (today >= WEEK_STARTS[i]) return i; }
-  return -1;
-}
-
-var KEY = "tracker10k_christine";
-var LS = null;
-try { var t = "__t"; localStorage.setItem(t, "1"); localStorage.removeItem(t); LS = localStorage; } catch(e) { LS = null; }
-var state = {};
-try { state = JSON.parse((LS && LS.getItem(KEY)) || "{}") || {}; } catch(e) { state = {}; }
-function persist() { if (!LS) return; try { LS.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
-
-var grid = document.getElementById('grid');
-var total = 0;
-var currentWeek = getCurrentWeek();
-var currentWeekEl = null;
-
-var svgCheck = '<svg viewBox="0 0 16 16"><polyline points="3 8 7 12 13 4"></polyline></svg>';
-
-W.forEach(function(w, wi) {
-  var code = w[0], dates = w[1], tot = w[2], foc = w[3], tag = w[4], sess = w[5];
-  var card = document.createElement('div'); card.className = 'wk';
-  var isCurrent = (wi === currentWeek);
-  
-  if (isCurrent) { card.classList.add('current'); card.id = 'current-week'; currentWeekEl = card; }
-
-  var h = '<div class="wh"><div class="wc">' + code + '</div><div class="wf">' +
-    foc.toUpperCase() + (tag ? ' <span class="tg">' + tag + '</span>' : '') +
-    (isCurrent ? ' <span class="now">En cours</span>' : '') +
-    '</div><div class="wt">' + tot + ' km</div></div>';
-
-  sess.forEach(function(s, si) {
-    var day = s[0], sh = s[1], km = s[2], key = s[3];
-    var id = wi + '_' + si; total++;
-    var on = state[id] ? 'checked' : '';
-    var dclass = state[id] ? ' done' : '';
-    h += '<label class="s' + (key ? ' key' : '') + dclass + '" data-id="' + id + '">' +
-      '<input type="checkbox" ' + on + '>' +
-      '<span class="chk">' + svgCheck + '</span>' +
-      '<span class="dy">' + day + '</span>' +
-      '<span class="sh">' + sh + '</span>' +
-      '<span class="km">' + (km ? km + ' km' : '') + '</span></label>';
-  });
-  card.innerHTML = h; grid.appendChild(card);
-});
-
-var pl = document.getElementById('pl'), pi = document.getElementById('pi');
-var cwEl = document.getElementById('cw');
-
-function refresh() {
-  var done = Object.values(state).filter(Boolean).length;
-  pl.textContent = done + ' / ' + total;
-  pi.style.width = (total ? (done / total * 100) : 0) + '%';
-  if (cwEl) {
-    if (currentWeek >= 0) cwEl.textContent = W[currentWeek][0] + ' en cours';
-    else if (new Date() > RACE_DAY) cwEl.textContent = 'Course passée';
-    else cwEl.textContent = 'Début 21 juil.';
-  }
-}
-
-function applyToDom() {
-  document.querySelectorAll('label.s').forEach(function(l) {
-    var on = !!state[l.dataset.id];
-    l.querySelector('input').checked = on;
-    l.classList.toggle('done', on);
-  });
-  document.querySelectorAll('.wk').forEach(function(wk, wi) {
-    if (wi < currentWeek) {
-      var labels = wk.querySelectorAll('label.s');
-      var allDone = labels.length > 0;
-      labels.forEach(function(l) { if (!state[l.dataset.id]) allDone = false; });
-      wk.classList.toggle('past-done', allDone);
+    function getCurrentWeek() {
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (today > RACE_DAY) return -1;
+      for (var i = WEEK_STARTS.length - 1; i >= 0; i--) { if (today >= WEEK_STARTS[i]) return i; }
+      return -1;
     }
-  });
-  refresh();
-}
 
-/* ===== AUDIO & EFFECTS ===== */
-var audioCtx = null;
-function playSatisfyingPop() {
-  if (!window.AudioContext && !window.webkitAudioContext) return;
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  
-  var osc = audioCtx.createOscillator();
-  var gain = audioCtx.createGain();
-  
-  osc.type = 'sine';
-  osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
-  
-  gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-  
-  osc.connect(gain); gain.connect(audioCtx.destination);
-  osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-}
+    var KEY = "tracker10k_christine";
+    var LS = null;
+    try { var t = "__t"; localStorage.setItem(t, "1"); localStorage.removeItem(t); LS = localStorage; } catch (e) { LS = null; }
+    var state = {};
+    try { state = JSON.parse((LS && LS.getItem(KEY)) || "{}") || {}; } catch (e) { state = {}; }
+    function persist() { if (!LS) return; try { LS.setItem(KEY, JSON.stringify(state)); } catch (e) { } }
 
-grid.addEventListener('change', function(e) {
-  var lab = e.target.closest('label.s'); if (!lab) return;
-  var id = lab.dataset.id;
-  if (e.target.checked) { 
-    state[id] = 1; lab.classList.add('done'); 
-    
-    // Audio feedback
-    playSatisfyingPop();
-    
-    // Row flash
-    lab.style.animation = 'none';
-    lab.offsetHeight; // trigger reflow
-    lab.style.animation = 'rowFlash 0.5s ease-out';
-    
-    // Haptic feedback (Android only)
-    if (window.navigator && typeof window.navigator.vibrate === 'function') { 
-      // Des impulsions plus longues (50ms) pour être sûr que le moteur physique du téléphone ait le temps de réagir
-      window.navigator.vibrate([50, 40, 50]); 
+    var grid = document.getElementById('grid');
+    var total = 0;
+    var ALL_IDS = [];
+    var currentWeek = getCurrentWeek();
+    var currentWeekEl = null;
+
+    var svgCheck = '<svg viewBox="0 0 16 16"><polyline points="3 8 7 12 13 4"></polyline></svg>';
+
+    W.forEach(function (w, wi) {
+      var code = w[0], dates = w[1], tot = w[2], foc = w[3], tag = w[4], sess = w[5];
+      var card = document.createElement('div'); card.className = 'wk';
+      var isCurrent = (wi === currentWeek);
+
+      if (isCurrent) { card.classList.add('current'); card.id = 'current-week'; currentWeekEl = card; }
+
+      var h = '<div class="wh"><div class="wc">' + code + '</div><div class="wf">' +
+        foc.toUpperCase() + (tag ? ' <span class="tg">' + tag + '</span>' : '') +
+        (isCurrent ? ' <span class="now">En cours</span>' : '') +
+        '</div><div class="wt">' + tot + ' km</div></div>';
+
+      sess.forEach(function (s, si) {
+        var day = s[0], sh = s[1], km = s[2], key = s[3];
+        var id = wi + '_' + si; total++; ALL_IDS.push(id);
+        var on = state[id] ? 'checked' : '';
+        var dclass = state[id] ? ' done' : '';
+        h += '<label class="s' + (key ? ' key' : '') + dclass + '" data-id="' + id + '">' +
+          '<input type="checkbox" ' + on + '>' +
+          '<span class="chk">' + svgCheck + '</span>' +
+          '<span class="dy">' + day + '</span>' +
+          '<span class="sh">' + sh + '</span>' +
+          '<span class="km">' + (km ? km + ' km' : '') + '</span></label>';
+      });
+      card.innerHTML = h; grid.appendChild(card);
+    });
+
+    var pl = document.getElementById('pl'), pi = document.getElementById('pi');
+    var cwEl = document.getElementById('cw');
+
+    function refresh() {
+      var done = Object.values(state).filter(Boolean).length;
+      pl.textContent = done + ' / ' + total;
+      pi.style.width = (total ? (done / total * 100) : 0) + '%';
+      if (cwEl) {
+        if (currentWeek >= 0) cwEl.textContent = W[currentWeek][0] + ' en cours';
+        else if (new Date() > RACE_DAY) cwEl.textContent = 'Course passée';
+        else cwEl.textContent = 'Début 21 juil.';
+      }
     }
-    
-    // Rich Confetti particles
-    var rect = lab.querySelector('.chk').getBoundingClientRect();
-    var cx = rect.left + rect.width / 2;
-    var cy = rect.top + rect.height / 2;
-    var colors = ['#D6006C', '#FF3D7F', '#FF5E9F', '#FFFFFF', '#FFD700'];
-    for (var i = 0; i < 24; i++) {
-      var p = document.createElement('div');
-      p.className = 'particle' + (Math.random() > 0.5 ? ' sq' : '');
-      var angle = Math.random() * Math.PI * 2;
-      var velocity = 30 + Math.random() * 50; // faster burst
-      p.style.left = cx + 'px';
-      p.style.top = cy + 'px';
-      p.style.background = colors[Math.floor(Math.random() * colors.length)];
-      
-      // Calculate parabolic target
-      var tx = Math.cos(angle) * velocity;
-      var ty = (Math.sin(angle) * velocity) - 20; // bias upwards initially
-      var rot = (Math.random() * 360) + 'deg';
-      
-      p.style.setProperty('--tx', tx + 'px');
-      p.style.setProperty('--ty', ty + 'px');
-      p.style.setProperty('--rot', rot);
-      document.body.appendChild(p);
-      setTimeout(function(el) { el.remove(); }, 700, p);
+
+    function applyToDom() {
+      document.querySelectorAll('label.s').forEach(function (l) {
+        var on = !!state[l.dataset.id];
+        l.querySelector('input').checked = on;
+        l.classList.toggle('done', on);
+      });
+      document.querySelectorAll('.wk').forEach(function (wk, wi) {
+        if (wi < currentWeek) {
+          var labels = wk.querySelectorAll('label.s');
+          var allDone = labels.length > 0;
+          labels.forEach(function (l) { if (!state[l.dataset.id]) allDone = false; });
+          wk.classList.toggle('past-done', allDone);
+        }
+      });
+      refresh();
     }
-  }
-  else { delete state[id]; lab.classList.remove('done'); }
-  persist(); applyToDom();
-});
 
-document.getElementById('reset').addEventListener('click', function() {
-  if (!confirm('Décocher toutes les séances ? Action irréversible.')) return;
-  state = {}; if (LS) { try { LS.removeItem(KEY); } catch(e) {} } applyToDom();
-});
+    /* ===== AUDIO & EFFECTS ===== */
+    var audioCtx = null;
+    function playSatisfyingPop() {
+      if (!window.AudioContext && !window.webkitAudioContext) return;
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
 
-document.getElementById('save').addEventListener('click', function() {
-  var payload = { app: "tracker10k", date: new Date().toISOString(), state: state };
-  var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-  var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = "tracker-10k-christine.json";
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
-});
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
 
-document.getElementById('load').addEventListener('click', function() { document.getElementById('file').click(); });
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
 
-document.getElementById('file').addEventListener('change', function(e) {
-  var f = e.target.files[0]; if (!f) return;
-  var r = new FileReader();
-  r.onload = function() {
-    try {
-      var d = JSON.parse(r.result);
-      var st = d && d.state ? d.state : d;
-      if (typeof st !== "object" || st === null) throw 0;
-      state = st; persist(); applyToDom();
-      alert("Progression restaurée ✓");
-    } catch(x) { alert("Fichier invalide."); }
-    e.target.value = "";
-  };
-  r.readAsText(f);
-});
+      gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
 
-if (!LS) {
-  var w = document.createElement('p'); w.style.cssText = "color:var(--hot);font-size:12.5px;margin-top:6px;";
-  w.textContent = "Navigation privée : progression non mémorisée (utilise Sauvegarder).";
-  document.querySelector('.foot').appendChild(w);
-}
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+    }
 
-applyToDom();
+    grid.addEventListener('change', function (e) {
+      var lab = e.target.closest('label.s'); if (!lab) return;
+      var id = lab.dataset.id;
+      if (e.target.checked) {
+        state[id] = 1; lab.classList.add('done');
 
-if (currentWeekEl) {
-  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  setTimeout(function() {
-    currentWeekEl.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'center' });
-  }, 150);
-}
-</script>
+        // Audio feedback
+        playSatisfyingPop();
+
+        // Row flash
+        lab.style.animation = 'none';
+        lab.offsetHeight; // trigger reflow
+        lab.style.animation = 'rowFlash 0.5s ease-out';
+
+        // Haptic feedback (Android only)
+        if (window.navigator && typeof window.navigator.vibrate === 'function') {
+          // Des impulsions plus longues (50ms) pour être sûr que le moteur physique du téléphone ait le temps de réagir
+          window.navigator.vibrate([50, 40, 50]);
+        }
+
+        // Rich Confetti particles
+        var rect = lab.querySelector('.chk').getBoundingClientRect();
+        var cx = rect.left + rect.width / 2;
+        var cy = rect.top + rect.height / 2;
+        var colors = ['#D6006C', '#FF3D7F', '#FF5E9F', '#FFFFFF', '#FFD700'];
+        for (var i = 0; i < 24; i++) {
+          var p = document.createElement('div');
+          p.className = 'particle' + (Math.random() > 0.5 ? ' sq' : '');
+          var angle = Math.random() * Math.PI * 2;
+          var velocity = 30 + Math.random() * 50; // faster burst
+          p.style.left = cx + 'px';
+          p.style.top = cy + 'px';
+          p.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+          // Calculate parabolic target
+          var tx = Math.cos(angle) * velocity;
+          var ty = (Math.sin(angle) * velocity) - 20; // bias upwards initially
+          var rot = (Math.random() * 360) + 'deg';
+
+          p.style.setProperty('--tx', tx + 'px');
+          p.style.setProperty('--ty', ty + 'px');
+          p.style.setProperty('--rot', rot);
+          document.body.appendChild(p);
+          setTimeout(function (el) { el.remove(); }, 700, p);
+        }
+      }
+      else { delete state[id]; lab.classList.remove('done'); }
+      persist();
+      if (window.TrackerSync) TrackerSync.mark(id, !!state[id]);
+      applyToDom();
+    });
+
+    document.getElementById('reset').addEventListener('click', function () {
+      // Depuis le passage à Supabase, le reset ne vide plus seulement ce navigateur :
+      // il pousse toutes les séances à false sur le serveur, donc sur les deux appareils.
+      var synced = window.TrackerSync && TrackerSync.isConfigured();
+      var msg = synced
+        ? 'Décocher les ' + total + ' séances ?\n\n'
+        + 'Cela efface la progression sur TOUS les appareils, pas seulement celui-ci. '
+        + 'Aucun retour en arrière possible.'
+        : 'Décocher toutes les séances ? Action irréversible.';
+      if (!confirm(msg)) return;
+      state = {}; if (LS) { try { LS.removeItem(KEY); } catch (e) { } }
+      if (window.TrackerSync) TrackerSync.markAll(ALL_IDS);
+      applyToDom();
+    });
+
+    if (!LS) {
+      var w = document.createElement('p'); w.style.cssText = "color:var(--hot);font-size:12.5px;margin-top:6px;";
+      w.textContent = "Navigation privée : rien n'est mémorisé sur cet appareil. Connecte-toi pour que les séances cochées partent quand même sur le serveur.";
+      document.querySelector('.foot').appendChild(w);
+    }
+
+    applyToDom();
+
+    /* ===== SYNCHRONISATION SUPABASE ===== */
+    (function () {
+      if (!window.TrackerSync) return;
+
+      var chip = document.getElementById('sync');
+      var panel = document.getElementById('auth');
+      var emailEl = document.getElementById('auth-email');
+      var passEl = document.getElementById('auth-pass');
+      var sendEl = document.getElementById('auth-send');
+      var msgEl = document.getElementById('auth-msg');
+
+      var LABELS = {
+        'signed-out': 'Se connecter',
+        'signing-in': 'Connexion…',
+        'syncing': 'Synchro…',
+        'synced': 'Synchronisé',
+        'offline': 'Hors-ligne',
+        'error': 'Erreur de synchro',
+        'auth-error': 'Connexion impossible'
+      };
+
+      // États où le panneau doit rester visible : soit l'utilisateur doit agir,
+      // soit sa tentative a échoué et il lui faut un moyen de recommencer.
+      var PANEL_STATES = { 'signed-out': 1, 'auth-error': 1 };
+
+      function render(state, detail) {
+        if (state === 'disabled') { chip.classList.remove('on'); panel.classList.remove('on'); return; }
+
+        chip.classList.add('on');
+        chip.dataset.state = state;
+
+        var label = LABELS[state] || state;
+        var pending = TrackerSync.pendingCount();
+        if (pending && (state === 'offline' || state === 'error')) label += ' · ' + pending + ' en attente';
+        chip.textContent = label;
+        chip.title = detail || '';
+
+        panel.classList.toggle('on', !!PANEL_STATES[state]);
+
+        if (state === 'auth-error') {
+          msgEl.textContent = detail || 'La connexion a échoué.';
+          sendEl.disabled = false;
+          passEl.value = '';
+          passEl.focus();
+        } else if (state === 'error' && detail) {
+          msgEl.textContent = detail;
+          sendEl.disabled = false;
+        } else if (state === 'syncing' || state === 'synced') {
+          // Connexion réussie : on ne garde pas le mot de passe en mémoire du DOM.
+          passEl.value = '';
+          msgEl.textContent = '';
+        }
+      }
+
+      chip.addEventListener('click', function () {
+        if (PANEL_STATES[chip.dataset.state]) panel.classList.add('on');
+      });
+
+      sendEl.addEventListener('click', function () {
+        var email = (emailEl.value || '').trim();
+        var pass = passEl.value || '';
+        if (!email || email.indexOf('@') < 0) { msgEl.textContent = 'Adresse invalide.'; emailEl.focus(); return; }
+        if (!pass) { msgEl.textContent = 'Mot de passe manquant.'; passEl.focus(); return; }
+        sendEl.disabled = true;
+        msgEl.textContent = '';
+        TrackerSync.signIn(email, pass).catch(function () { });
+      });
+
+      [emailEl, passEl].forEach(function (el) {
+        el.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') sendEl.click();
+        });
+      });
+
+      TrackerSync.init({
+        getState: function () { return state; },
+        onRemote: function (next) { state = next; persist(); applyToDom(); },
+        onStatus: render
+      });
+    })();
+
+    if (currentWeekEl) {
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setTimeout(function () {
+        currentWeekEl.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'center' });
+      }, 150);
+    }
+  </script>
 </body>
+
 </html>

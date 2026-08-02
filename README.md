@@ -12,6 +12,10 @@ Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et de
 | `Christine_10K_Tracker.pdf` | Tracker imprimable (1 page, à afficher). |
 | `Christine_10K_Carnet.pdf` | Carnet imprimable (4 pages). |
 | `index.html` | Page d'accueil (liens vers tracker + carnet), sert de landing GitHub Pages. |
+| `sync.js` | Synchronisation Supabase du tracker (hors-ligne d'abord). |
+| `supabase/migrations/0001_sessions.sql` | Schéma de la table `sessions` + policies RLS (placeholders). |
+| `supabase/policies.local.sql` | Policies avec les vraies adresses — **hors dépôt** (`.gitignore`). |
+| `tests/sync.test.js` | Tests de la réconciliation local/distant (`node tests/sync.test.js`). |
 | `data/2026-07-23_5k.tcx` | Trace du test 5 km du 23 juillet. |
 | `data/zebris_bilan_2025-08-20.pdf` | Bilan podologique (analyse de pression, Posturosports). |
 
@@ -20,6 +24,127 @@ Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et de
 - En local : ouvre `index.html` dans un navigateur.
 - En ligne : active **GitHub Pages** (Settings → Pages → branche `main`, dossier `/root`).
   L'URL affichera automatiquement `index.html`.
+
+## Synchronisation entre appareils (Supabase)
+
+Le tracker mémorise la progression dans le navigateur (`localStorage`) et la synchronise
+via Supabase, pour que les cases cochées sur le téléphone de Christine remontent sur les
+autres appareils. Le compte Claude et le compte Supabase sont partagés entre Benjamin et
+Christine — c'est ce qui rend une base commune pertinente.
+
+### État au 2 août 2026
+
+| Étape | Statut |
+|---|---|
+| Schéma `sessions` + index + trigger + RLS écrits | fait (`0001_sessions.sql`) |
+| Couche de synchro hors-ligne d'abord | fait (`sync.js`) |
+| Câblage dans le tracker (pastille, panneau de connexion) | fait |
+| Tests de réconciliation (5 scénarios, 10 assertions) | fait, verts |
+| Migration appliquée dans Supabase | fait (table, index, trigger, RLS) |
+| Policies appliquées (variante B, adresses réelles) | fait |
+| Table publiée dans `supabase_realtime` (synchro en direct) | fait |
+| Site URL + Redirect URL déclarées dans le dashboard | fait |
+| `CONFIG` rempli dans `sync.js` | fait (URL + clé publique) |
+| RLS vérifiée par appel REST réel | fait — voir ci-dessous |
+| Rendu vérifié dans un vrai navigateur | fait (Chrome, panneau + pastille) |
+| **Comptes créés dans Authentication → Users** | **à faire** |
+| **Aller-retour authentifié entre deux appareils** | **jamais fait** |
+
+Vérification RLS du 2 août 2026, avec la clé publique et sans authentification :
+`GET /rest/v1/sessions` renvoie `[]` en HTTP 200, et `POST` est rejeté en HTTP 401
+avec le code `42501` (« new row violates row-level security policy »). Autrement dit,
+quelqu'un qui trouve le dépôt et récupère la clé ne peut ni lire ni écrire.
+C'est bien l'authentification qui ouvre l'accès, pas la clé.
+
+Ce qui reste non vérifié est le comportement en conditions réelles : le rendu de la
+pastille et du panneau de connexion dans un navigateur, et surtout le canal Realtime —
+que les événements arrivent vraiment d'un appareil à l'autre ne se constatera qu'avec
+deux sessions authentifiées ouvertes en parallèle.
+
+### Ce qu'il reste à faire
+
+1. ~~**SQL Editor** → exécuter `supabase/migrations/0001_sessions.sql`, puis
+   `supabase/policies.local.sql`~~ — fait le 2 août 2026 via le serveur MCP,
+   en quatre migrations : `0001_sessions`, `0002_sessions_policies`,
+   `0003_touch_updated_at_search_path`, `0004_sessions_realtime`.
+   La variante A reste commentée.
+2. ~~**Authentication → URL Configuration**~~ — Site URL et Redirect URL déclarées
+   le 2 août 2026. Devenues sans objet depuis le passage au mot de passe :
+   `signInWithPassword` ne redirige pas. Laissées en place, elles ne gênent rien.
+3. ~~**Settings → API** → remplir `CONFIG` en tête de `sync.js`~~ — fait le 2 août 2026.
+   Clé retenue : la `sb_publishable_…` plutôt que l'ancien JWT `anon`, toujours valide
+   mais en voie de remplacement. Ces deux valeurs sont publiques par conception : elles
+   sont livrées au navigateur de quiconque ouvre la page, et rendre le dépôt privé n'y
+   changerait rien. Ce qui protège la table, c'est la RLS.
+
+4. **Authentication → Users → Add user** → créer les deux comptes avec
+   **« Auto Confirm User » coché**, sinon `signInWithPassword` renvoie
+   « Email not confirmed ». Les adresses doivent correspondre exactement à celles
+   des policies, l'allowlist compare la chaîne du JWT.
+
+**Il ne reste ensuite que la vérification en conditions réelles** : ouvrir le tracker
+dans deux navigateurs authentifiés et confirmer qu'une case cochée d'un côté apparaît
+de l'autre. Tant que ce n'est pas fait, ne pas donner le lien à Christine.
+
+### Décisions prises, et pourquoi
+
+- **Une ligne par séance**, pas un blob JSON unique. Si Christine coche une case sur son
+  téléphone pendant que Benjamin en coche une autre, un blob ferait perdre l'une des deux.
+  Clé composite `(plan_id, session_id)`, `session_id` au format `"3_2"` = semaine S3,
+  3ᵉ séance — exactement les identifiants déjà générés par le tracker.
+- **Hors-ligne d'abord.** `localStorage` reste la source d'affichage, Supabase est une
+  couche par-dessus. Sans ça, une séance cochée dans un parc sans réseau serait perdue —
+  et la PWA installée sur l'écran d'accueil perdrait son intérêt.
+- **Réconciliation : dernier écrivain gagne, séance par séance.** Chaque mutation locale
+  est horodatée (`…_meta` dans `localStorage`) et comparée à `updated_at` côté serveur.
+  Une séance en file d'attente dont la mutation locale est plus récente n'est jamais
+  écrasée par une valeur serveur périmée.
+- **Auth obligatoire** plutôt qu'accès anonyme. Le dépôt est public, donc la clé publique
+  est visible : sans auth, la table serait ouverte en écriture à qui trouve le dépôt.
+- **Mot de passe plutôt que magic link.** Le magic link avait été retenu d'abord, puis
+  abandonné le 2 août 2026 : le SMTP partagé de Supabase plafonne à **2 mails par heure**,
+  et ce plafond n'est déverrouillable qu'en configurant un SMTP personnalisé. Dépendre
+  d'un service tiers à maintenir, pour deux utilisateurs qui se connectent une fois
+  chacun, coûtait plus que ça ne rapportait. `signInWithPassword` n'envoie aucun mail :
+  ni quota, ni SMTP, ni lien à cliquer. Les policies n'ont pas bougé — le JWT porte
+  toujours `email`, donc l'allowlist des deux adresses fonctionne à l'identique.
+
+### Pièges à connaître
+
+- **Le dépôt est public.** Aucune adresse mail, clé secrète ou token ne doit y entrer.
+  Les policies avec les vraies adresses vivent dans `supabase/policies.local.sql`,
+  exclu par `.gitignore` (`*.local.sql`). Le fichier de migration committé ne contient
+  que des placeholders.
+- **Ne jamais lancer `supabase db pull` ici.** Les policies appliquées contiennent
+  les vraies adresses : un `db pull` les réécrirait dans `supabase/migrations/`,
+  suivi par git, donc publiées. La base est la référence pour les policies ;
+  `policies.local.sql` sert à les rejouer.
+- **La clé `service_role` / `secret key` ne doit jamais toucher ce projet** : elle
+  contourne la RLS, et tout ce qui est dans `sync.js` finit dans un dépôt public.
+- **Plan gratuit : projet mis en pause après 1 semaine sans activité.** Sans effet
+  pendant la prépa (3-4 séances/semaine), mais le projet s'endormira après le 4 octobre.
+  Réactivation en un clic, sans perte de données.
+- **Realtime tient à deux réglages qui doivent rester d'accord** : `CONFIG.realtime`
+  côté client, et l'appartenance de la table à la publication `supabase_realtime`
+  côté base (dernière ligne de `0001_sessions.sql`, appliquée le 2 août 2026).
+  Si l'un des deux saute, le canal se souscrit sans jamais rien recevoir, en
+  silence — la synchro continue de marcher, mais seulement au chargement de la
+  page. Pour couper le temps réel, couper les deux :
+  `alter publication supabase_realtime drop table public.sessions;`
+
+### Outillage
+
+Serveur MCP Supabase configuré en scope `user` dans `~/.claude.json` :
+`npx -y @supabase/mcp-server-supabase@latest --project-ref=hdrjoyrpczutjihnbbui`,
+avec le token personnel en variable d'environnement. Il permet d'appliquer les migrations
+et d'inspecter la base directement, sans passer par le dashboard.
+
+Tests de la logique de réconciliation — la seule partie capable de corrompre
+silencieusement la progression :
+
+```bash
+node tests/sync.test.js
+```
 
 ## Journal des tests
 
@@ -43,3 +168,6 @@ plantaire et la bandelette (TFL, depuis mai 2026). Détails dans le carnet.
       donc la mécanique est déjà presque en place à vitesse, le vrai levier restant est la
       cadence *en endurance* + le temps de contact au sol + la base aérobie.
 - [ ] Test S4 (22 août) → mettre à jour le journal et les allures.
+- [ ] Finir la mise en route Supabase : migration + policies + `CONFIG` + Redirect URL
+      (voir « Synchronisation entre appareils »), puis vérifier un aller-retour réel
+      entre deux appareils avant de donner le lien à Christine.
