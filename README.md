@@ -13,6 +13,7 @@ Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et de
 | `Christine_10K_Carnet.pdf` | Carnet imprimable (4 pages). |
 | `index.html` | Page d'accueil (liens vers tracker + carnet), sert de landing GitHub Pages. |
 | `sync.js` | Synchronisation Supabase du tracker (hors-ligne d'abord). |
+| `sw.js` | Service worker : c'est lui qui rend la PWA réellement utilisable hors ligne. |
 | `supabase/migrations/0001_sessions.sql` | Schéma de la table `sessions` + policies RLS (placeholders). |
 | `supabase/policies.local.sql` | Policies avec les vraies adresses — **hors dépôt** (`.gitignore`). |
 | `supabase/migrations/0005_sessions_annotations.sql` | Note, distance réalisée, date de report. |
@@ -130,6 +131,39 @@ Deux pièges rencontrés, à ne pas réintroduire :
 - L'ouverture de la feuille force un reflow au lieu d'utiliser
   `requestAnimationFrame`, que le navigateur bride quand l'onglet n'est pas rendu —
   la feuille resterait alors invisible.
+
+### Hors-ligne : le service worker
+
+Le manifeste rendait la PWA installable, mais **rien ne la rendait utilisable sans
+réseau** : sans service worker, Christine obtenait la page d'erreur du navigateur.
+Le stockage local de `sync.js` ne sert à rien si la page elle-même ne se charge pas.
+Corrigé le 2 août 2026 (`sw.js`).
+
+- **Les fichiers du site passent par le réseau d'abord**, le cache ne servant que de
+  filet. Un « cache d'abord » servirait une logique périmée avec un chargement de
+  retard et obligerait à bumper `CACHE` à chaque correction — inacceptable pour du
+  code de synchronisation. Bumper `CACHE` ne sert plus qu'à évincer d'anciennes
+  entrées.
+- **Le client Supabase du CDN est mis en cache** en réponse opaque, sinon le tracker
+  se chargerait hors ligne sans sa couche de synchronisation.
+- **L'API Supabase n'est jamais mise en cache** : rejouer une réponse ferait croire à
+  une synchronisation qui n'a pas eu lieu.
+- Cycle vérifié de bout en bout : hors ligne la page se charge, une séance cochée
+  part en file d'attente, et elle est poussée au retour du réseau.
+
+Le `background_color` du manifeste est passé de `#F4F1F6` à `#0F0814` : l'écran de
+démarrage flashait en blanc à chaque lancement depuis l'écran d'accueil.
+
+### Volume et jalons
+
+- **La jauge compare le réalisé au prévu *à ce stade du plan***, pas au total des
+  11 semaines — sinon l'écart serait toujours énorme en début de préparation et
+  n'apprendrait rien. Une séance faite compte sa distance corrigée si elle en a une.
+- Un ratio unique contre une cible est **une jauge, pas un graphique**. La figure
+  héro de la page reste « OBJECTIF 59'30 » : la jauge est délibérément secondaire,
+  et son chiffre porte l'encre de texte, pas la couleur de marque.
+- **Le prochain jalon** est la prochaine séance clé non faite : test S4, 4 × 1000 m
+  de la S7, verdict de la S9, puis la course.
 
 ### Décisions prises, et pourquoi
 

@@ -239,6 +239,90 @@
       }
     }
 
+    /* ===== VOLUME (jauge réalisé / prévu à ce stade) =====
+       Un ratio unique contre une cible : c'est une jauge, pas un graphique.
+       Elle reste secondaire — la figure héro de la page est « OBJECTIF 59'30 ». */
+    .volume {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin: 16px 0;
+    }
+
+    .volume-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 9px;
+    }
+
+    .volume-lbl {
+      font-family: var(--font-disp);
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+    }
+
+    /* Le chiffre porte l'encre de texte, pas la couleur de la marque : c'est la
+       barre qui porte l'identité visuelle, le nombre reste du texte. */
+    .volume-val {
+      font-family: var(--font-disp);
+      font-size: 15px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .volume-val b {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--txt);
+    }
+
+    /* Piste en teinte claire de la même rampe que le remplissage, pour que
+       l'état se lise sur toute la longueur de la barre. */
+    .volume-meter {
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(214, 0, 108, 0.18);
+      overflow: hidden;
+    }
+
+    .volume-meter i {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--brand), var(--hot));
+      transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .volume-meter i {
+        transition: none;
+      }
+    }
+
+    .volume-next {
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    .volume-next b {
+      color: var(--txt);
+      font-weight: 600;
+    }
+
+    .volume-next em {
+      font-style: normal;
+      color: var(--brand);
+      font-weight: 600;
+    }
+
     /* ===== CUES (repères) ===== */
     .cues {
       display: grid;
@@ -969,6 +1053,15 @@
       <p>10 km sous une heure · Octobre Rose · repli 1 h 02</p>
     </div>
 
+    <div class="volume" id="volume" hidden>
+      <div class="volume-head">
+        <span class="volume-lbl">Volume à ce stade</span>
+        <span class="volume-val" id="vol-val"></span>
+      </div>
+      <div class="volume-meter" role="img" id="vol-meter"><i id="vol-fill"></i></div>
+      <div class="volume-next" id="vol-next"></div>
+    </div>
+
     <div class="cues">
       <div class="cue"><b>Allure objectif</b>6'00/km, répétée dès la S7</div>
       <div class="cue"><b>Cadence</b>160 → 171 pas/min (métronome en EF)</div>
@@ -1332,6 +1425,58 @@
       return { planned: planned, real: Math.round(real * 10) / 10 };
     }
 
+    /* Jauge de volume : le réalisé face au prévu **à ce stade du plan**.
+     * Comparer au total des 11 semaines n'apprendrait rien — l'écart serait
+     * toujours énorme en début de préparation. C'est la comparaison à la date
+     * du jour qui répond à « est-ce que je suis dans les clous ». */
+    function paintVolume() {
+      var panel = document.getElementById('volume');
+      if (!panel) return;
+
+      var today = new Date(); today.setHours(0, 0, 0, 0);
+      var prevu = 0, reel = 0, prochain = null;
+
+      ALL_IDS.forEach(function (id) {
+        var plan = SESSIONS[id]; if (!plan) return;
+        var r = rec(id);
+        var d = (r && r.date) ? fromISODate(r.date) : plan.planned;
+
+        if (plan.km !== null && d && d <= today) prevu += plan.km;
+
+        if (isDone(id)) {
+          if (r && r.km !== undefined && r.km !== null) reel += Number(r.km);
+          else if (plan.km !== null) reel += plan.km;
+        }
+
+        // Jalon = séance clé encore à venir et non faite.
+        if (plan.key && !isDone(id) && d && d >= today && (!prochain || d < prochain.d)) {
+          prochain = { d: d, plan: plan };
+        }
+      });
+
+      reel = Math.round(reel * 10) / 10;
+
+      if (prevu === 0 && reel === 0 && !prochain) { panel.hidden = true; return; }
+      panel.hidden = false;
+
+      document.getElementById('vol-val').innerHTML =
+        '<b>' + esc(String(reel).replace('.', ',')) + '</b> / ' + esc(String(prevu)) + ' km';
+
+      var ratio = prevu > 0 ? reel / prevu : 0;
+      document.getElementById('vol-fill').style.width = Math.min(100, Math.round(ratio * 100)) + '%';
+      document.getElementById('vol-meter').setAttribute('aria-label',
+        String(reel).replace('.', ',') + ' km parcourus sur ' + prevu
+        + ' km prévus à ce stade du plan');
+
+      var next = document.getElementById('vol-next');
+      if (!prochain) { next.textContent = ''; return; }
+
+      var jours = Math.round((prochain.d - today) / 86400000);
+      var quand = jours === 0 ? "aujourd'hui" : (jours === 1 ? 'demain' : 'dans ' + jours + ' jours');
+      next.innerHTML = 'Prochain jalon · <b>' + esc(prochain.plan.label) + '</b> · <em>'
+        + esc(quand) + '</em>';
+    }
+
     function applyToDom() {
       document.querySelectorAll('label.s').forEach(paintRow);
 
@@ -1357,6 +1502,7 @@
         }
       });
 
+      paintVolume();
       refresh();
     }
 
@@ -1697,6 +1843,12 @@
       setTimeout(function () {
         currentWeekEl.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'center' });
       }, 150);
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () { /* pas bloquant */ });
+      });
     }
   </script>
 </body>

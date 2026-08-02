@@ -341,6 +341,12 @@
   topBtn.addEventListener('click', function() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () { /* pas bloquant */ });
+    });
+  }
 </script>
 </body>
 </html>

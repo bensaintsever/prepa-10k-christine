@@ -56,5 +56,13 @@
   <footer class="site-footer">Suivi de préparation. Données : zebris 20/08/2025, Pixel Watch 4, tests 3 juil. &amp; 23 juil. 2026.</footer>
 </div>
 
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () { /* pas bloquant */ });
+  });
+}
+</script>
+
 </body>
 </html>

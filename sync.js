@@ -103,8 +103,39 @@
     if (host && host.onStatus) host.onStatus(next, detail || null);
   }
 
+  function hasConfig() {
+    return !!(CONFIG.url && CONFIG.key);
+  }
+
   function isConfigured() {
-    return !!(CONFIG.url && CONFIG.key && window.supabase);
+    return hasConfig() && !!window.supabase;
+  }
+
+  /* Distingue une panne de transport d'une erreur applicative.
+   *
+   * On ne se fie pas à `navigator.onLine` pour trancher : il vaut `true` dès
+   * qu'une interface réseau existe, même sans accès à Internet. Un échec de
+   * transport est donc traité comme « hors-ligne » quelle qu'en soit la cause —
+   * c'est l'état réel du point de vue de l'application, et les modifications
+   * sont déjà en file d'attente.
+   *
+   * Le détail mentionne les deux causes plausibles, dont la mise en pause du
+   * projet : le plan gratuit endort un projet après une semaine sans activité,
+   * ce qui arrivera après la course. */
+  function describeFailure(err) {
+    var msg = (err && err.message) ? err.message : String(err);
+
+    if (!navigator.onLine || /failed to fetch|networkerror|load failed|fetch failed/i.test(msg)) {
+      return {
+        status: 'offline',
+        detail: 'Serveur injoignable — les modifications sont conservées et '
+          + 'repartiront au retour du réseau. Si la connexion fonctionne, le projet '
+          + 'Supabase est peut-être en pause : le plan gratuit endort un projet '
+          + 'après une semaine sans activité, il se réveille depuis le dashboard.'
+      };
+    }
+
+    return { status: 'error', detail: msg };
   }
 
   /* ---------------------------------------------------------------- auth */
@@ -189,7 +220,8 @@
       })
       .catch(function (err) {
         pulling = null;
-        setStatus(navigator.onLine ? 'error' : 'offline', err.message || String(err));
+        var f = describeFailure(err);
+        setStatus(f.status, f.detail);
         return null;
       });
 
@@ -273,7 +305,8 @@
       flushOutbox()
         .then(function () { setStatus('synced'); })
         .catch(function (err) {
-          setStatus(navigator.onLine ? 'error' : 'offline', err.message || String(err));
+          var f = describeFailure(err);
+          setStatus(f.status, f.detail);
         });
     }, 400); // regroupe les clics rapprochés en un seul appel
   }
@@ -335,7 +368,11 @@
     host = hostApi;
 
     if (!isConfigured()) {
-      setStatus('disabled');
+      /* Configuré mais client absent : c'est le cas hors-ligne, le CDN n'ayant
+       * pas répondu. Le masquer comme « désactivé » ferait croire que la
+       * synchronisation n'existe pas, alors qu'elle reprendra au retour du
+       * réseau — les modifications sont déjà mises en file. */
+      setStatus(hasConfig() ? 'offline' : 'disabled');
       return Promise.resolve(null);
     }
 
