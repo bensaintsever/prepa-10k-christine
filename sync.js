@@ -205,6 +205,7 @@
     var next = {};
     var seen = {};
     var changed = false;
+    var conflicts = [];
 
     rows.forEach(function (row) {
       var id = row.session_id;
@@ -216,6 +217,14 @@
 
       var keepLocal = outbox[id] && localTs > remoteTs;
       var rec = keepLocal ? localRec : fromRow(row);
+
+      /* Écraser une case à cocher est sans gravité ; écraser un texte rédigé
+       * l'est moins. On ne signale que le cas réellement perdant : une note
+       * locale encore en attente d'envoi que le serveur remplace. */
+      if (!keepLocal && outbox[id] && localRec && localRec.note
+        && localRec.note !== (row.note || '')) {
+        conflicts.push({ id: id, local: localRec.note, remote: row.note || '' });
+      }
 
       if (rec && !isEmpty(rec)) next[id] = rec;
       if (sig(rec) !== sig(localRec)) changed = true;
@@ -233,6 +242,7 @@
     writeMap(OUTBOX_KEY, outbox);
 
     if (changed && host.onRemote) host.onRemote(next);
+    if (conflicts.length && host.onConflict) host.onConflict(conflicts);
     return next;
   }
 

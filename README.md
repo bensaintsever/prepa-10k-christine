@@ -18,6 +18,7 @@ Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et de
 | `supabase/migrations/0005_sessions_annotations.sql` | Note, distance réalisée, date de report. |
 | `tests/sync.test.js` | Tests de la réconciliation local/distant (`node tests/sync.test.js`). |
 | `tests/dates.test.js` | Tests de la dérivation des dates de séance. |
+| `tests/state.test.js` | Tests de la migration d'état et de la saisie (distance, report). |
 | `data/2026-07-23_5k.tcx` | Trace du test 5 km du 23 juillet. |
 | `data/zebris_bilan_2025-08-20.pdf` | Bilan podologique (analyse de pression, Posturosports). |
 
@@ -105,7 +106,17 @@ souvent) et **reporter la séance** à un autre jour.
   dans `tests/dates.test.js`.
 - **Une séance reportée reste dans sa carte de semaine**, avec sa nouvelle date en
   rose et le prévu rappelé en infobulle. Le tracker suit un plan ; le faire migrer
-  entre semaines rendrait les totaux hebdomadaires mouvants.
+  entre semaines rendrait les totaux hebdomadaires mouvants. En revanche les lignes
+  sont **triées par date effective** à l'intérieur de la carte : sans ça une séance
+  décalée du mardi au samedi resterait affichée avant le jeudi.
+- **L'en-tête de semaine affiche le réalisé quand il diffère du prévu** (« 10,4 / 22 km »).
+  Une séance faite compte sa distance corrigée si elle en a une, sinon celle du plan ;
+  une séance non faite ne compte pas. C'est l'écart au plan qui est parlant.
+- **Une note écrasée par l'autre appareil est signalée.** La réconciliation reste
+  « dernier écrivain gagne », mais perdre un texte rédigé sans le dire n'est pas la
+  même chose que perdre une case cochée. L'avertissement ne se déclenche que sur le
+  cas réellement perdant : une note locale encore en attente d'envoi que le serveur
+  remplace — pas une mise à jour distante ordinaire.
 - **Décocher n'efface pas les annotations**, et « Réinitialiser » non plus : ce sont
   les seuls contenus écrits à la main, les perdre via un bouton intitulé « décocher »
   serait une destruction que rien n'annonce.

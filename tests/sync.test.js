@@ -69,11 +69,19 @@ function run(name, opts, assert) {
   let state = JSON.parse(JSON.stringify(opts.localState || {}));
   let remoteApplied = null;
 
+  let conflicts = null;
+
   return env.win.TrackerSync.init({
     getState: () => state,
     onRemote: next => { remoteApplied = next; state = next; },
-    onStatus: () => { }
-  }).then(() => assert({ env, state: () => state, remoteApplied: () => remoteApplied }));
+    onStatus: () => { },
+    onConflict: list => { conflicts = list; }
+  }).then(() => assert({
+    env,
+    state: () => state,
+    remoteApplied: () => remoteApplied,
+    conflicts: () => conflicts
+  }));
 }
 
 const NOW = Date.now();
@@ -194,6 +202,43 @@ const row = (id, over) => Object.assign(
     remoteRows: [row('9_2', { done: false, note: 'sensations correctes', updated_at: NEW_ISO })]
   }, ({ state }) => {
     check('note survit au décochage', state(), { '9_2': { done: 0, note: 'sensations correctes' } });
+  });
+
+  // 11. Une note locale non envoyée écrasée par le serveur doit être signalée.
+  await run('11. Note locale en attente écrasée → conflit signalé', {
+    localState: { '2_0': { done: 1, note: 'ma version' } },
+    storage: {
+      tracker10k_christine_meta: JSON.stringify({ '2_0': NOW - 120000 }),
+      tracker10k_christine_outbox: JSON.stringify({ '2_0': true })
+    },
+    remoteRows: [row('2_0', { done: true, note: 'sa version', updated_at: NEW_ISO })]
+  }, ({ state, conflicts }) => {
+    check('la version serveur est appliquée', state(), { '2_0': { done: 1, note: 'sa version' } });
+    check('le conflit est remonté', conflicts(),
+      [{ id: '2_0', local: 'ma version', remote: 'sa version' }]);
+  });
+
+  // 12. Une mise à jour distante ordinaire n'est pas un conflit : sans édition
+  //     locale en attente, personne ne perd de texte.
+  await run('12. Note distante sans édition locale → aucun conflit', {
+    localState: { '2_1': { done: 1, note: 'ancienne' } },
+    storage: { tracker10k_christine_meta: JSON.stringify({ '2_1': NOW - 120000 }) },
+    remoteRows: [row('2_1', { done: true, note: 'nouvelle', updated_at: NEW_ISO })]
+  }, ({ state, conflicts }) => {
+    check('note mise à jour', state(), { '2_1': { done: 1, note: 'nouvelle' } });
+    check('aucun conflit signalé', conflicts(), null);
+  });
+
+  // 13. Une case cochée écrasée ne déclenche pas d'alerte : rien de rédigé.
+  await run('13. Case écrasée sans note → aucun conflit', {
+    localState: { '2_2': { done: 1 } },
+    storage: {
+      tracker10k_christine_meta: JSON.stringify({ '2_2': NOW - 120000 }),
+      tracker10k_christine_outbox: JSON.stringify({ '2_2': true })
+    },
+    remoteRows: [row('2_2', { done: false, updated_at: NEW_ISO })]
+  }, ({ conflicts }) => {
+    check('aucun conflit signalé', conflicts(), null);
   });
 
   console.log('\n' + pass + ' assertions passées, ' + fail + ' échecs');

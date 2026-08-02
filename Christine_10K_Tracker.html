@@ -836,6 +836,47 @@
       color: var(--hot);
     }
 
+    /* ===== AVERTISSEMENT DE CONFLIT ===== */
+    .toast {
+      position: fixed;
+      z-index: 95;
+      left: 50%;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      transform: translate(-50%, 20px);
+      max-width: min(440px, calc(100vw - 32px));
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      background-color: var(--bg);
+      background-image: linear-gradient(rgba(255, 61, 127, 0.14), rgba(255, 61, 127, 0.14));
+      border: 1px solid rgba(255, 61, 127, 0.4);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
+      color: var(--txt);
+      font-size: 13px;
+      line-height: 1.5;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .toast.on {
+      opacity: 1;
+      transform: translate(-50%, 0);
+      pointer-events: auto;
+    }
+
+    .toast b {
+      display: block;
+      font-family: var(--font-disp);
+      color: var(--hot);
+      margin-bottom: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .toast {
+        transition: none;
+      }
+    }
+
     /* ===== FOOTER & RESET ===== */
     .foot {
       color: var(--muted);
@@ -964,6 +1005,7 @@
     </div>
   </div>
 
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="sheet-backdrop" id="sheet-bg"></div>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
     <div class="sheet-head">
@@ -1083,6 +1125,29 @@
       return d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
     }
 
+    /* ===== SAISIE =====
+     * Logique pure, volontairement hors du gestionnaire de la feuille : c'est
+     * là qu'un `type="number"` avalait silencieusement « 7,2 », et ça ne se
+     * teste pas depuis un handler qui a besoin du DOM. */
+
+    /* Renvoie { empty } | { error } | { value } — jamais une valeur muette. */
+    function parseKm(raw) {
+      var s = String(raw === null || raw === undefined ? '' : raw).trim().replace(',', '.');
+      if (s === '') return { empty: true };
+      if (!/^\d*\.?\d*$/.test(s)) return { error: true };
+      var k = Number(s);
+      if (!isFinite(k) || k < 0 || k > 999) return { error: true };
+      return { value: Math.round(k * 10) / 10 };
+    }
+
+    /* Une date égale au plan n'est pas un report : la stocker ferait afficher
+     * la ligne comme décalée alors qu'elle ne l'est pas. */
+    function normalizeMove(value, plannedDateObj) {
+      if (!value) return null;
+      if (value === toISODate(plannedDateObj)) return null;
+      return value;
+    }
+
     var KEY = "tracker10k_christine";
     var LS = null;
     try { var t = "__t"; localStorage.setItem(t, "1"); localStorage.removeItem(t); LS = localStorage; } catch (e) { LS = null; }
@@ -1154,6 +1219,8 @@
     W.forEach(function (w, wi) {
       var code = w[0], dates = w[1], tot = w[2], foc = w[3], tag = w[4], sess = w[5];
       var card = document.createElement('div'); card.className = 'wk';
+      card.dataset.week = wi;
+      card.dataset.planned = tot;
       var isCurrent = (wi === currentWeek);
 
       if (isCurrent) { card.classList.add('current'); card.id = 'current-week'; currentWeekEl = card; }
@@ -1243,9 +1310,64 @@
       btn.setAttribute('aria-label', (annotated ? 'Modifier' : 'Annoter') + ' — ' + plan.label);
     }
 
+    /* Date servant au tri : celle du report si elle existe, sinon celle du plan. */
+    function sortKey(id) {
+      var plan = SESSIONS[id];
+      if (!plan) return 0;
+      var r = rec(id);
+      var d = (r && r.date) ? fromISODate(r.date) : plan.planned;
+      return d ? d.getTime() : 0;
+    }
+
+    /* Réordonne les lignes d'une carte par date effective.
+     * Sans ça, une séance décalée du mardi au dimanche resterait en tête de
+     * semaine au-dessus du jeudi : lisible, mais chronologiquement faux.
+     * Le rang du plan sert de départage pour que le tri reste stable. */
+    function sortWeek(card) {
+      var rows = Array.prototype.slice.call(card.querySelectorAll('label.s'));
+      var ordered = rows.slice().sort(function (a, b) {
+        var d = sortKey(a.dataset.id) - sortKey(b.dataset.id);
+        if (d !== 0) return d;
+        return (SESSIONS[a.dataset.id].si || 0) - (SESSIONS[b.dataset.id].si || 0);
+      });
+      var changed = ordered.some(function (el, i) { return el !== rows[i]; });
+      if (!changed) return;
+      ordered.forEach(function (el) { card.appendChild(el); });
+    }
+
+    /* Cumul réellement parcouru sur la semaine : une séance faite compte sa
+     * distance corrigée si elle en a une, sinon celle du plan. Une séance non
+     * faite ne compte pas — c'est l'écart au prévu qui est parlant. */
+    function weekTotals(card) {
+      var planned = Number(card.dataset.planned) || 0;
+      var real = 0;
+      card.querySelectorAll('label.s').forEach(function (l) {
+        var id = l.dataset.id;
+        if (!isDone(id)) return;
+        var r = rec(id), plan = SESSIONS[id];
+        if (r && r.km !== undefined && r.km !== null) real += Number(r.km);
+        else if (plan && plan.km !== null) real += plan.km;
+      });
+      return { planned: planned, real: Math.round(real * 10) / 10 };
+    }
+
     function applyToDom() {
       document.querySelectorAll('label.s').forEach(paintRow);
-      document.querySelectorAll('.wk').forEach(function (wk, wi) {
+
+      document.querySelectorAll('.wk').forEach(function (wk) {
+        var wi = Number(wk.dataset.week);
+
+        sortWeek(wk);
+
+        var t = weekTotals(wk);
+        var wt = wk.querySelector('.wt');
+        if (wt) {
+          wt.textContent = t.real > 0 && t.real !== t.planned
+            ? fmtKm(t.real).replace(' km', '') + ' / ' + t.planned + ' km'
+            : t.planned + ' km';
+          wt.title = t.real > 0 ? 'Réalisé ' + fmtKm(t.real) + ' sur ' + t.planned + ' km prévus' : '';
+        }
+
         if (wi < currentWeek) {
           var labels = wk.querySelectorAll('label.s');
           var allDone = labels.length > 0;
@@ -1253,6 +1375,7 @@
           wk.classList.toggle('past-done', allDone);
         }
       });
+
       refresh();
     }
 
@@ -1437,21 +1560,16 @@
 
         // Une saisie invalide doit être signalée, pas escamotée : sinon la
         // distance disparaît sans que rien ne l'explique.
-        var raw = String(kmEl.value || '').trim().replace(',', '.');
-        if (raw !== '') {
-          var k = Number(raw);
-          if (!isFinite(k) || k < 0 || k > 999) {
-            kmHint.textContent = 'Distance invalide — un nombre entre 0 et 999.';
-            kmEl.focus();
-            return;
-          }
-          next.km = Math.round(k * 10) / 10;
+        var km = parseKm(kmEl.value);
+        if (km.error) {
+          kmHint.textContent = 'Distance invalide — un nombre entre 0 et 999.';
+          kmEl.focus();
+          return;
         }
+        if (km.value !== undefined) next.km = km.value;
 
-        // Une date égale au plan n'est pas un report : on ne la stocke pas,
-        // sinon la ligne s'afficherait comme décalée sans l'être.
-        var d = dateEl.value || '';
-        if (d && d !== toISODate(plan.planned)) next.date = d;
+        var moved = normalizeMove(dateEl.value, plan.planned);
+        if (moved) next.date = moved;
 
         writeRec(openId, next);
         applyToDom();
@@ -1566,10 +1684,30 @@
         });
       });
 
+      /* Une note écrasée par l'autre appareil ne doit pas disparaître en
+       * silence : c'est du texte rédigé, contrairement à une case cochée. */
+      var toastEl = document.getElementById('toast');
+      var toastTimer = null;
+
+      function showConflicts(list) {
+        var n = list.length;
+        var quoi = n === 1
+          ? 'La note de « ' + esc(SESSIONS[list[0].id] ? SESSIONS[list[0].id].label : list[0].id) + ' »'
+          : n + ' notes';
+        toastEl.innerHTML = '<b>Note remplacée</b>' + quoi +
+          ' a été remplacée par une version plus récente venue de l\'autre appareil.';
+        toastEl.classList.add('on');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toastEl.classList.remove('on'); }, 9000);
+      }
+
+      toastEl.addEventListener('click', function () { toastEl.classList.remove('on'); });
+
       TrackerSync.init({
         getState: function () { return state; },
         onRemote: function (next) { state = next; persist(); applyToDom(); },
-        onStatus: render
+        onStatus: render,
+        onConflict: showConflicts
       });
     })();
 
