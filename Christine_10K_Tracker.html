@@ -586,6 +586,256 @@
       color: rgba(255, 61, 127, 0.3);
     }
 
+    /* ===== ANNOTATIONS (note, distance réalisée, report) ===== */
+
+    /* Note affichée sous l'intitulé, jamais barrée même séance faite :
+       c'est le seul contenu écrit par Christine, il doit rester lisible. */
+    label.s .sh .note {
+      display: block;
+      margin-top: 4px;
+      font-style: normal;
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    label.s.done .sh .note {
+      color: rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+    }
+
+    /* Distance réalisée au-dessus, prévue barrée en dessous. */
+    label.s .km i {
+      display: block;
+      font-style: normal;
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: line-through;
+      opacity: .45;
+      margin-top: 1px;
+    }
+
+    /* Séance reportée : la date prend la couleur de marque pour signaler
+       qu'elle s'écarte du plan. */
+    label.s .dy.moved {
+      width: auto;
+      min-width: 64px;
+      color: var(--brand);
+    }
+
+    label.s.done .dy.moved {
+      color: rgba(214, 0, 108, 0.45);
+    }
+
+    /* Bouton d'édition : visible en permanence (Christine est sur mobile,
+       un survol ne se découvre pas), discret tant qu'on ne le vise pas. */
+    label.s .edit {
+      flex: none;
+      width: 32px;
+      height: 32px;
+      margin: -6px -6px -6px 0;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    label.s .edit:hover,
+    label.s .edit:focus-visible {
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--txt);
+      outline: none;
+    }
+
+    label.s .edit.filled {
+      color: var(--brand);
+    }
+
+    /* ===== FEUILLE D'ÉDITION ===== */
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .sheet-backdrop.on {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sheet {
+      position: fixed;
+      z-index: 91;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      /* Base opaque : --surface ne vaut que 3 % de blanc, suffisant pour une
+         carte posée sur la page mais pas pour une modale, que la grille
+         traverserait. Le voile clair est superposé au fond plein. */
+      background-color: var(--bg);
+      background-image: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05));
+      box-shadow: 0 -14px 44px rgba(0, 0, 0, 0.55);
+      border-top: 1px solid var(--border);
+      border-radius: var(--radius) var(--radius) 0 0;
+      padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+      transform: translateY(100%);
+      transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+      max-height: 88vh;
+      overflow-y: auto;
+    }
+
+    .sheet.on {
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .sheet,
+      .sheet-backdrop {
+        transition: none;
+      }
+    }
+
+    @media (min-width: 720px) {
+      .sheet {
+        left: 50%;
+        right: auto;
+        bottom: 50%;
+        width: 460px;
+        transform: translate(-50%, 60%);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+        opacity: 0;
+      }
+
+      .sheet.on {
+        transform: translate(-50%, 50%);
+        opacity: 1;
+      }
+    }
+
+    .sheet-head {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .sheet-head b {
+      font-family: var(--font-disp);
+      font-size: 17px;
+      color: #fff;
+    }
+
+    .sheet-head span {
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    .sheet-sub {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    .fld {
+      margin-bottom: 14px;
+    }
+
+    .fld label {
+      display: block;
+      font-family: var(--font-disp);
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .fld input,
+    .fld textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--txt);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      resize: vertical;
+    }
+
+    .fld input:focus,
+    .fld textarea:focus {
+      outline: none;
+      border-color: var(--brand);
+    }
+
+    .fld .hint {
+      margin-top: 5px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .fld-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .fld-row .fld {
+      flex: 1;
+    }
+
+    .sheet-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .sheet-actions button {
+      padding: 11px 16px;
+      min-height: 44px;
+      font-family: var(--font-disp);
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: .03em;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--txt);
+      cursor: pointer;
+    }
+
+    .sheet-actions .save {
+      flex: 1;
+      border: none;
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .sheet-actions .save:hover {
+      background: var(--hot);
+    }
+
+    .sheet-actions .clear:hover {
+      border-color: var(--hot);
+      color: var(--hot);
+    }
+
     /* ===== FOOTER & RESET ===== */
     .foot {
       color: var(--muted);
@@ -714,6 +964,43 @@
     </div>
   </div>
 
+  <div class="sheet-backdrop" id="sheet-bg"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+    <div class="sheet-head">
+      <b id="sheet-title">Séance</b>
+      <span id="sheet-week"></span>
+    </div>
+    <p class="sheet-sub" id="sheet-plan"></p>
+
+    <div class="fld">
+      <label for="f-note">Note</label>
+      <textarea id="f-note" rows="3" maxlength="2000"
+        placeholder="Sensations, météo, douleur, allure tenue…"></textarea>
+    </div>
+
+    <div class="fld-row">
+      <div class="fld">
+        <label for="f-km">Distance réalisée</label>
+        <!-- type="text" et non "number" : un input number rejette « 7,2 » et
+             vide le champ sans rien dire. inputmode="decimal" conserve le
+             clavier numérique sur mobile, et la virgule est gérée à la saisie. -->
+        <input type="text" id="f-km" inputmode="decimal" autocomplete="off" placeholder="km">
+        <div class="hint" id="f-km-hint"></div>
+      </div>
+      <div class="fld">
+        <label for="f-date">Date</label>
+        <input type="date" id="f-date">
+        <div class="hint" id="f-date-hint"></div>
+      </div>
+    </div>
+
+    <div class="sheet-actions">
+      <button type="button" class="clear" id="f-clear">Effacer</button>
+      <button type="button" id="f-cancel">Annuler</button>
+      <button type="button" class="save" id="f-save">Enregistrer</button>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="sync.js"></script>
   <script>
@@ -757,16 +1044,108 @@
       return -1;
     }
 
+    /* ===== DATES DES SÉANCES =====
+     * Les étiquettes du plan ne portent qu'un jour de semaine ("Mar.", "Jeu. 23").
+     * Pour permettre le report d'une séance il faut une vraie date : on la déduit
+     * du début de semaine et du jour lu dans l'étiquette. Les étiquettes qui
+     * précisent déjà un quantième servent de contrôle (voir tests/dates.test.js). */
+    var WEEKDAYS = { 'Lun': 1, 'Mar': 2, 'Mer': 3, 'Jeu': 4, 'Ven': 5, 'Sam': 6, 'Dim': 0 };
+
+    function plannedDate(weekIndex, dayLabel) {
+      var start = WEEK_STARTS[weekIndex];
+      if (!start) return null;
+      var key = String(dayLabel).slice(0, 3);
+      var target = WEEKDAYS[key];
+      if (target === undefined) return null;
+
+      // Premier jour >= début de semaine portant ce jour de la semaine.
+      var d = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+      var delta = (target - d.getDay() + 7) % 7;
+      d.setDate(d.getDate() + delta);
+      return d;
+    }
+
+    function toISODate(d) {
+      if (!d) return null;
+      var m = String(d.getMonth() + 1), j = String(d.getDate());
+      return d.getFullYear() + '-' + (m.length < 2 ? '0' + m : m) + '-' + (j.length < 2 ? '0' + j : j);
+    }
+
+    function fromISODate(s) {
+      if (!s) return null;
+      var p = String(s).split('-');
+      if (p.length !== 3) return null;
+      return new Date(+p[0], +p[1] - 1, +p[2]);
+    }
+
+    function formatDate(d) {
+      if (!d) return '';
+      return d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+    }
+
     var KEY = "tracker10k_christine";
     var LS = null;
     try { var t = "__t"; localStorage.setItem(t, "1"); localStorage.removeItem(t); LS = localStorage; } catch (e) { LS = null; }
     var state = {};
     try { state = JSON.parse((LS && LS.getItem(KEY)) || "{}") || {}; } catch (e) { state = {}; }
+
+    /* Migration de l'ancien format : une séance valait `1`, elle vaut désormais
+     * { done, note, km, date }. Sans ça, une progression déjà saisie serait
+     * relue comme un objet vide et perdue au premier enregistrement. */
+    (function migrateState() {
+      var migrated = false;
+      Object.keys(state).forEach(function (id) {
+        var v = state[id];
+        if (v !== null && typeof v === 'object') return;
+        if (v) { state[id] = { done: 1 }; } else { delete state[id]; }
+        migrated = true;
+      });
+      if (migrated && LS) { try { LS.setItem(KEY, JSON.stringify(state)); } catch (e) { } }
+    })();
+
     function persist() { if (!LS) return; try { LS.setItem(KEY, JSON.stringify(state)); } catch (e) { } }
+
+    /* ----- accès à un enregistrement de séance ----- */
+    function rec(id) { return state[id] || null; }
+    function isDone(id) { var r = state[id]; return !!(r && r.done); }
+
+    function isBlank(r) {
+      return !r || (!r.done && !r.note && r.km === undefined && !r.date);
+    }
+
+    /* Écrit un enregistrement et le met en file de synchronisation.
+     * Un enregistrement redevenu vide est supprimé plutôt que conservé. */
+    function writeRec(id, next) {
+      if (isBlank(next)) delete state[id]; else state[id] = next;
+      persist();
+      if (window.TrackerSync) TrackerSync.mark(id, isDone(id));
+    }
+
+    /* Date effective d'une séance : celle du report si elle existe,
+     * sinon celle déduite du plan. */
+    function effectiveDate(wi, dayLabel, id) {
+      var r = rec(id);
+      if (r && r.date) return fromISODate(r.date);
+      return plannedDate(wi, dayLabel);
+    }
 
     var grid = document.getElementById('grid');
     var total = 0;
     var ALL_IDS = [];
+    var SESSIONS = {};   // id -> descriptif figé du plan (prévu, semaine, libellé)
+
+    /* Les notes sont saisies par l'utilisatrice et réinjectées dans du HTML :
+     * sans échappement, un « < » suffirait à casser la ligne. */
+    function esc(s) {
+      return String(s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function fmtKm(n) {
+      if (n === null || n === undefined || n === '') return '';
+      return String(Math.round(Number(n) * 10) / 10).replace('.', ',') + ' km';
+    }
     var currentWeek = getCurrentWeek();
     var currentWeekEl = null;
 
@@ -787,14 +1166,24 @@
       sess.forEach(function (s, si) {
         var day = s[0], sh = s[1], km = s[2], key = s[3];
         var id = wi + '_' + si; total++; ALL_IDS.push(id);
-        var on = state[id] ? 'checked' : '';
-        var dclass = state[id] ? ' done' : '';
-        h += '<label class="s' + (key ? ' key' : '') + dclass + '" data-id="' + id + '">' +
-          '<input type="checkbox" ' + on + '>' +
+
+        // Mémorisé pour la feuille d'édition : elle a besoin du prévu
+        // pour l'afficher en repère et pour distinguer un écart d'une saisie.
+        SESSIONS[id] = {
+          wi: wi, si: si, day: day, label: sh, key: !!key,
+          km: km ? Number(km) : null,
+          weekCode: code, weekDates: dates,
+          planned: plannedDate(wi, day)
+        };
+
+        h += '<label class="s' + (key ? ' key' : '') + '" data-id="' + id + '">' +
+          '<input type="checkbox">' +
           '<span class="chk">' + svgCheck + '</span>' +
-          '<span class="dy">' + day + '</span>' +
-          '<span class="sh">' + sh + '</span>' +
-          '<span class="km">' + (km ? km + ' km' : '') + '</span></label>';
+          '<span class="dy"></span>' +
+          '<span class="sh"></span>' +
+          '<span class="km"></span>' +
+          '<button type="button" class="edit" aria-label="Modifier cette séance">⋯</button>' +
+          '</label>';
       });
       card.innerHTML = h; grid.appendChild(card);
     });
@@ -803,7 +1192,8 @@
     var cwEl = document.getElementById('cw');
 
     function refresh() {
-      var done = Object.values(state).filter(Boolean).length;
+      // Un enregistrement peut n'exister que pour une note : seul `done` compte.
+      var done = Object.keys(state).filter(isDone).length;
       pl.textContent = done + ' / ' + total;
       pi.style.width = (total ? (done / total * 100) : 0) + '%';
       if (cwEl) {
@@ -813,17 +1203,53 @@
       }
     }
 
+    /* Rend une ligne à partir du plan et de l'enregistrement.
+     * Point d'entrée unique : la construction initiale laisse les cases vides
+     * et c'est ici que tout est peint, pour qu'un rendu après synchro soit
+     * strictement identique à un rendu au chargement. */
+    function paintRow(l) {
+      var id = l.dataset.id;
+      var plan = SESSIONS[id];
+      if (!plan) return;
+      var r = rec(id);
+      var on = !!(r && r.done);
+
+      l.querySelector('input').checked = on;
+      l.classList.toggle('done', on);
+
+      var dyEl = l.querySelector('.dy');
+      var moved = !!(r && r.date);
+      dyEl.textContent = moved ? formatDate(fromISODate(r.date)) : plan.day;
+      dyEl.classList.toggle('moved', moved);
+      dyEl.title = moved ? 'Reporté — prévu ' + formatDate(plan.planned) : '';
+
+      var shEl = l.querySelector('.sh');
+      shEl.innerHTML = esc(plan.label) +
+        (r && r.note ? '<em class="note">' + esc(r.note) + '</em>' : '');
+
+      var kmEl = l.querySelector('.km');
+      var hasReal = r && r.km !== undefined && r.km !== null;
+      if (hasReal && plan.km !== null && Number(r.km) !== plan.km) {
+        kmEl.innerHTML = esc(fmtKm(r.km)) + '<i>' + esc(fmtKm(plan.km)) + '</i>';
+      } else if (hasReal) {
+        kmEl.textContent = fmtKm(r.km);
+      } else {
+        kmEl.textContent = plan.km !== null ? fmtKm(plan.km) : '';
+      }
+
+      var btn = l.querySelector('.edit');
+      var annotated = !!(r && (r.note || hasReal || r.date));
+      btn.classList.toggle('filled', annotated);
+      btn.setAttribute('aria-label', (annotated ? 'Modifier' : 'Annoter') + ' — ' + plan.label);
+    }
+
     function applyToDom() {
-      document.querySelectorAll('label.s').forEach(function (l) {
-        var on = !!state[l.dataset.id];
-        l.querySelector('input').checked = on;
-        l.classList.toggle('done', on);
-      });
+      document.querySelectorAll('label.s').forEach(paintRow);
       document.querySelectorAll('.wk').forEach(function (wk, wi) {
         if (wi < currentWeek) {
           var labels = wk.querySelectorAll('label.s');
           var allDone = labels.length > 0;
-          labels.forEach(function (l) { if (!state[l.dataset.id]) allDone = false; });
+          labels.forEach(function (l) { if (!isDone(l.dataset.id)) allDone = false; });
           wk.classList.toggle('past-done', allDone);
         }
       });
@@ -855,7 +1281,10 @@
       var lab = e.target.closest('label.s'); if (!lab) return;
       var id = lab.dataset.id;
       if (e.target.checked) {
-        state[id] = 1; lab.classList.add('done');
+        // Cocher n'écrase pas une note ou un report déjà saisis.
+        var cur = rec(id) || {};
+        state[id] = { done: 1, note: cur.note, km: cur.km, date: cur.date };
+        lab.classList.add('done');
 
         // Audio feedback
         playSatisfyingPop();
@@ -897,9 +1326,16 @@
           setTimeout(function (el) { el.remove(); }, 700, p);
         }
       }
-      else { delete state[id]; lab.classList.remove('done'); }
+      else {
+        // Décocher ne doit pas emporter la note ni le report : on retire `done`
+        // et on ne supprime l'enregistrement que s'il ne reste plus rien.
+        var prev = rec(id) || {};
+        var next = { done: 0, note: prev.note, km: prev.km, date: prev.date };
+        if (isBlank(next)) delete state[id]; else state[id] = next;
+        lab.classList.remove('done');
+      }
       persist();
-      if (window.TrackerSync) TrackerSync.mark(id, !!state[id]);
+      if (window.TrackerSync) TrackerSync.mark(id, isDone(id));
       applyToDom();
     });
 
@@ -907,13 +1343,23 @@
       // Depuis le passage à Supabase, le reset ne vide plus seulement ce navigateur :
       // il pousse toutes les séances à false sur le serveur, donc sur les deux appareils.
       var synced = window.TrackerSync && TrackerSync.isConfigured();
-      var msg = synced
-        ? 'Décocher les ' + total + ' séances ?\n\n'
-        + 'Cela efface la progression sur TOUS les appareils, pas seulement celui-ci. '
-        + 'Aucun retour en arrière possible.'
-        : 'Décocher toutes les séances ? Action irréversible.';
+      var msg = 'Décocher les ' + total + ' séances ?\n\n'
+        + 'Les notes, distances et reports sont conservés.\n'
+        + (synced
+          ? 'Cela décoche sur TOUS les appareils, pas seulement celui-ci. '
+          + 'Aucun retour en arrière possible.'
+          : 'Action irréversible.');
       if (!confirm(msg)) return;
-      state = {}; if (LS) { try { LS.removeItem(KEY); } catch (e) { } }
+
+      // Ne remet à zéro que l'état « fait » : les annotations sont du contenu
+      // écrit à la main, les effacer d'un bouton intitulé « décocher » serait
+      // une perte que rien n'annonce.
+      Object.keys(state).forEach(function (id) {
+        var prev = state[id];
+        var next = { done: 0, note: prev.note, km: prev.km, date: prev.date };
+        if (isBlank(next)) delete state[id]; else state[id] = next;
+      });
+      persist();
       if (window.TrackerSync) TrackerSync.markAll(ALL_IDS);
       applyToDom();
     });
@@ -925,6 +1371,126 @@
     }
 
     applyToDom();
+
+    /* ===== FEUILLE D'ÉDITION D'UNE SÉANCE ===== */
+    (function () {
+      var sheet = document.getElementById('sheet');
+      var backdrop = document.getElementById('sheet-bg');
+      var titleEl = document.getElementById('sheet-title');
+      var weekEl = document.getElementById('sheet-week');
+      var planEl = document.getElementById('sheet-plan');
+      var noteEl = document.getElementById('f-note');
+      var kmEl = document.getElementById('f-km');
+      var kmHint = document.getElementById('f-km-hint');
+      var dateEl = document.getElementById('f-date');
+      var dateHint = document.getElementById('f-date-hint');
+
+      var openId = null;
+      var lastTrigger = null;
+
+      function open(id, trigger) {
+        var plan = SESSIONS[id];
+        if (!plan) return;
+        openId = id;
+        lastTrigger = trigger || null;
+
+        var r = rec(id) || {};
+
+        titleEl.textContent = plan.label;
+        weekEl.textContent = plan.weekCode + ' · ' + plan.weekDates;
+        planEl.textContent = 'Prévu ' + formatDate(plan.planned)
+          + (plan.km !== null ? ' · ' + fmtKm(plan.km) : '');
+
+        noteEl.value = r.note || '';
+        kmEl.value = (r.km === undefined || r.km === null) ? '' : String(r.km).replace('.', ',');
+        kmEl.placeholder = plan.km !== null ? String(plan.km) : 'km';
+        kmHint.textContent = plan.km !== null ? 'Prévu : ' + fmtKm(plan.km) : '';
+
+        dateEl.value = r.date || toISODate(plan.planned) || '';
+        dateHint.textContent = r.date ? 'Reportée — prévu ' + formatDate(plan.planned) : '';
+
+        sheet.hidden = false;
+        // Reflow forcé plutôt que requestAnimationFrame : rAF est bridé quand
+        // l'onglet n'est pas rendu, et la feuille resterait alors invisible.
+        void sheet.offsetHeight;
+        sheet.classList.add('on');
+        backdrop.classList.add('on');
+        noteEl.focus();
+      }
+
+      function close() {
+        sheet.classList.remove('on');
+        backdrop.classList.remove('on');
+        openId = null;
+        setTimeout(function () { if (!sheet.classList.contains('on')) sheet.hidden = true; }, 250);
+        if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+      }
+
+      function save() {
+        if (!openId) return;
+        var plan = SESSIONS[openId];
+        var prev = rec(openId) || {};
+        var next = { done: prev.done ? 1 : 0 };
+
+        var note = (noteEl.value || '').trim();
+        if (note) next.note = note.slice(0, 2000);
+
+        // Une saisie invalide doit être signalée, pas escamotée : sinon la
+        // distance disparaît sans que rien ne l'explique.
+        var raw = String(kmEl.value || '').trim().replace(',', '.');
+        if (raw !== '') {
+          var k = Number(raw);
+          if (!isFinite(k) || k < 0 || k > 999) {
+            kmHint.textContent = 'Distance invalide — un nombre entre 0 et 999.';
+            kmEl.focus();
+            return;
+          }
+          next.km = Math.round(k * 10) / 10;
+        }
+
+        // Une date égale au plan n'est pas un report : on ne la stocke pas,
+        // sinon la ligne s'afficherait comme décalée sans l'être.
+        var d = dateEl.value || '';
+        if (d && d !== toISODate(plan.planned)) next.date = d;
+
+        writeRec(openId, next);
+        applyToDom();
+        close();
+      }
+
+      function clearAnnotations() {
+        if (!openId) return;
+        noteEl.value = '';
+        kmEl.value = '';
+        dateEl.value = toISODate(SESSIONS[openId].planned) || '';
+        dateHint.textContent = '';
+      }
+
+      // Le bouton vit dans un <label> : sans ces deux appels, le clic
+      // basculerait aussi la case à cocher de la séance.
+      grid.addEventListener('click', function (e) {
+        var btn = e.target.closest('.edit');
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var lab = btn.closest('label.s');
+        if (lab) open(lab.dataset.id, btn);
+      });
+
+      document.getElementById('f-save').addEventListener('click', save);
+      document.getElementById('f-cancel').addEventListener('click', close);
+      document.getElementById('f-clear').addEventListener('click', clearAnnotations);
+      backdrop.addEventListener('click', close);
+
+      document.addEventListener('keydown', function (e) {
+        if (!openId) return;
+        if (e.key === 'Escape') { e.preventDefault(); close(); }
+        // Entrée valide depuis les champs courts, pas depuis la note multiligne.
+        if (e.key === 'Enter' && (e.target === kmEl || e.target === dateEl)) {
+          e.preventDefault(); save();
+        }
+      });
+    })();
 
     /* ===== SYNCHRONISATION SUPABASE ===== */
     (function () {

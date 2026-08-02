@@ -55,6 +55,49 @@
   var channel = null;
   var flushTimer = null;
 
+  /* ------------------------------------------------- forme d'un enregistrement
+   * Une séance valait un booléen ; elle porte maintenant une note, une distance
+   * réalisée et une date de report. Les champs absents signifient « conforme au
+   * plan » : on ne stocke que ce qui s'écarte du prévu, localement comme côté
+   * serveur. La réconciliation compare l'enregistrement entier. */
+
+  function fromRow(row) {
+    var rec = { done: row.done ? 1 : 0 };
+    if (row.note) rec.note = row.note;
+    if (row.distance_km !== null && row.distance_km !== undefined) rec.km = Number(row.distance_km);
+    if (row.scheduled_on) rec.date = row.scheduled_on;
+    return rec;
+  }
+
+  function toRow(id, rec) {
+    rec = rec || {};
+    return {
+      plan_id: CONFIG.planId,
+      session_id: id,
+      done: !!rec.done,
+      note: rec.note || null,
+      distance_km: (rec.km === null || rec.km === undefined) ? null : rec.km,
+      scheduled_on: rec.date || null
+    };
+  }
+
+  /* Signature stable pour détecter un changement réel : les clés sont listées
+   * explicitement, un JSON.stringify direct dépendrait de l'ordre d'insertion. */
+  function sig(rec) {
+    if (!rec) return '';
+    return [
+      rec.done ? 1 : 0,
+      rec.note || '',
+      (rec.km === null || rec.km === undefined) ? '' : rec.km,
+      rec.date || ''
+    ].join('');
+  }
+
+  /* Un enregistrement sans aucun écart au plan n'a pas à exister. */
+  function isEmpty(rec) {
+    return sig(rec) === sig({ done: 0 });
+  }
+
   function setStatus(next, detail) {
     status = next;
     if (host && host.onStatus) host.onStatus(next, detail || null);
@@ -130,7 +173,7 @@
 
     pulling = client
       .from('sessions')
-      .select('session_id, done, updated_at')
+      .select('session_id, done, note, distance_km, scheduled_on, updated_at')
       .eq('plan_id', CONFIG.planId)
       .then(function (res) {
         if (res.error) throw res.error;
@@ -169,20 +212,20 @@
 
       var remoteTs = Date.parse(row.updated_at) || 0;
       var localTs = meta[id] || 0;
-      var localDone = !!local[id];
+      var localRec = local[id] || null;
 
       var keepLocal = outbox[id] && localTs > remoteTs;
-      var done = keepLocal ? localDone : !!row.done;
+      var rec = keepLocal ? localRec : fromRow(row);
 
-      if (done) next[id] = 1;
-      if (done !== localDone) changed = true;
+      if (rec && !isEmpty(rec)) next[id] = rec;
+      if (sig(rec) !== sig(localRec)) changed = true;
       if (!keepLocal) meta[id] = remoteTs;
     });
 
     // Séances connues localement mais absentes du serveur : à pousser.
     Object.keys(local).forEach(function (id) {
       if (seen[id]) return;
-      if (local[id]) next[id] = 1;
+      if (!isEmpty(local[id])) next[id] = local[id];
       outbox[id] = true;
     });
 
@@ -199,7 +242,7 @@
 
     var local = host.getState() || {};
     var payload = ids.map(function (id) {
-      return { plan_id: CONFIG.planId, session_id: id, done: !!local[id] };
+      return toRow(id, local[id]);
     });
 
     return client
@@ -249,10 +292,13 @@
 
           var local = host.getState() || {};
           var next = {};
-          Object.keys(local).forEach(function (k) { if (local[k]) next[k] = 1; });
+          Object.keys(local).forEach(function (k) {
+            if (!isEmpty(local[k])) next[k] = local[k];
+          });
 
-          if (row.done) next[row.session_id] = 1;
-          else delete next[row.session_id];
+          var rec = fromRow(row);
+          if (isEmpty(rec)) delete next[row.session_id];
+          else next[row.session_id] = rec;
 
           meta[row.session_id] = Date.parse(row.updated_at) || Date.now();
           writeMap(META_KEY, meta);

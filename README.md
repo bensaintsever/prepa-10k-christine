@@ -15,7 +15,9 @@ Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et de
 | `sync.js` | Synchronisation Supabase du tracker (hors-ligne d'abord). |
 | `supabase/migrations/0001_sessions.sql` | Schéma de la table `sessions` + policies RLS (placeholders). |
 | `supabase/policies.local.sql` | Policies avec les vraies adresses — **hors dépôt** (`.gitignore`). |
+| `supabase/migrations/0005_sessions_annotations.sql` | Note, distance réalisée, date de report. |
 | `tests/sync.test.js` | Tests de la réconciliation local/distant (`node tests/sync.test.js`). |
+| `tests/dates.test.js` | Tests de la dérivation des dates de séance. |
 | `data/2026-07-23_5k.tcx` | Trace du test 5 km du 23 juillet. |
 | `data/zebris_bilan_2025-08-20.pdf` | Bilan podologique (analyse de pression, Posturosports). |
 
@@ -85,6 +87,38 @@ deux sessions authentifiées ouvertes en parallèle.
 **Il ne reste ensuite que la vérification en conditions réelles** : ouvrir le tracker
 dans deux navigateurs authentifiés et confirmer qu'une case cochée d'un côté apparaît
 de l'autre. Tant que ce n'est pas fait, ne pas donner le lien à Christine.
+
+### Annotations de séance
+
+Depuis le 2 août 2026, une séance n'est plus un booléen. Christine peut y attacher
+une **note**, corriger la **distance réalisée** (le prévu et le réalisé diffèrent
+souvent) et **reporter la séance** à un autre jour.
+
+- Côté base : `note`, `distance_km`, `scheduled_on`, toutes nullables
+  (`0005_sessions_annotations.sql`). `null` signifie « conforme au plan ».
+- Côté client : l'état est passé de `{ "3_2": 1 }` à
+  `{ "3_2": { done, note, km, date } }`. Le `localStorage` existant est migré au
+  chargement — sans ça une progression déjà saisie serait relue comme vide.
+- **Les dates sont déduites, pas saisies.** Le plan n'écrit qu'un jour de semaine
+  (`"Mar."`, `"Jeu. 23"`) : `plannedDate()` en dérive une date réelle à partir de
+  `WEEK_STARTS`. Les 17 étiquettes qui portent déjà un quantième servent d'oracle
+  dans `tests/dates.test.js`.
+- **Une séance reportée reste dans sa carte de semaine**, avec sa nouvelle date en
+  rose et le prévu rappelé en infobulle. Le tracker suit un plan ; le faire migrer
+  entre semaines rendrait les totaux hebdomadaires mouvants.
+- **Décocher n'efface pas les annotations**, et « Réinitialiser » non plus : ce sont
+  les seuls contenus écrits à la main, les perdre via un bouton intitulé « décocher »
+  serait une destruction que rien n'annonce.
+
+Deux pièges rencontrés, à ne pas réintroduire :
+
+- Le champ distance est un `type="text"` avec `inputmode="decimal"`, **jamais un
+  `type="number"`** : un input number rejette « 7,2 » et vide le champ en silence,
+  alors que c'est ce que produit un clavier français. La virgule est convertie à
+  l'enregistrement, et une saisie invalide est signalée au lieu d'être escamotée.
+- L'ouverture de la feuille force un reflow au lieu d'utiliser
+  `requestAnimationFrame`, que le navigateur bride quand l'onglet n'est pas rendu —
+  la feuille resterait alors invisible.
 
 ### Décisions prises, et pourquoi
 
