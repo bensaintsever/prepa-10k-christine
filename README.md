@@ -154,6 +154,32 @@ Corrigé le 2 août 2026 (`sw.js`).
 Le `background_color` du manifeste est passé de `#F4F1F6` à `#0F0814` : l'écran de
 démarrage flashait en blanc à chaque lancement depuis l'écran d'accueil.
 
+### Navigation mobile
+
+Le plan complet représentait **5,2 écrans de défilement** sur un téléphone.
+
+- **Une semaine passée et terminée se replie d'office** sur son en-tête, qui porte
+  déjà le code, le focus et le cumul — un résumé suffisant. Une semaine passée mais
+  incomplète reste ouverte : c'est justement ce qu'il y a à voir. La semaine en cours
+  n'est jamais repliée d'office. En fin de plan, dix semaines repliées ramènent la
+  page de 5,2 à **2,6 écrans**.
+- L'en-tête reste cliquable pour plier ou déplier à la main, et la dérogation est
+  mémorisée dans `…_ui` — **volontairement hors de Supabase** : plier une semaine est
+  un choix propre à l'appareil qu'on a en main, pas une donnée d'entraînement.
+- Le défilement automatique vers la semaine en cours existait déjà et fonctionne
+  (`scrollIntoView` au chargement) ; c'est la hauteur du contenu qui posait problème,
+  pas le positionnement.
+
+Deux défauts d'en-tête corrigés au passage, tous deux préexistants :
+
+- `--shell-h` déclarait 56 px quand l'en-tête en mesurait 61 — et 83 px sous 400 px,
+  où « 10K CHRISTINE » passait sur deux lignes. La barre de progression collante,
+  calée sur cette variable, était donc **masquée sur 27 px** : le compteur de Christine
+  était amputé. La hauteur est désormais contrainte à `--shell-h` plutôt que déduite
+  du contenu, pour que la variable ne puisse plus mentir.
+- Les onglets sont resserrés sous 720 px : marque et navigation réclamaient 396 px
+  pour 390 disponibles, « Carnet » sortait de l'écran. La cible tactile reste à 36 px.
+
 ### Volume et jalons
 
 - **La jauge compare le réalisé au prévu *à ce stade du plan***, pas au total des

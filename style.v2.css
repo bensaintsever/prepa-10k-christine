@@ -78,11 +78,16 @@ li::marker { color: var(--hot); }
   padding-top: env(safe-area-inset-top);
 }
 
+/* La hauteur est contrainte à --shell-h au lieu d'être déduite du contenu.
+   Sans ça la variable ment — l'en-tête mesurait 61 px pour 56 déclarés — et la
+   barre de progression collante, calée sur --shell-h, passait sous l'en-tête. */
+.shell { height: var(--shell-h); }
 .shell-inner {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
+  height: 100%;
+  padding: 0 16px;
   max-width: 1000px;
   margin: 0 auto;
 }
@@ -277,6 +282,17 @@ tr.hi td.l, tr.hi .pk { color: var(--hot); }
 
 /* ===== TABLES → CARTES SUR MOBILE ===== */
 @media (max-width: 719px) {
+  /* Sous ~400 px, « 10K CHRISTINE » passait sur deux lignes : l'en-tête montait
+     à 83 px alors que --shell-h en déclare 56, et la barre de progression
+     collante se retrouvait masquée sur 27 px. On garde la marque sur une ligne
+     et on la rétrécit plutôt que de laisser la hauteur dériver. */
+  .shell-brand { white-space: nowrap; font-size: 16px; letter-spacing: .05em; }
+
+  /* Onglets resserrés : à 390 px, marque et navigation réclamaient 396 px et
+     « Carnet » sortait de l'écran. La cible tactile reste à 36 px de haut. */
+  .shell-nav { margin-left: auto; gap: 2px; }
+  .shell-tab { padding: 0 11px; font-size: 13.5px; }
+
   .tw { overflow-x: visible; background: transparent; border: none; }
   table { background: transparent; border: none; overflow: visible; }
   table thead { position: absolute; left: -9999px; clip: rect(0 0 0 0); }
@@ -412,7 +428,9 @@ tr.hi td.l, tr.hi .pk { color: var(--hot); }
 /* ===== DESKTOP ENRICHMENT ===== */
 @media (min-width: 720px) {
   body { font-size: 16px; }
-  .shell-inner { padding: 12px 24px; }
+  /* Horizontal seulement : un padding vertical réintroduirait l'écart entre la
+     hauteur réelle de l'en-tête et --shell-h. */
+  .shell-inner { padding: 0 24px; }
   .wrap { padding: 32px 24px 80px; }
   .hero { padding: 48px 40px; margin: 24px 0 32px; }
   .cards { gap: 24px; }

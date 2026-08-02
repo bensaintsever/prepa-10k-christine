@@ -403,6 +403,58 @@
       align-items: stretch;
       background: rgba(0, 0, 0, 0.2);
       border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .wh:hover {
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .wh:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: -2px;
+    }
+
+    /* Chevron : sans lui, rien n'indique que l'en-tête se plie. */
+    .wch {
+      display: flex;
+      align-items: center;
+      padding-right: 14px;
+      color: var(--muted);
+      flex: none;
+    }
+
+    .wch svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.22s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .wk.collapsed .wch svg {
+      transform: rotate(-90deg);
+    }
+
+    /* Semaine repliée : seul l'en-tête subsiste, qui porte déjà le code, le
+       focus et le cumul — c'est un résumé suffisant. */
+    .wk.collapsed label.s {
+      display: none;
+    }
+
+    .wk.collapsed .wh {
+      border-bottom: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .wch svg {
+        transition: none;
+      }
     }
 
     .wc {
@@ -1244,6 +1296,18 @@
 
     function persist() { if (!LS) return; try { LS.setItem(KEY, JSON.stringify(state)); } catch (e) { } }
 
+    /* Préférences d'affichage, volontairement hors de Supabase : plier une
+     * semaine est un choix propre à l'appareil qu'on a en main, pas une donnée
+     * d'entraînement à partager. `open[wi]` ne contient que les dérogations à
+     * la règle automatique. */
+    var UI_KEY = KEY + '_ui';
+    var ui = { open: {} };
+    try {
+      var raw = LS && LS.getItem(UI_KEY);
+      if (raw) { var p = JSON.parse(raw); if (p && p.open) ui.open = p.open; }
+    } catch (e) { ui = { open: {} }; }
+    function persistUi() { if (!LS) return; try { LS.setItem(UI_KEY, JSON.stringify(ui)); } catch (e) { } }
+
     /* ----- accès à un enregistrement de séance ----- */
     function rec(id) { return state[id] || null; }
     function isDone(id) { var r = state[id]; return !!(r && r.done); }
@@ -1299,10 +1363,14 @@
 
       if (isCurrent) { card.classList.add('current'); card.id = 'current-week'; currentWeekEl = card; }
 
-      var h = '<div class="wh"><div class="wc">' + code + '</div><div class="wf">' +
+      var h = '<div class="wh" role="button" tabindex="0" aria-expanded="true"' +
+        ' aria-label="Plier ou déplier la semaine ' + code + '">' +
+        '<div class="wc">' + code + '</div><div class="wf">' +
         foc.toUpperCase() + (tag ? ' <span class="tg">' + tag + '</span>' : '') +
         (isCurrent ? ' <span class="now">En cours</span>' : '') +
-        '</div><div class="wt">' + tot + ' km</div></div>';
+        '</div><div class="wt">' + tot + ' km</div>' +
+        '<div class="wch"><svg viewBox="0 0 16 16"><polyline points="4 6 8 10 12 6"></polyline></svg></div>' +
+        '</div>';
 
       sess.forEach(function (s, si) {
         var day = s[0], sh = s[1], km = s[2], key = s[3];
@@ -1494,12 +1562,24 @@
           wt.title = t.real > 0 ? 'Réalisé ' + fmtKm(t.real) + ' sur ' + t.planned + ' km prévus' : '';
         }
 
-        if (wi < currentWeek) {
-          var labels = wk.querySelectorAll('label.s');
-          var allDone = labels.length > 0;
-          labels.forEach(function (l) { if (!isDone(l.dataset.id)) allDone = false; });
-          wk.classList.toggle('past-done', allDone);
-        }
+        var labels = wk.querySelectorAll('label.s');
+        var allDone = labels.length > 0;
+        labels.forEach(function (l) { if (!isDone(l.dataset.id)) allDone = false; });
+
+        if (wi < currentWeek) wk.classList.toggle('past-done', allDone);
+
+        /* Repli automatique d'une semaine passée et terminée : c'est ce qui
+         * fait la différence sur mobile, où le plan complet représente plus de
+         * cinq écrans de défilement. Une semaine passée mais incomplète reste
+         * ouverte — c'est justement ce qu'il y a à voir. La semaine en cours
+         * n'est jamais repliée d'office. */
+        var autoReplie = allDone && wi < currentWeek;
+        var force = ui.open[wi];
+        var replie = (force === undefined) ? autoReplie : !force;
+
+        wk.classList.toggle('collapsed', replie);
+        var head = wk.querySelector('.wh');
+        if (head) head.setAttribute('aria-expanded', replie ? 'false' : 'true');
       });
 
       paintVolume();
@@ -1621,6 +1701,32 @@
     }
 
     applyToDom();
+
+    /* ===== PLIAGE DES SEMAINES ===== */
+    (function () {
+      function bascule(wk) {
+        var wi = Number(wk.dataset.week);
+        ui.open[wi] = wk.classList.contains('collapsed');   // on inverse l'état courant
+        persistUi();
+        applyToDom();
+      }
+
+      grid.addEventListener('click', function (e) {
+        var head = e.target.closest('.wh');
+        if (!head) return;
+        var wk = head.closest('.wk');
+        if (wk) bascule(wk);
+      });
+
+      grid.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        var head = e.target.closest('.wh');
+        if (!head) return;
+        e.preventDefault();
+        var wk = head.closest('.wk');
+        if (wk) bascule(wk);
+      });
+    })();
 
     /* ===== FEUILLE D'ÉDITION D'UNE SÉANCE ===== */
     (function () {

@@ -70,7 +70,11 @@ self.addEventListener('fetch', event => {
   if (url.origin === self.location.origin) {
     event.respondWith((async () => {
       try {
-        const net = await fetch(req);
+        // `cache: 'no-cache'` force la revalidation : sans ça le fetch du
+        // service worker passe par le cache HTTP du navigateur, et « réseau
+        // d'abord » ne serait vrai que sur le papier — une correction pourrait
+        // attendre l'expiration du max-age de GitHub Pages.
+        const net = await fetch(req, { cache: 'no-cache' });
         if (net && net.ok) {
           const cache = await caches.open(CACHE);
           cache.put(req, net.clone());
