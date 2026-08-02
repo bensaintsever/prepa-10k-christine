@@ -9,14 +9,14 @@
  * Bumper CACHE ne sert qu'à évincer d'anciennes entrées — un fichier retiré
  * de CORE, ou un cache qu'on veut reconstruire de zéro.
  */
-const CACHE = 'tracker10k-v2';
+const CACHE = 'tracker10k-v3';
 
 const CORE = [
   './',
   './index.html',
   './Christine_10K_Tracker.html',
   './Christine_10K_Carnet.html',
-  './style.v2.css',
+  './style.css',
   './sync.js',
   './manifest.json',
   './icon-192.png',

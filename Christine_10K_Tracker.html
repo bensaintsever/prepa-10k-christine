@@ -8,7 +8,7 @@
   <meta name="description"
     content="Tracker 11 semaines — cocher chaque séance, progression automatique. Objectif 59'30.">
   <title>Tracker 10 km · Christine · Octobre Rose 2026</title>
-  <link rel="stylesheet" href="style.v2.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
   <!-- View Transitions API for modern page loads -->
@@ -17,7 +17,9 @@
     /* ===== TRACKER BAR (sticky below shell, glassmorphism) ===== */
     .tracker-bar {
       position: sticky;
-      top: var(--shell-h);
+      /* Même calcul que la hauteur de .shell : sans le safe-area, la barre se
+         calerait 47 px trop haut sur un téléphone à encoche. */
+      top: calc(var(--shell-h) + env(safe-area-inset-top));
       z-index: 40;
       background: rgba(15, 8, 20, 0.6);
       backdrop-filter: blur(12px);
@@ -236,6 +238,25 @@
       .sync-chip {
         padding: 3px 7px;
         font-size: 10.5px;
+      }
+    }
+
+    /* Sous 420 px, compteur + barre + libellé de semaine + pastille réclamaient
+       397 px pour 320 disponibles, et « Synchronisé » sortait de l'écran. Le
+       libellé de semaine est ce qu'on peut retirer sans rien perdre : la carte
+       en cours porte déjà son badge « En cours » et le défilement automatique
+       l'amène à l'écran. */
+    @media (max-width: 419px) {
+      .tracker-week {
+        display: none;
+      }
+
+      .tracker-progress {
+        min-width: 48px;
+      }
+
+      .tracker-bar-inner {
+        gap: 12px;
       }
     }
 

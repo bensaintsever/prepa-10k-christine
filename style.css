@@ -78,10 +78,15 @@ li::marker { color: var(--hot); }
   padding-top: env(safe-area-inset-top);
 }
 
-/* La hauteur est contrainte à --shell-h au lieu d'être déduite du contenu.
-   Sans ça la variable ment — l'en-tête mesurait 61 px pour 56 déclarés — et la
-   barre de progression collante, calée sur --shell-h, passait sous l'en-tête. */
-.shell { height: var(--shell-h); }
+/* La hauteur est contrainte au lieu d'être déduite du contenu : sinon la
+   variable ment — l'en-tête mesurait 61 px pour 56 déclarés — et la barre de
+   progression collante, calée dessus, passait sous l'en-tête.
+
+   L'encoche s'ajoute à cette hauteur, elle ne s'y retranche pas. Avec
+   `box-sizing: border-box`, une hauteur nue absorberait `padding-top` dans les
+   56 px : sur un iPhone à encoche la zone de contenu tombait à 8 px et
+   l'en-tête était écrasé. */
+.shell { height: calc(var(--shell-h) + env(safe-area-inset-top)); }
 .shell-inner {
   display: flex;
   align-items: center;
@@ -282,16 +287,44 @@ tr.hi td.l, tr.hi .pk { color: var(--hot); }
 
 /* ===== TABLES → CARTES SUR MOBILE ===== */
 @media (max-width: 719px) {
-  /* Sous ~400 px, « 10K CHRISTINE » passait sur deux lignes : l'en-tête montait
-     à 83 px alors que --shell-h en déclare 56, et la barre de progression
-     collante se retrouvait masquée sur 27 px. On garde la marque sur une ligne
-     et on la rétrécit plutôt que de laisser la hauteur dériver. */
-  .shell-brand { white-space: nowrap; font-size: 16px; letter-spacing: .05em; }
+  /* En-tête élastique plutôt que calibré à une largeur.
+     Sous ~400 px, « 10K CHRISTINE » passait sur deux lignes : l'en-tête montait
+     à 83 px pour 56 déclarés, et la barre collante se retrouvait masquée sur
+     27 px. La marque tient donc sur une ligne — et c'est elle qui cède la place
+     quand l'écran rétrécit, les onglets restant intégralement atteignables
+     jusqu'à 320 px. */
+  .shell-brand {
+    white-space: nowrap;
+    font-size: 16px;
+    letter-spacing: .05em;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: clip;
+  }
 
-  /* Onglets resserrés : à 390 px, marque et navigation réclamaient 396 px et
-     « Carnet » sortait de l'écran. La cible tactile reste à 36 px de haut. */
-  .shell-nav { margin-left: auto; gap: 2px; }
-  .shell-tab { padding: 0 11px; font-size: 13.5px; }
+  /* Onglets resserrés et insécables : la cible tactile reste à 36 px de haut. */
+  .shell-nav { margin-left: auto; gap: 2px; flex: none; }
+  .shell-tab { padding: 0 11px; font-size: 13.5px; white-space: nowrap; }
+}
+
+/* Entre 360 et 420 px — la plupart des téléphones — la signature complète ne
+   tient qu'en la réduisant encore. On préfère « 10K CHRISTINE » en petit à un
+   « 10K CHRISTI… » tronqué. */
+@media (max-width: 419px) {
+  .shell-brand { font-size: 13.5px; letter-spacing: .03em; }
+  .shell-nav { gap: 1px; }
+  .shell-tab { padding: 0 9px; font-size: 13px; }
+}
+
+/* Sous 360 px (iPhone SE et assimilés), marque et onglets ne tiennent plus
+   ensemble. Plutôt qu'une signature tronquée en « 10K CHI », on l'escamote :
+   les onglets portent la navigation et « Tracker » est déjà mis en évidence. */
+@media (max-width: 359px) {
+  .shell-brand { display: none; }
+  .shell-nav { margin: 0 auto; }
+}
+
+@media (max-width: 719px) {
 
   .tw { overflow-x: visible; background: transparent; border: none; }
   table { background: transparent; border: none; overflow: visible; }
