@@ -344,38 +344,32 @@
       font-weight: 600;
     }
 
-    /* ===== CUES (repères) ===== */
-    .cues {
+    /* ===== REPÈRES (sous-titre du hero) =====
+       Anciennement trois cartes séparées : repliées ici en lignes serrées
+       sous l'objectif, pour rendre l'écran d'accueil au plan, pas aux rappels. */
+    .hero-cues {
+      list-style: none;
+      margin: 14px 0 0;
+      padding: 12px 0 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin: 16px 0;
+      gap: 6px;
     }
 
-    .cue {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--brand);
-      border-radius: var(--radius-sm);
-      padding: 12px 16px;
-      font-size: 14px;
-      transition: transform 0.2s;
+    .hero-cues li {
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--muted);
     }
 
-    .cue:hover {
-      transform: translateX(4px);
-      border-left-color: var(--hot);
-      background: var(--surface-hover);
-    }
-
-    .cue b {
-      display: block;
+    .hero-cues b {
       color: #fff;
+      font-weight: 600;
       font-family: var(--font-disp);
       text-transform: uppercase;
-      letter-spacing: .04em;
-      font-size: 13px;
-      margin-bottom: 2px;
+      letter-spacing: .03em;
+      font-size: 11.5px;
+      margin-right: 4px;
     }
 
     /* ===== RENFO (habitude hebdo, le levier anti-blessure) =====
@@ -1196,7 +1190,12 @@
     <div class="hero">
       <div class="k">Dimanche 4 octobre 2026</div>
       <h1>Objectif 59'30</h1>
-      <p>10 km sous une heure · Octobre Rose · repli 1 h 02</p>
+      <p>10 km sous une heure · repli 1 h 02</p>
+      <ul class="hero-cues">
+        <li><b>Allure</b> 6'00/km, dès la S7</li>
+        <li><b>Cadence</b> ~167 à l'allure — la travailler en EF (métronome) + le contact au sol</li>
+        <li><b>Règle 24 h</b> voûte douloureuse le lendemain = repos</li>
+      </ul>
     </div>
 
     <div class="volume" id="volume" hidden>
@@ -1208,13 +1207,7 @@
       <div class="volume-next" id="vol-next"></div>
     </div>
 
-    <div class="cues">
-      <div class="cue"><b>Allure objectif</b>6'00/km, répétée dès la S7</div>
-      <div class="cue"><b>Cadence</b>déjà ~167 à l'allure — le levier reste la cadence en EF (métronome) + un contact au sol plus court</div>
-      <div class="cue"><b>Règle des 24 h</b>voûte douloureuse le lendemain = repos</div>
-    </div>
-
-    <details class="renfo" open>
+    <details class="renfo">
       <summary>
         <span class="renfo-lbl">Renfo · le levier anti-blessure n°1</span>
         <span class="renfo-chev" aria-hidden="true"></span>
@@ -1308,8 +1301,7 @@
     <div class="foot">
       <div class="leg"><span></span> coche chaque séance faite &nbsp;·&nbsp; <span><em>&nbsp;&nbsp;&nbsp;</em></span>
         séance clé (test, Hyrox, verdict, course)</div>
-      <p style="margin-top:12px;">Les cases sont synchronisées entre tes appareils dès que tu es connectée. Sans réseau,
-        elles sont mémorisées sur place et remontent au retour de la connexion.</p>
+      <p style="margin-top:12px;">Synchronisée entre tes appareils une fois connectée ; sinon mémorisée hors-ligne et remontée au retour du réseau.</p>
       <button class="btn-reset" id="reset">Réinitialiser la progression…</button>
     </div>
   </div>
@@ -2047,9 +2039,12 @@
         'auth-error': 'Connexion impossible'
       };
 
-      // États où le panneau doit rester visible : soit l'utilisateur doit agir,
-      // soit sa tentative a échoué et il lui faut un moyen de recommencer.
-      var PANEL_STATES = { 'signed-out': 1, 'auth-error': 1 };
+      // États où le panneau s'ouvre de lui-même : seulement après un échec, pour
+      // redonner un moyen de recommencer. Déconnecté, le formulaire reste replié
+      // derrière la pastille « Se connecter » — elle se connecte une fois par
+      // appareil, ce n'est pas ce gros bloc qu'il faut lui montrer à chaque
+      // ouverture. Elle le déplie en touchant la pastille (voir le clic ci-après).
+      var PANEL_STATES = { 'auth-error': 1 };
 
       function render(state, detail) {
         if (state === 'disabled') { chip.classList.remove('on'); panel.classList.remove('on'); return; }
@@ -2080,8 +2075,12 @@
         }
       }
 
+      // La pastille déplie/replie le formulaire tant qu'on n'est pas connecté
+      // (ou après un échec) : c'est elle, et non un bloc toujours ouvert, qui
+      // porte l'action de connexion.
       chip.addEventListener('click', function () {
-        if (PANEL_STATES[chip.dataset.state]) panel.classList.add('on');
+        var st = chip.dataset.state;
+        if (st === 'signed-out' || st === 'auth-error') panel.classList.toggle('on');
       });
 
       sendEl.addEventListener('click', function () {
