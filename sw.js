@@ -9,7 +9,7 @@
  * Bumper CACHE ne sert qu'à évincer d'anciennes entrées — un fichier retiré
  * de CORE, ou un cache qu'on veut reconstruire de zéro.
  */
-const CACHE = 'tracker10k-v3';
+const CACHE = 'tracker10k-v4';
 
 const CORE = [
   './',
@@ -93,15 +93,21 @@ self.addEventListener('fetch', event => {
   }
 
   // Ressources tierces figées (le client Supabase du CDN) : cache d'abord,
-  // rafraîchi en arrière-plan.
-  event.respondWith((async () => {
-    const hit = await caches.match(req);
-    const reseau = fetch(req).then(res => {
-      if (res && (res.ok || res.type === 'opaque')) {
-        caches.open(CACHE).then(c => c.put(req, res.clone()));
-      }
-      return res;
-    }).catch(() => null);
-    return hit || (await reseau) || Response.error();
-  })());
+  // rafraîchi en arrière-plan. Volontairement limité à ce seul hôte : les
+  // démos vidéo (YouTube) sont du média volumineux et vivant, servi par de
+  // multiples hôtes avec des requêtes Range — le mettre en cache gonflerait le
+  // stockage, et une réponse opaque rejouée casserait le lecteur. Tout autre
+  // tiers est donc laissé au navigateur (pas de respondWith), sans cache.
+  if (url.hostname === 'cdn.jsdelivr.net') {
+    event.respondWith((async () => {
+      const hit = await caches.match(req);
+      const reseau = fetch(req).then(res => {
+        if (res && (res.ok || res.type === 'opaque')) {
+          caches.open(CACHE).then(c => c.put(req, res.clone()));
+        }
+        return res;
+      }).catch(() => null);
+      return hit || (await reseau) || Response.error();
+    })());
+  }
 });

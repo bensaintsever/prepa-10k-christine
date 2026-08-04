@@ -378,6 +378,79 @@
       margin-bottom: 2px;
     }
 
+    /* ===== RENFO (habitude hebdo, le levier anti-blessure) =====
+       Volontairement hors du modèle de séances datées : le renfo est tenu en
+       fond 3×/sem, pas un jour précis. Un panneau persistant le garde visible
+       toutes les semaines plutôt que noyé dans une seule case cochée. */
+    .renfo {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--brand);
+      border-radius: var(--radius-sm);
+      margin: 16px 0;
+      overflow: hidden;
+    }
+    .renfo > summary {
+      list-style: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 12px 16px;
+    }
+    .renfo > summary::-webkit-details-marker { display: none; }
+    .renfo-lbl {
+      font-family: var(--font-disp); text-transform: uppercase;
+      letter-spacing: .04em; font-size: 13px; color: #fff; font-weight: 700;
+    }
+    .renfo-chev {
+      width: 12px; height: 12px; flex: 0 0 auto;
+      border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+      transform: rotate(45deg); transition: transform 0.2s;
+    }
+    .renfo[open] .renfo-chev { transform: rotate(-135deg); }
+    .renfo-body { padding: 0 16px 16px; }
+    .renfo-intro { font-size: 13.5px; color: var(--muted); margin: 0 0 8px; line-height: 1.5; }
+    .renfo-note { font-size: 12px; color: var(--muted); opacity: .8; margin: 0 0 4px; }
+
+    /* Un exercice = texte + schéma SVG (toujours là, hors-ligne compris) + une
+       démo vidéo repliée, qui ne se charge qu'au dépli (donc coût réseau nul au
+       chargement de l'appli, et rien à télécharger si on ne l'ouvre pas). */
+    .renfo-ex {
+      display: grid; grid-template-columns: 1fr 128px; gap: 12px 14px;
+      align-items: center; padding: 14px 0;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .renfo-ex:first-of-type { border-top: none; padding-top: 4px; }
+    .renfo-ex-txt b { color: #fff; }
+    .renfo-ex-txt em { font-style: normal; color: var(--brand); font-weight: 600; font-size: 12.5px; margin-left: 8px; }
+    .renfo-ex-txt p { margin: 6px 0 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .renfo-svg {
+      width: 128px; height: auto; align-self: center; justify-self: end;
+      background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: 6px;
+    }
+    .renfo-vid { grid-column: 1 / -1; margin-top: 2px; }
+    .renfo-vid > summary {
+      list-style: none; cursor: pointer; display: inline-flex; align-items: center;
+      gap: 6px; font-size: 13px; color: var(--hot); font-weight: 600; padding: 4px 0;
+    }
+    .renfo-vid > summary::-webkit-details-marker { display: none; }
+    .renfo-vid-frame {
+      position: relative; padding-top: 56.25%; margin: 8px 0 6px;
+      border-radius: var(--radius-sm); overflow: hidden; background: #000;
+    }
+    .renfo-vid-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .renfo-vid-link { font-size: 12.5px; color: var(--muted); text-decoration: none; }
+    .renfo-vid-link:hover { color: var(--hot); text-decoration: underline; }
+    @media (max-width: 520px) {
+      .renfo-ex { grid-template-columns: 1fr; }
+      .renfo-svg { width: 100%; max-width: 220px; justify-self: start; }
+    }
+    .renfo-warn {
+      font-size: 12.5px; color: var(--muted); margin: 0 0 12px; line-height: 1.5;
+      padding: 10px 12px; border-radius: var(--radius-sm);
+      background: rgba(214,0,108,0.08); border: 1px solid var(--border);
+    }
+    .renfo-link { font-size: 13px; color: var(--hot); font-weight: 600; text-decoration: none; }
+    .renfo-link:hover { text-decoration: underline; }
+
     /* ===== BENTO WEEK GRID ===== */
     .grid {
       display: grid;
@@ -1137,9 +1210,98 @@
 
     <div class="cues">
       <div class="cue"><b>Allure objectif</b>6'00/km, répétée dès la S7</div>
-      <div class="cue"><b>Cadence</b>160 → 171 pas/min (métronome en EF)</div>
+      <div class="cue"><b>Cadence</b>déjà ~167 à l'allure — le levier reste la cadence en EF (métronome) + un contact au sol plus court</div>
       <div class="cue"><b>Règle des 24 h</b>voûte douloureuse le lendemain = repos</div>
     </div>
+
+    <details class="renfo" open>
+      <summary>
+        <span class="renfo-lbl">Renfo · le levier anti-blessure n°1</span>
+        <span class="renfo-chev" aria-hidden="true"></span>
+      </summary>
+      <div class="renfo-body">
+        <p class="renfo-intro">À tenir en fond, toutes les semaines. C'est ce qui traite le TFL et l'aponévrose — plus déterminant que n'importe quelle séance de course.</p>
+        <p class="renfo-note">Les schémas restent visibles hors-ligne ; les démos vidéo nécessitent le réseau.</p>
+
+        <div class="renfo-ex">
+          <div class="renfo-ex-txt">
+            <b>Abducteurs de hanche</b><em>3×/sem</em>
+            <p>Allongée sur le côté, jambe du dessus levée bien droite — bassin stable, sans rouler en arrière. C'est le facteur n°1 du TFL — en période de TFL actif, passe-les en quotidien.</p>
+          </div>
+          <svg class="renfo-svg" viewBox="0 0 200 120" role="img" aria-label="Abduction de hanche allongée sur le côté, jambe du dessus levée, bassin stable">
+            <line x1="12" y1="104" x2="188" y2="104" stroke="#6b5b78" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="34" cy="90" r="8" fill="#b9aec2"/>
+            <path d="M42 93 L108 98" stroke="#b9aec2" stroke-width="4" stroke-linecap="round"/>
+            <path d="M62 95 L55 104" stroke="#b9aec2" stroke-width="3" stroke-linecap="round"/>
+            <path d="M108 98 L140 102 L126 95" fill="none" stroke="#b9aec2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M108 95 L170 74" stroke="#ff3d7f" stroke-width="4" stroke-linecap="round"/>
+            <path d="M170 74 L179 77" stroke="#ff3d7f" stroke-width="3" stroke-linecap="round"/>
+            <path d="M150 88 L150 66" stroke="#ff3d7f" stroke-width="2"/>
+            <path d="M145 72 L150 63 L155 72" fill="none" stroke="#ff3d7f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <details class="renfo-vid">
+            <summary>▶ Voir la démo vidéo</summary>
+            <div class="renfo-vid-frame">
+              <iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/9dJVwNzbH7s" title="Abduction de hanche allongée — démonstration" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            <a class="renfo-vid-link" href="https://www.youtube.com/watch?v=9dJVwNzbH7s" target="_blank" rel="noopener">Ouvrir sur YouTube ↗</a>
+          </details>
+        </div>
+
+        <div class="renfo-ex">
+          <div class="renfo-ex-txt">
+            <b>Excentrique de mollet</b><em>3×12, 1j/2</em>
+            <p>Sur une marche, orteils relevés sur une serviette roulée : monte sur la pointe (3 s), pause (2 s), redescends lentement (3 s). Ce sont les orteils en extension qui chargent l'aponévrose.</p>
+          </div>
+          <svg class="renfo-svg" viewBox="0 0 200 120" role="img" aria-label="Montée sur pointe unipodale, orteils relevés sur une serviette au bord d'une marche">
+            <path d="M22 106 L118 106 L118 78" fill="none" stroke="#6b5b78" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle cx="96" cy="30" r="8" fill="#b9aec2"/>
+            <path d="M96 38 L96 92" stroke="#b9aec2" stroke-width="4" stroke-linecap="round"/>
+            <path d="M96 60 L80 74" stroke="#b9aec2" stroke-width="3" stroke-linecap="round"/>
+            <path d="M96 92 L116 86" stroke="#ff3d7f" stroke-width="4" stroke-linecap="round"/>
+            <path d="M116 86 L127 79" stroke="#ff3d7f" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="120" cy="83" r="4.5" fill="none" stroke="#ff3d7f" stroke-width="2"/>
+            <path d="M156 52 L156 88" stroke="#ff3d7f" stroke-width="2"/>
+            <path d="M151 58 L156 49 L161 58" fill="none" stroke="#ff3d7f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M151 82 L156 91 L161 82" fill="none" stroke="#ff3d7f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <details class="renfo-vid">
+            <summary>▶ Voir la démo vidéo</summary>
+            <div class="renfo-vid-frame">
+              <iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/D2cr36sDFpk" title="Protocole Rathleff aponévrose plantaire — démonstration" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            <a class="renfo-vid-link" href="https://www.youtube.com/watch?v=D2cr36sDFpk" target="_blank" rel="noopener">Ouvrir sur YouTube ↗</a>
+          </details>
+        </div>
+
+        <div class="renfo-ex">
+          <div class="renfo-ex-txt">
+            <b>Contrôle rotationnel de hanche</b><em>2–3×/sem</em>
+            <p>Soulevé de terre sur une jambe : penche le tronc en avant en gardant le bassin de niveau, contrôle la rotation de la hanche d'appui (rotation interne à l'élastique). Cible l'ouverture de pas droite.</p>
+          </div>
+          <svg class="renfo-svg" viewBox="0 0 200 120" role="img" aria-label="Soulevé de terre unipodal avec contrôle de la rotation de la hanche d'appui">
+            <line x1="12" y1="107" x2="188" y2="107" stroke="#6b5b78" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="32" cy="46" r="8" fill="#b9aec2"/>
+            <path d="M40 48 L92 60" stroke="#b9aec2" stroke-width="4" stroke-linecap="round"/>
+            <path d="M92 60 L96 107" stroke="#b9aec2" stroke-width="4" stroke-linecap="round"/>
+            <path d="M92 60 L150 44" stroke="#b9aec2" stroke-width="4" stroke-linecap="round"/>
+            <path d="M56 51 L58 72" stroke="#b9aec2" stroke-width="3" stroke-linecap="round"/>
+            <path d="M110 84 A14 14 0 1 1 96 82" fill="none" stroke="#ff3d7f" stroke-width="2"/>
+            <path d="M100 76 L96 83 L103 85" fill="none" stroke="#ff3d7f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <details class="renfo-vid">
+            <summary>▶ Voir la démo vidéo</summary>
+            <div class="renfo-vid-frame">
+              <iframe loading="lazy" src="https://www.youtube-nocookie.com/embed/YqdseIe3m0U" title="Soulevé de terre unipodal, rotation de hanche — démonstration" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            <a class="renfo-vid-link" href="https://www.youtube.com/watch?v=YqdseIe3m0U" target="_blank" rel="noopener">Ouvrir sur YouTube ↗</a>
+          </details>
+        </div>
+
+        <p class="renfo-warn">Hyperlaxité : ne pas étirer davantage — le problème est le contrôle, pas l'amplitude. Ni rouleau ni étirement passif sur la bandelette.</p>
+        <a class="renfo-link" href="Christine_10K_Carnet.html#s4">Le détail dans le carnet →</a>
+      </div>
+    </details>
 
     <div class="grid" id="grid"></div>
 
@@ -1198,22 +1360,22 @@
         [["Mar. 21", "EF 4 km ✓", "4", 1], ["Jeu. 23", "TEST 5 km ✓ · 30'40", "5", 1], ["Dim.", "EF 6 km facile", "6", 0]]],
       ["S1", "27 juil.–2 août", "20", "Bloc 1 · Base & cadence", "",
         [["Mar.", "VMA 8 × (30/30)", "6", 0], ["Jeu.", "EF 6 km + métronome", "6", 0], ["Dim.", "Sortie longue 8 km", "8", 0]]],
-      ["S2", "3–9 août", "22", "Passage à 4 sorties", "",
-        [["Mar.", "VMA 10 × (30/30)", "6", 0], ["Jeu.", "EF 5 km + 8 accél.", "5", 0], ["Ven.", "EF 4 km facile", "4", 0], ["Dim.", "Sortie longue 7 km", "7", 0]]],
-      ["S3", "10–16 août", "25", "Bloc 1 · Volume", "",
-        [["Mar.", "VMA 8 × 400 m", "7", 0], ["Jeu.", "EF 5 km + éduc.", "5", 0], ["Ven.", "EF 4 km facile", "4", 0], ["Dim.", "Sortie longue 9 km", "9", 0]]],
+      ["S2", "3–9 août", "18", "Prudence TFL · tout en EF plat", "TFL",
+        [["Mar.", "EF 5 km plat + métronome", "5", 0], ["Jeu.", "EF 4 km facile", "4", 0], ["Ven.", "EF 4 km facile", "4", 0], ["Dim.", "EF 5 km plat", "5", 0]]],
+      ["S3", "10–16 août", "24", "Bloc 1 · Volume · intro seuil", "",
+        [["Mar.", "Seuil 3 × 6' à 6'10 (si sans douleur)", "7", 0], ["Jeu.", "EF 5 km + éduc.", "5", 0], ["Ven.", "EF 4 km facile", "4", 0], ["Dim.", "Sortie longue 8 km", "8", 0]]],
       ["S4", "17–23 août", "19", "Relâche + recalibration", "",
         [["Mar.", "EF 6 km + 6 accél.", "6", 0], ["Jeu.", "EF 5 km facile", "5", 0], ["Sam.", "TEST 5 km chrono", "8", 1]]],
       ["S5", "24–30 août", "24", "Bloc 2 · Seuil · reprise Hyrox", "Hyrox",
         [["Mar.", "Seuil 2 × 8'", "7", 0], ["Jeu.", "HYROX (allégé)", "", 1], ["Sam.", "EF 6 km récup.", "6", 0], ["Dim.", "Sortie longue 11 km", "11", 0]]],
       ["S6", "31 août–6 sept.", "15", "Déplacement 3–6 · allégée", "",
         [["Mar. 1", "Seuil 3 × 8' (avant départ)", "8", 0], ["Jeu. 3", "EF 4 km (si possible)", "4", 0], ["Dim. 6", "EF 3 km (si possible)", "3", 0]]],
-      ["S7", "7–13 sept.", "27", "Pic · point de contrôle mardi", "Hyrox",
-        [["Mar. 8", "4 × 1000 m à 6'00 · relevé", "9", 1], ["Jeu. 10", "HYROX", "", 1], ["Sam.", "EF 5 km facile", "5", 0], ["Dim.", "Sortie longue 13 km", "13", 0]]],
+      ["S7", "7–13 sept.", "25", "Pic · point de contrôle mardi", "Hyrox",
+        [["Mar. 8", "4 × 1000 m à 6'00 · relevé", "9", 1], ["Jeu. 10", "HYROX (allégé)", "", 1], ["Sam.", "EF 5 km facile", "5", 0], ["Dim.", "Sortie longue 11 km", "11", 0]]],
       ["S8", "14–20 sept.", "15", "Hyrox Doubles sam. 19 · affûtage", "Événement",
         [["Mar. 15", "6 × 500 m à 6'00", "7", 0], ["Jeu. 17", "EF 4 km + 4 × 100 m", "4", 0], ["Ven. 18", "Repos", "", 0], ["Sam. 19", "HYROX DOUBLES", "4", 1], ["Dim. 20", "Repos", "", 0]]],
-      ["S9", "21–27 sept.", "26", "Verdict jeudi · plus de Hyrox", "",
-        [["Mar. 22", "EF 5 km récup.", "5", 0], ["Jeu. 24", "VERDICT 5 × 1000 m à 6'00", "9", 1], ["Sam. 26", "EF 4 km facile", "4", 0], ["Dim. 27", "Sortie longue 8 km", "8", 0]]],
+      ["S9", "21–27 sept.", "24", "Verdict jeudi · plus de Hyrox", "",
+        [["Mar. 22", "EF 5 km récup.", "5", 0], ["Jeu. 24", "VERDICT 5 × 1000 m à 6'00", "9", 1], ["Sam. 26", "EF 4 km facile", "4", 0], ["Dim. 27", "EF 6 km relâché (affûtage)", "6", 0]]],
       ["S10", "28 sept.–4 oct.", "15", "Affûtage → course", "Jour J",
         [["Mar.", "5 × 500 m à 6'00", "7", 0], ["Jeu.", "EF 4 km + 6 accél.", "4", 0], ["Ven.", "Repos", "", 0], ["Sam.", "EF 4 km + gammes", "4", 0], ["Dim. 4", "COURSE 10 KM", "10", 1]]]
     ];

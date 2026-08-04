@@ -263,16 +263,94 @@ node tests/sync.test.js
 
 ## Idée directrice
 
-La cadence est le fil rouge : passer les jambes de 160 vers ~171 pas/min en gardant la longueur
-de foulée donne 6'00/km (59'59 sur 10 km), et c'est le même réglage qui protège l'aponévrose
-plantaire et la bandelette (TFL, depuis mai 2026). Détails dans le carnet.
+La cadence est le fil rouge, mais **en endurance** : au test du 23/07 elle est déjà à ~167 pas/min
+à l'allure de course, donc la mécanique est presque en place à vitesse. Le levier qui reste est la
+cadence en EF (160 le 3 juillet), le temps de contact au sol et la base aérobie (dérive de FC à
+5,5 %) — le tout en gardant la longueur de foulée, ce qui vise 6'00/km (59'59 sur 10 km) et protège
+au passage l'aponévrose plantaire et la bandelette (TFL, depuis mai 2026). Détails dans le carnet.
+
+## Ajustements coaching (3 août 2026)
+
+Revue du plan sous l'angle coaching. Six ajustements, appliqués au tracker (`W`), au carnet et à
+l'accueil. Le fond du plan (cadence-levier, sorties longues lentes, repli 1h02, points de contrôle)
+n'a pas bougé — ce sont des corrections de dosage et de séquençage.
+
+- **Renfo rendu visible.** Le carnet listait les trois piliers anti-blessure (abducteurs de hanche
+  3×/sem, excentrique de mollet Rathleff 1j/2, contrôle rotationnel de hanche 2–3×/sem), mais l'outil
+  suivi au quotidien — le tracker — n'en montrait rien. Ajout d'un **panneau renfo persistant** en tête
+  du tracker (`<details class="renfo">`, ouvert par défaut) et d'une **carte « Le renfo »** sur l'accueil,
+  toutes deux reliées au carnet §Muscu. Choix assumé du rappel permanent plutôt que de 11 cases datées :
+  le renfo est une habitude 3×/sem, pas une séance à date ; le glisser dans `W` casserait le modèle de
+  dates (`dates.test.js` exige une date valide et un ordre chronologique par séance).
+- **S7, semaine à risque, désamorcée.** C'était le pic running (27 km) empilé sur un Hyrox le jeudi,
+  pendant la montée de cadence — le scénario n°1 de rallumage du TFL. Hyrox passé en « allégé » et
+  sortie longue ramenée 13 → 11 km (semaine 27 → 25 km). La séance-clé 4×1000 est conservée.
+- **Intro du seuil avancée (S2–S3).** Un 10 km sous 1 h est un effort de seuil, pas de VMA. Le
+  8×400 m de la S3 (haute charge d'impact) devient **Seuil 3×6' à 6'10**, et la VMA de la S2 est
+  allégée (10 → 8 × 30/30). Le seuil apparaît deux semaines plus tôt qu'avant.
+- **Affûtage S9 allégé.** La sortie longue du dimanche 27 (8 km, à 7 jours de la course) descend à
+  **6 km EF relâché** (semaine 26 → 24 km). Le verdict 5×1000 du jeudi est conservé.
+- **Message cadence recalé** (carnet + cue du tracker) : à l'allure elle est déjà à ~167 ; le levier
+  affiché est désormais la cadence en EF + le contact au sol + la base aérobie.
+
+Ce qui n'a **pas** été touché, volontairement : le volume de pic (25 km) reste bas pour un sous-1h,
+mais c'est une concession assumée au risque de blessure et au Hyrox en cross-training.
+
+### Renfo : schémas SVG + démos vidéo
+
+Le panneau renfo du tracker montre désormais, pour chacun des trois exercices, un **schéma SVG**
+et une **démo vidéo** repliée.
+
+- **Deux médias, deux rôles.** Le schéma est en SVG inline : il ne dépend d'aucun réseau ni fichier
+  externe, donc il reste visible hors-ligne — cohérent avec l'objectif de la PWA. La vidéo, elle,
+  a besoin du réseau par nature ; elle est donc dans un `<details>` **replié par défaut** et son
+  `<iframe loading="lazy">` ne se charge qu'au dépli. Coût réseau au chargement de l'appli : nul.
+- **Vie privée.** Les vidéos passent par `youtube-nocookie.com`, et chaque bloc porte un lien
+  « Ouvrir sur YouTube ↗ » de secours si un jour l'intégration était bloquée.
+- **Le service worker ne met plus en cache le tiers non-CDN.** La branche « ressources tierces »
+  de `sw.js` s'appliquait à *tout* hôte externe en cache-first, réponses opaques comprises. Laissée
+  telle quelle, elle aurait tenté de mettre en cache le lecteur YouTube et les segments vidéo
+  (multiples hôtes, requêtes Range) — stockage gonflé, et une réponse opaque rejouée casse le
+  lecteur. Elle est désormais **limitée à `cdn.jsdelivr.net`** (le client Supabase, seule ressource
+  tierce figée) ; tout autre tiers est laissé au navigateur, sans cache. `CACHE` passé à `v4`.
+- **Sources des démos** (choisies pour coller à l'exercice, à valider avec sa kiné) :
+  abducteurs → *Elite Performance Institute* ; mollet Rathleff → *Bay Podiatry* ;
+  contrôle rotationnel → *Dr. Beau Beard*.
+
+## Recalage sur données réelles (4 août 2026)
+
+Les ajustements du 3 août avaient été posés à l'aveugle. Lecture de la table `sessions` : la S1
+n'a pas été réalisée comme prévu, et **pour une raison qui change le dosage**.
+
+| Séance | Prévu | Réalisé | Note saisie |
+|---|---|---|---|
+| S1 · Jeu. EF 6 + métronome | 6 km | **4 km** | « Douleur TFL » |
+| S1 · Dim. Sortie longue 8 | 8 km | **4,5 km** | « Suite douleur TFL, test » |
+
+Soit **S1 ≈ 14,5 / 20 km** — mais le sujet n'est pas le volume manquant, c'est le **TFL rallumé
+sur deux séances d'affilée**, avec une sortie longue coupée de moitié. C'est le risque flagué sur la
+rampe de début (+33 % en S1), confirmé par les faits. Et ça déclenche le protocole du carnet :
+« 1re fois → deux séances suivantes en EF courte et plate » — ces deux séances sont Mar. et Jeu.
+de la S2.
+
+Or la S2 faisait l'inverse (22 km, 4ᵉ séance, VMA le mardi). Recalage, TFL déclaré « calmé depuis
+dimanche » :
+
+- **S2 → semaine douce, 18 km, tout EF plat.** Mardi VMA → EF plat (métronome conservé, c'est du
+  travail de cadence à faible impact) ; jeudi sans les accélérations ; dimanche « longue » → EF 5 km
+  plat. Le vrai ajustement de volume est **à l'avant**, pas au pic.
+- **S3 plafonnée à 24 km** (sortie longue 9 → 8) et seuil du mardi conditionné à l'absence de
+  douleur — application de la règle « plafond ~24 km tant que le TFL n'est pas éteint ~10 jours ».
+- **Abducteurs passés en quotidien** en période de TFL actif (note ajoutée au panneau renfo).
+- Cap 59'30 **maintenu sous surveillance** ; réévaluation au **test S4 du 22 août**. Si récidive,
+  bascule vers l'objectif repli 1h02, déjà prévu comme protocole dans le carnet.
 
 ## À faire ensuite
 
-- [ ] Reformuler la cible « cadence » : le test du 23/07 montre 167 pas/min à l'allure de course,
-      donc la mécanique est déjà presque en place à vitesse, le vrai levier restant est la
-      cadence *en endurance* + le temps de contact au sol + la base aérobie.
-- [ ] Test S4 (22 août) → mettre à jour le journal et les allures.
+- [x] Reformuler la cible « cadence » — fait le 3 août 2026 (voir « Ajustements coaching »).
+- [ ] Test S4 (22 août) → mettre à jour le journal et les allures, et **trancher 59'30 vs 1h02**
+      selon l'état du TFL.
+- [ ] Si le TFL se calme durablement, **rebâtir le volume S3→S5** vers la trajectoire d'origine.
 - [ ] Finir la mise en route Supabase : migration + policies + `CONFIG` + Redirect URL
       (voir « Synchronisation entre appareils »), puis vérifier un aller-retour réel
       entre deux appareils avant de donner le lien à Christine.
