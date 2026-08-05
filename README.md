@@ -336,18 +336,34 @@ de la S2.
 Or la S2 faisait l'inverse (22 km, 4ᵉ séance, VMA le mardi). Recalage, TFL déclaré « calmé depuis
 dimanche » :
 
-- **S2 → semaine douce, 18 km, tout EF plat.** Mardi VMA → EF plat (métronome conservé, c'est du
-  travail de cadence à faible impact) ; jeudi sans les accélérations ; dimanche « longue » → EF 5 km
-  plat. Le vrai ajustement de volume est **à l'avant**, pas au pic.
+- **S2 → semaine douce, 18 km, tout EF plat.** Mardi VMA → EF plat ; jeudi sans les accélérations ;
+  dimanche « longue » → EF 5 km plat. Le vrai ajustement de volume est **à l'avant**, pas au pic.
 - **S3 plafonnée à 24 km** (sortie longue 9 → 8) et seuil du mardi conditionné à l'absence de
   douleur — application de la règle « plafond ~24 km tant que le TFL n'est pas éteint ~10 jours ».
 - **Abducteurs passés en quotidien** en période de TFL actif (note ajoutée au panneau renfo).
 - Cap 59'30 **maintenu sous surveillance** ; réévaluation au **test S4 du 22 août**. Si récidive,
   bascule vers l'objectif repli 1h02, déjà prévu comme protocole dans le carnet.
 
+### Retour de séance : fin du métronome en footing (5 août 2026)
+
+La séance de cadence du mardi 4 août (S2) s'est très mal passée : cadence bloquée à 160 malgré le
+métronome, allure 8'00/km, cardio sorti de la zone 2, vécu comme pénible et démoralisant.
+
+C'est un résultat **attendu, pas un échec** — et le problème vient de la consigne, pas de Christine.
+La cadence est couplée à la vitesse : à 8'00/km, 160 pas/min est normal ; viser 170 impose des pas
+de ~73 cm, une foulée hachée, et la sur-concentration sur le rythme crispe et fait monter le cardio.
+Ses données le disaient déjà — 167 à l'allure de course au 23 juillet.
+
+Décision : **plus de métronome en footing.** La cadence se travaille désormais là où elle est
+naturelle — lignes droites (6–8 × 20 s) et allure spécifique/seuil — et l'EF se court à la sensation
+et au cardio (zone 2, quitte à ralentir ou marcher), pour construire la base aérobie, qui est le vrai
+frein. Recadrage passé dans le carnet (lead, §01, §03, §05, les « 3 choses ») et le tracker (cue
+cadence, libellés S2).
+
 ## À faire ensuite
 
-- [x] Reformuler la cible « cadence » — fait le 3 août 2026 (voir « Ajustements coaching »).
+- [x] Reformuler la cible « cadence » — fait, puis **corrigé le 5 août** : fin du métronome en
+      footing après une séance ratée (voir « Retour de séance » ci-dessus).
 - [ ] Test S4 (22 août) → mettre à jour le journal et les allures, et **trancher 59'30 vs 1h02**
       selon l'état du TFL.
 - [ ] Si le TFL se calme durablement, **rebâtir le volume S3→S5** vers la trajectoire d'origine.
