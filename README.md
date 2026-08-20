@@ -8,9 +8,10 @@ Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et de
 | Fichier | Rôle |
 |---|---|
 | `Christine_10K_Tracker.html` | Le **tracker** : 11 semaines à cocher (cases mémorisées dans le navigateur). |
-| `Christine_10K_Carnet.html` | Le **carnet** : le pourquoi du plan, allures, muscu, foulée, sécurité. |
-| `Christine_10K_Tracker.pdf` | Tracker imprimable (1 page, à afficher). |
-| `Christine_10K_Carnet.pdf` | Carnet imprimable (4 pages). |
+| `Christine_10K_Carnet.html` | Le **carnet** : le pourquoi du plan, allures, renfo, foulée, sécurité. |
+| `Christine_Hyrox_Fevrier.html` | Le **bloc Février** : 18 semaines vers le Hyrox Doubles du 7 février 2027. |
+| `Christine_10K_Tracker.pdf` | Tracker imprimable — **périmé depuis le recalage du 20 août**, à regénérer. |
+| `Christine_10K_Carnet.pdf` | Carnet imprimable — **périmé depuis le recalage du 20 août**, à regénérer. |
 | `index.html` | Page d'accueil (liens vers tracker + carnet), sert de landing GitHub Pages. |
 | `sync.js` | Synchronisation Supabase du tracker (hors-ligne d'abord). |
 | `sw.js` | Service worker : c'est lui qui rend la PWA réellement utilisable hors ligne. |
@@ -22,6 +23,7 @@ Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et de
 | `tests/state.test.js` | Tests de la migration d'état et de la saisie (distance, report). |
 | `data/2026-07-23_5k.tcx` | Trace du test 5 km du 23 juillet. |
 | `data/zebris_bilan_2025-08-20.pdf` | Bilan podologique (analyse de pression, Posturosports). |
+| `data/Google Health …/` | Export Google Health complet du 20 août 2026 (2,2 Go, hors dépôt). |
 
 ## Consulter
 
@@ -257,7 +259,9 @@ node tests/sync.test.js
 |---|---|---|---|---|
 | 2026-07-03 | 10 km | 65'00 (6'32/km) | 160 | Allure très régulière. FC moy. 167, dérive 162→171. |
 | 2026-07-23 | 5 km (test S0) | 30'40 (6'08/km), fin à 5'48/km | 167 | FC 164. Contact 314 ms, oscillation 9,9 cm, foulée 99 cm. Déjà plus rapide que l'allure objectif. |
-| 2026-08-22 | 5 km (test S4) | … | … | Prochain jalon : recaler les allures. |
+| 2026-08-14 | Seuil 3 × 6' (S3) | **5'42/km**, dérive −3 % | 170–172 | FC 152→163, foulée 104 cm. Le meilleur relevé du bloc — sans métronome. |
+| 2026-08-16 | Sortie longue 8 km | 7'25/km | 157 | FC 138, dérive 4,3 % (contre 9,3 % le 21 juil.). |
+| 2026-08-22 | 5 km (test S4) | … | … | Prochain jalon : trancher 59'30 vs 1h02. |
 | 2026-09-08 | 4 × 1000 m à 6'00 (S7) | … | … | Métriques à l'allure de course, jambes fraîches. |
 | 2026-09-24 | 5 × 1000 m à 6'00 (S9) | … | … | Séance verdict : 5/5 = sous-1h validé. |
 
@@ -360,13 +364,140 @@ et au cardio (zone 2, quitte à ralentir ou marcher), pour construire la base a�
 frein. Recadrage passé dans le carnet (lead, §01, §03, §05, les « 3 choses ») et le tracker (cue
 cadence, libellés S2).
 
+## Analyse de l'export montre et recalage complet (20 août 2026)
+
+Export Google Health complet déposé dans `data/` — 3 380 fichiers, 21 courses GPS depuis le
+21 juillet. C'est le premier recalage fait sur des données de séance réelles plutôt que sur
+la saisie du tracker. Trois constats ont changé le plan.
+
+**La thèse du 5 août est validée par les faits.** Le 14 août, séance de seuil de la S3 faite
+le vendredi : trois blocs de six minutes à **5'42/km**, cadence **170-172 spontanée**, foulée
+104 cm, FC de 152 à 163, dérive **négative**. Plus rapide que l'allure objectif, sans
+métronome. La cadence n'est plus un chantier : elle vient avec la vitesse, comme annoncé.
+
+**Mais la base aérobie ne progresse pas.** L'allure EF à FC constante est plate du 21 juillet
+au 18 août (7'20 à 7'35/km pour FC 132-138), la FC de repos est passée de 53 à 58, le VO2max
+n'a gagné que 0,6. Le plan avait identifié le bon facteur limitant et construit un dosage qui
+ne le traitait pas — 58 minutes de seuil sur onze semaines, soit cinq par semaine, et aucune
+surcharge progressive après la mi-août.
+
+**Deux indicateurs sont retirés.** Le contact au sol et l'oscillation verticale ne varient pas :
+sur la séance du 14 août, qui va de 7'40 à 5'20/km, la montre renvoie 311-315 ms (σ = 9,6 ms)
+et 9,8-10,0 cm (σ = 0,3 cm). Un vrai temps de contact varierait de 40 à 50 ms entre ces
+allures. Le capteur ne discrimine pas — les suivre, c'était suivre du bruit. Cadence
+(σ = 12,9) et longueur de foulée (σ = 14,4) restent exploitables.
+
+Correction de comptage au passage : la S1 vaut **10,0 km réels** au GPS, pas 14,5. Le mardi
+coché sans distance ne valait pas 6 km mais 1,5. Le trou était deux fois plus profond
+qu'estimé le 4 août.
+
+### Le plan S4→S10, recalé
+
+| | Avant | Après |
+|---|---|---|
+| Volume S4→S10 | 137 km | 160 km |
+| Vrai seuil | 40 min | 64 min |
+| Rampes > +20 % | 3 (dont +67 %) | 1 |
+| Jours de course / sem. | 3,3 | 4,0 |
+
+- **La S6 est la correction structurelle.** Elle passe de 15 à 25 km : un déplacement ne
+  justifie pas de décrocher, trois sorties de 35 à 60 min se font partout. C'est ce qui fait
+  tomber la rampe S6→S7 de **+67 % à +12 %** — la rampe qui reproduisait à l'identique le
+  scénario ayant rallumé le TFL fin juillet (+33 %).
+- **Prescrire en minutes, plus en kilomètres.** À 7'40/km, « EF 4 km » vaut 31 minutes, sous
+  la dose utile. Quatre séances du plan étaient dans ce cas.
+- **La longue finit à l'allure** — 15 min à 6'00 en S7, 20 min en S9. C'était la séance
+  absente : la seule qui pose la vraie question du 10 km, tenir l'allure sur des jambes
+  fatiguées.
+- **Le « verdict » 5 × 1000 disparaît en tant que test**, remplacé par 4 × 1200 à 5'57. La
+  charge reste, l'enjeu part : un test all-out à dix jours de la course coûte trois à cinq
+  jours et ne change rien à ce qu'on ferait ensuite.
+- **Le Hyrox Doubles du 19 septembre est conservé** et devient la séance d'allure de la S8.
+  Il ne représente que 4 km de course (8 × 500 m) avec les stations partagées, Benjamin
+  prenant le début et la fin de chacune — pas une compétition à cinq jours de récupération.
+
+Règle de décision posée pour le test du 22 août (Riegel, exposant 1,06) : **5 km ≤ 28'30**
+→ cap 59'30 maintenu ; **28'30–29'45** → viser 1h00, repli assumé ; **> 30'00** → bascule
+1h02 et allures spécifiques recalées à 6'12.
+
+### Le renfo entre dans le plan
+
+Elle fait trois séances par semaine — **jambes**, **renfo running**, **bras** — et le plan
+n'en voyait aucune. Le contenu était bon ; ce qui manquait, c'est que rien ne garantissait
+qu'elles tombent au bon endroit.
+
+**Revirement assumé sur une décision du 3 août.** Il avait été écrit que le renfo n'entrerait
+pas dans `W` parce que « c'est une habitude 3×/sem, pas une séance à date ». C'est faux depuis
+qu'on sait qu'il s'agit de trois séances distinctes à jour fixe. Elles sont donc dans `W`,
+avec une distance vide — le modèle le supportait déjà, les entrées Hyrox fonctionnent ainsi.
+
+- **Jambes le mardi après-midi.** Elle court vers 5 h et soulève vers 15 h : dix heures
+  d'écart, la fenêtre qui annule l'interférence force/endurance. Empiler le dur au même jour
+  laisse les autres réellement faciles. Jambes le lundi et seuil le mardi ferait l'inverse.
+- **Renfo running le mercredi.** Faible charge — c'est la prévention (abducteurs, Rathleff,
+  contrôle rotationnel), elle sert de récupération active le lendemain des jambes.
+- **Bras le samedi.** Ne charge pas les jambes, donc ne coûte rien à la longue du dimanche,
+  et tombe 48 h après le WOD Hyrox du jeudi qui charge déjà le haut du corps.
+- Séance jambes à garder **lourde et courte** (3 à 6 répétitions) : c'est ce format qui
+  achète l'économie de course, seul levier de performance quand le kilométrage est plafonné.
+  Dernière séance lourde le 22 septembre (J−12), puis activation légère.
+
+### Contraintes techniques rencontrées
+
+- **Les totaux de semaine doivent être des entiers.** `card.dataset.planned` est relu par
+  `Number()` : « 24,5 » donne `NaN`, et la jauge tombe à zéro sans rien signaler. Les
+  distances de séance acceptent les décimales (`fmtKm` les rend « 7,5 km »), pas l'en-tête.
+- **Les index de séance ne doivent pas bouger rétroactivement.** `session_id` vaut
+  `"semaine_index"` : réordonner une semaine déjà cochée ferait pointer les enregistrements
+  Supabase sur d'autres séances. La S4 garde donc ses trois lignes dans le même ordre, seuls
+  les libellés changent, et le renfo n'entre qu'à partir de la S5.
+- Conséquence à connaître : **`4_1` est coché alors que c'est `4_0` qui a été fait**
+  (les 5 km du mardi 18). Une case à décocher, une à cocher.
+- `CACHE` passé à `v5` pour la nouvelle page.
+
+## L'objectif d'après : Hyrox Doubles, 7 février 2027
+
+Nouveau document, `Christine_Hyrox_Fevrier.html` — **18 semaines** entre le 10 km et
+l'épreuve (fenêtre annoncée 3–7 février, calage sur le dimanche 7).
+
+**Le bloc ne traite que la course, et c'est une conséquence de la répartition.** En Doubles
+les 8 km se courent ensemble : l'allure de l'équipe est celle de Christine, et Benjamin ne
+peut pas la compenser — il attend. Il convertit donc sa marge en charge de station, en
+prenant le début et la fin de chacune. Résultat : sur les stations une partie est absorbable,
+sur les kilomètres rien ne l'est. Le run est le seul poste où chaque seconde gagnée est une
+seconde d'équipe, multipliée par huit.
+
+- **La VMA devient le levier**, ce qu'elle n'était pas pour le 10 km : un effort d'une heure
+  à intensité constante se joue au seuil, huit relances au-dessus du seuil se jouent au
+  plafond. VO2max à 37,5, c'est bas.
+- **Deux chantiers séparés jusqu'en janvier.** VMA à jambes fraîches d'un côté, course sous
+  fatigue de l'autre. Les fusionner trop tôt donne des séances où l'on ne fait ni l'un ni
+  l'autre : arrivée cramée à l'intervalle, elle court à 90 % en croyant faire de la VMA.
+- **Volume de pointe à 36 km**, contre 28 au pic du 10 km. Les trois rebonds au-dessus de
+  +20 % sortent tous d'une décharge et restent sous le pic précédent — l'inverse du +67 %
+  critiqué ci-dessus.
+- **Le kilomètre haché est la séance reine** : 8 × 1 km avec récupération courte. C'est la
+  demande exacte de l'épreuve, et elle ne demande aucun matériel — utile, puisque le matos
+  Hyrox n'est disponible qu'aux séances du coach.
+- **Indicateur de référence : l'écart entre le run 1 et le run 8**, cible ≤ 30 s/km. Le
+  Doubles du 19 septembre en donne la ligne de base.
+- Deux dépendances externes à traiter en octobre : le **demi-Cooper** de mi-octobre pour
+  mesurer la VMA (sans lui les allures ne sont que des ordres de grandeur), et la
+  **réservation de la simulation complète du 17 janvier**, qui exige les huit stations.
+
 ## À faire ensuite
 
 - [x] Reformuler la cible « cadence » — fait, puis **corrigé le 5 août** : fin du métronome en
       footing après une séance ratée (voir « Retour de séance » ci-dessus).
+- [x] Analyser l'export montre et recaler le plan — fait le 20 août (voir ci-dessus).
+- [x] Rebâtir le volume maintenant que le TFL est calme depuis 15 jours — fait, S4→S10 recalé.
+- [ ] **Décocher `4_1`, cocher `4_0`** dans le tracker : le renumérotage de la S4 a décalé
+      la case de la séance du mardi 18.
 - [ ] Test S4 (22 août) → mettre à jour le journal et les allures, et **trancher 59'30 vs 1h02**
-      selon l'état du TFL.
-- [ ] Si le TFL se calme durablement, **rebâtir le volume S3→S5** vers la trajectoire d'origine.
+      selon la règle de décision ci-dessus.
+- [ ] Doubles du 19 septembre → relever les **splits de course** et le ressenti station par
+      station. C'est la ligne de base du bloc Février, plus utile que le chrono final.
+- [ ] Octobre : caler le **demi-Cooper** et **réserver la simulation du 17 janvier**.
 - [ ] Finir la mise en route Supabase : migration + policies + `CONFIG` + Redirect URL
       (voir « Synchronisation entre appareils »), puis vérifier un aller-retour réel
       entre deux appareils avant de donner le lien à Christine.
