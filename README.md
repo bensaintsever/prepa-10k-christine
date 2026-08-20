@@ -436,8 +436,10 @@ avec une distance vide — le modèle le supportait déjà, les entrées Hyrox f
   laisse les autres réellement faciles. Jambes le lundi et seuil le mardi ferait l'inverse.
 - **Renfo running le mercredi.** Faible charge — c'est la prévention (abducteurs, Rathleff,
   contrôle rotationnel), elle sert de récupération active le lendemain des jambes.
-- **Bras le samedi.** Ne charge pas les jambes, donc ne coûte rien à la longue du dimanche,
-  et tombe 48 h après le WOD Hyrox du jeudi qui charge déjà le haut du corps.
+- **Bras le samedi**, avancée au lundi en S8 et S10 (week-end pris par le Doubles puis par la
+  course). Ne charge pas les jambes, donc ne coûte rien à la longue du dimanche, et tombe
+  48 h après le WOD Hyrox du jeudi qui charge déjà le haut du corps. **Jamais supprimée** :
+  c'est la séance la moins chère du plan. Elle figure dans les sept semaines.
 - Séance jambes à garder **lourde et courte** (3 à 6 répétitions) : c'est ce format qui
   achète l'économie de course, seul levier de performance quand le kilométrage est plafonné.
   Dernière séance lourde le 22 septembre (J−12), puis activation légère.
