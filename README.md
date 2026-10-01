@@ -9,7 +9,8 @@ Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et de
 |---|---|
 | `Christine_10K_Tracker.html` | Le **tracker** : 11 semaines à cocher (cases mémorisées dans le navigateur). |
 | `Christine_10K_Carnet.html` | Le **carnet** : le pourquoi du plan, allures, renfo, foulée, sécurité. |
-| `Christine_Hyrox_Fevrier.html` | Le **bloc Février** : 18 semaines vers le Hyrox Doubles du 7 février 2027. |
+| `Christine_Hyrox_Fevrier.html` | Le **plan Hyrox Doubles Mixte** (refait le 1er octobre 2026) : 18 semaines vers le samedi 6 février 2027. |
+| `Christine_Hyrox_Tracker.html` | Le **tracker Hyrox** : même moteur que le tracker 10 km, plan Supabase `christine-hyrox`. |
 | `Christine_10K_Tracker.pdf` | Tracker imprimable — **périmé depuis le recalage du 20 août**, à regénérer. |
 | `Christine_10K_Carnet.pdf` | Carnet imprimable — **périmé depuis le recalage du 20 août**, à regénérer. |
 | `index.html` | Page d'accueil (liens vers tracker + carnet), sert de landing GitHub Pages. |
@@ -21,6 +22,7 @@ Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et de
 | `tests/sync.test.js` | Tests de la réconciliation local/distant (`node tests/sync.test.js`). |
 | `tests/dates.test.js` | Tests de la dérivation des dates de séance. |
 | `tests/state.test.js` | Tests de la migration d'état et de la saisie (distance, report). |
+| `tests/plans.test.js` | Tests de l'isolation entre plans (clés locales, plan_id, filtres realtime). |
 | `data/2026-07-23_5k.tcx` | Trace du test 5 km du 23 juillet. |
 | `data/zebris_bilan_2025-08-20.pdf` | Bilan podologique (analyse de pression, Posturosports). |
 | `data/Google Health …/` | Export Google Health complet du 20 août 2026 (2,2 Go, hors dépôt). |
@@ -261,7 +263,8 @@ node tests/sync.test.js
 | 2026-07-23 | 5 km (test S0) | 30'40 (6'08/km), fin à 5'48/km | 167 | FC 164. Contact 314 ms, oscillation 9,9 cm, foulée 99 cm. Déjà plus rapide que l'allure objectif. |
 | 2026-08-14 | Seuil 3 × 6' (S3) | **5'42/km**, dérive −3 % | 170–172 | FC 152→163, foulée 104 cm. Le meilleur relevé du bloc — sans métronome. |
 | 2026-08-16 | Sortie longue 8 km | 7'25/km | 157 | FC 138, dérive 4,3 % (contre 9,3 % le 21 juil.). |
-| 2026-08-22 | 5 km (test S4) | … | … | Prochain jalon : trancher 59'30 vs 1h02. |
+| 2026-08-23 | 5 km (test S4) | 29'32 (5'54/km) au GPS, départ 5'25 → fin 6'07 | 170→164 | FC 161→167, quasi plafond dès le km2. Partie trop vite, n'a pas tenu l'allure. Montre : 32'45 (+3'13 non arrêtée après l'arrivée, non compté). Voir verdict ci-dessous. |
+| 2026-08-27 | Seuil 2 × 10' à 6'00 (S5, faite jeudi au lieu de mardi) | 2 blocs à **5'57/km**, FC 156 sur les deux, sans dérive | 168 (identique sur les 2 blocs) | Foulée 97→95 cm. Même allure, même FC, même cadence d'un bloc à l'autre — récup « marche » à 8'52/km entre les deux. Contraste net avec le test S4 : là où le départ trop rapide avait fait dériver l'allure, ici l'effort est tenu sans à-coup sur 2 × 10 min. Plutôt rassurant pour la question 59'30 vs 1h02. |
 | 2026-09-08 | 4 × 1000 m à 6'00 (S7) | … | … | Métriques à l'allure de course, jambes fraîches. |
 | 2026-09-24 | 5 × 1000 m à 6'00 (S9) | … | … | Séance verdict : 5/5 = sous-1h validé. |
 
@@ -459,6 +462,8 @@ avec une distance vide — le modèle le supportait déjà, les entrées Hyrox f
 
 ## L'objectif d'après : Hyrox Doubles, 7 février 2027
 
+> **Remplacé le 1er octobre 2026** par le plan décrit dans « Bloc Hyrox Doubles Mixte » plus bas. Section conservée pour l'historique.
+
 Nouveau document, `Christine_Hyrox_Fevrier.html` — **18 semaines** entre le 10 km et
 l'épreuve (fenêtre annoncée 3–7 février, calage sur le dimanche 7).
 
@@ -487,6 +492,44 @@ seconde d'équipe, multipliée par huit.
   mesurer la VMA (sans lui les allures ne sont que des ordres de grandeur), et la
   **réservation de la simulation complète du 17 janvier**, qui exige les huit stations.
 
+## Test S4 : un verdict à la limite, et faussé par le départ (23 août 2026)
+
+Le test 5 km prévu le 22 août a été fait le 23, avec les données Pixel Watch du jour
+(GPS, allure en direct, FC, cadence, foulée).
+
+**Deux chronos, pas un seul.** La montre affiche 32'45, mais le GPS montre l'arrivée au
+5ᵉ km à 29'32 : les 3'13 restantes sont immobiles (0 m parcouru), la montre n'a pas été
+arrêtée tout de suite après la ligne. Le chrono qui compte est **29'32 (5'54/km)**.
+
+**Le vrai problème n'est pas le chrono, c'est le pacing.** Les splits :
+
+| km | Temps | Allure | FC moy. | Cadence |
+|---|---|---|---|---|
+| 1 | 5'25 | 5'25/km | 161 | 170 |
+| 2 | 5'53 | 5'53/km | 166 | 166 |
+| 3 | 5'55 | 5'55/km | 167 | 165 |
+| 4 | 6'12 | 6'12/km | 166 | 163 |
+| 5 | 6'07 | 6'07/km | 164 | 164 |
+
+Départ à 5'25 — 35 s/km sous l'allure visée (6'00) — puis dérive continue jusqu'à 6'12
+au 4ᵉ km. La FC, elle, grimpe dès le premier kilomètre et plafonne autour de 165-167
+(zone Max.) du 2ᵉ km à la fin : l'effort est quasi maximal sur quatre kilomètres, pas
+un effort maîtrisé à allure cible. C'est un test 5 km lancé comme un 800 m.
+
+**Verdict Riegel, avec la réserve qui va avec.** 29'32 → 10 km projeté ≈ **61'34**,
+pile à la charnière des deux brackets de la règle du 20 août (28'30–29'45 → viser
+1h00 ; > 29'45 → bascule 1h02) — à 11 secondes de la limite haute. Sur un effort aussi
+mal réparti, Riegel est optimiste : une allure tenue du 1er au dernier km, à FC
+équivalente, aurait probablement rendu un chrono plus rapide que 29'32. Le nombre brut
+sous-estime donc plutôt sa forme réelle, mais l'exécution ne permet pas de trancher
+59'30 avec confiance.
+
+**Proposition : repli 1h02 assumé pour l'instant, sans black-out de 59'30.** Les allures
+spécifiques basculent à 6'12/km comme prévu par la règle du 20 août, mais le sujet
+n'est pas clos — un retest à allure maîtrisée (montre chronométrée dès le 1er mètre,
+consigne stricte de ne pas descendre sous 5'55 au 1er km) donnerait un chiffre fiable.
+Décision à confirmer avant de répercuter le repli dans le tracker et le carnet.
+
 ## À faire ensuite
 
 - [x] Reformuler la cible « cadence » — fait, puis **corrigé le 5 août** : fin du métronome en
@@ -495,11 +538,53 @@ seconde d'équipe, multipliée par huit.
 - [x] Rebâtir le volume maintenant que le TFL est calme depuis 15 jours — fait, S4→S10 recalé.
 - [ ] **Décocher `4_1`, cocher `4_0`** dans le tracker : le renumérotage de la S4 a décalé
       la case de la séance du mardi 18.
-- [ ] Test S4 (22 août) → mettre à jour le journal et les allures, et **trancher 59'30 vs 1h02**
-      selon la règle de décision ci-dessus.
+- [x] Test S4 → fait le 23 août, journal mis à jour (voir « Test S4 » ci-dessus). Verdict à
+      la limite (10 km projeté ≈ 61'34), faussé par un départ trop rapide.
+- [ ] **Décider du repli** : valider le passage à 1h02/6'12 proposé ci-dessus, ou attendre un
+      retest à allure maîtrisée avant de le répercuter dans le tracker et le carnet.
 - [ ] Doubles du 19 septembre → relever les **splits de course** et le ressenti station par
       station. C'est la ligne de base du bloc Février, plus utile que le chrono final.
 - [ ] Octobre : caler le **demi-Cooper** et **réserver la simulation du 17 janvier**.
 - [ ] Finir la mise en route Supabase : migration + policies + `CONFIG` + Redirect URL
       (voir « Synchronisation entre appareils »), puis vérifier un aller-retour réel
       entre deux appareils avant de donner le lien à Christine.
+
+## Bloc Hyrox Doubles Mixte (1er octobre 2026)
+
+Le plan du 20 août est remplacé. Épreuve : **Doubles Mixte, Lucis Hyrox Toulouse, MEETT**,
+calée sur le **samedi 6 février 2027** (le dimanche 7 n'accueille que les Doubles hommes et
+femmes ; créneau exact à confirmer, l'affûtage se décale d'autant).
+
+**Ce qui change par rapport au 20 août**
+- **Maroc du 2 au 15 novembre** : deux semaines en pointillé (options sans date), reprise à
+  environ 65 % du volume d'avant le départ.
+- **Règle des journées doubles** : un jour avec muscu et course, la course est un EF court.
+  La qualité passe donc le mercredi, seule ; muscu jambes le lundi, Hyrox le jeudi.
+- **Volume de pointe 27,5 km** (au lieu de 36), jamais plus de +20 % d'une semaine à l'autre.
+- **Doubles Mixte = charges hommes** à toutes les stations, wall ball 6 kg à 3 m compris.
+  Benjamin prend l'essentiel des sleds, du farmers et des fentes ; wall balls 6 kg ajoutés
+  à la séance jambes à partir de décembre (la salle de Christine en a une).
+- Repères : test VMA demi-Cooper mer. 14 oct. et mer. 30 déc., simulation complète jeu. 14 janv.
+
+**Multi-plan dans `sync.js`**
+- Une page déclare son plan avant `sync.js` :
+  `window.TRACKER_PLAN = { planId: 'christine-hyrox', storagePrefix: 'trackerHyrox_christine' };`
+- Sans déclaration (tracker 10 km), plan `christine-10k` et clés historiques
+  `tracker10k_christine_meta` / `_outbox` : rien ne bouge pour le 10 km.
+- Déclaration invalide : repli complet sur le plan 10 km avec un `console.warn`, jamais un
+  plan neuf sur les clés du 10 km (les files d'attente se mélangeraient).
+- Lecture initiale et canal realtime filtrés par `plan_id` ; un événement d'un autre plan est
+  ignoré. **Aucune migration SQL** : la table et les policies gèrent déjà plusieurs plan_id.
+- Même origine, donc une seule connexion Supabase pour les deux trackers.
+
+**Navigation** : 5 onglets (Accueil · Hyrox · Plan Hyrox · 10 km · Carnet), libellé court
+« Plan » sous 720 px, marque masquée sous 600 px. Les règles de l'en-tête sont **recopiées**
+dans `Christine_Hyrox_Fevrier.html` (qui ne charge pas `style.css` pour éviter les collisions) :
+toute modification de la nav se fait aux deux endroits. `CACHE` passé à `v6`.
+
+**À faire**
+- [ ] Vérifier un aller-retour réel sur `christine-hyrox` (cocher sur un appareil, voir sur l'autre).
+- [ ] Recaler le seuil sur le résultat du 10 km, puis les allures VMA après le test du 14 octobre.
+- [ ] Caler l'affûtage dès que le créneau du Doubles Mixte est connu.
+- [ ] Réserver la simulation complète du jeudi 14 janvier (huit stations).
+

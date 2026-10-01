@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0F0814">
-<meta name="description" content="Plan de préparation 10 km en 11 semaines pour Christine — Octobre Rose 2026, objectif 59'30.">
-<title>Préparation 10 km · Christine · Octobre Rose 2026</title>
+<meta name="description" content="Prépa Christine : Hyrox Doubles Mixte avec Benjamin le 6 février 2027 à Toulouse (18 semaines), et préparation 10 km du 4 octobre 2026.">
+<title>Prépa Christine · Hyrox Doubles 2027 &amp; 10 km</title>
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -15,6 +15,10 @@
   .pdf { margin-top: 24px; font-size: 14px; color: var(--muted); }
   .pdf a { color: #fff; font-weight: 500; text-decoration: underline; text-decoration-color: rgba(255,255,255,0.2); text-underline-offset: 4px; }
   .pdf a:hover { color: var(--hot); text-decoration-color: var(--hot); }
+  .group { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .group h2 { font-family: var(--font-disp); font-weight: 700; font-size: 22px; margin: 0 0 4px; color: #fff; }
+  .group .sub { margin: 0; font-size: 14px; color: var(--muted); }
+  .cards.hyrox a.card { border-color: rgba(255,61,127,0.25); }
   @media (max-width: 719px) {
     .cards { grid-template-columns: 1fr; }
   }
@@ -24,10 +28,12 @@
 
 <header class="shell">
   <div class="shell-inner">
-    <a class="shell-brand" href="index.html">10K Christine</a>
+    <a class="shell-brand" href="index.html">Prépa Christine</a>
     <nav class="shell-nav" aria-label="Navigation">
-      <a href="index.html" class="shell-tab active">Accueil</a>
-      <a href="Christine_10K_Tracker.html" class="shell-tab">Tracker</a>
+      <a href="index.html" class="shell-tab active" aria-current="page">Accueil</a>
+      <a href="Christine_Hyrox_Tracker.html" class="shell-tab">Hyrox</a>
+      <a href="Christine_Hyrox_Fevrier.html" class="shell-tab"><span class="tab-long">Plan Hyrox</span><span class="tab-short">Plan</span></a>
+      <a href="Christine_10K_Tracker.html" class="shell-tab">10 km</a>
       <a href="Christine_10K_Carnet.html" class="shell-tab">Carnet</a>
     </nav>
   </div>
@@ -35,32 +41,40 @@
 
 <div class="wrap">
   <div class="hero">
-    <div class="k">Christine · Octobre Rose</div>
-    <h1>10 km sous 1 heure</h1>
-    <p>Dimanche 4 octobre 2026 · plan 11 semaines. Objectif 59'30, repli 1 h 02.<br>Plan recalé le 20 août sur les données de la montre.</p>
+    <div class="k">Christine &amp; Benjamin · Objectif actuel</div>
+    <h1>Hyrox Doubles Mixte</h1>
+    <p>Samedi 6 février 2027 · Toulouse, MEETT.<br>18 semaines de préparation à partir du 5 octobre, en équipe avec Benjamin.</p>
   </div>
 
-  <div class="cards">
-    <a class="card" href="Christine_10K_Tracker.html">
-      <b>Le tracker</b>
-      <span>Les 11 semaines à cocher, séance par séance.</span>
-    </a>
-    <a class="card" href="Christine_10K_Carnet.html">
-      <b>Le carnet</b>
-      <span>Le pourquoi du plan, allures, renfo, foulée, sécurité.</span>
-    </a>
-    <a class="card" href="Christine_10K_Carnet.html#s4">
-      <b>Le renfo</b>
-      <span>Trois séances, trois rôles : jambes le mardi, renfo running le mercredi, bras le samedi.</span>
+  <div class="cards hyrox">
+    <a class="card" href="Christine_Hyrox_Tracker.html">
+      <b>Tracker Hyrox</b>
+      <span>Les 18 semaines à cocher, séance par séance.</span>
     </a>
     <a class="card" href="Christine_Hyrox_Fevrier.html">
-      <b>Bloc Février</b>
-      <span>L'objectif d'après : Hyrox Doubles le 7 février 2027. 18 semaines, centrées sur la course.</span>
+      <b>Plan Hyrox</b>
+      <span>Le plan complet : VMA jusqu'à Noël, puis l'allure Hyrox en sortie de station, tests et affûtage.</span>
     </a>
   </div>
-  
-  <p class="pdf">Versions imprimables : <a href="Christine_10K_Tracker.pdf">Tracker PDF</a> &nbsp;·&nbsp; <a href="Christine_10K_Carnet.pdf">Carnet PDF</a></p>
-  
+
+  <section class="group" aria-labelledby="g10k">
+    <h2 id="g10k">Préparation 10 km · 4 octobre</h2>
+    <p class="sub">Octobre Rose 2026, objectif 59'30, repli 1 h 02.</p>
+
+    <div class="cards">
+      <a class="card" href="Christine_10K_Tracker.html">
+        <b>Tracker 10 km</b>
+        <span>Les 11 semaines à cocher, séance par séance.</span>
+      </a>
+      <a class="card" href="Christine_10K_Carnet.html">
+        <b>Le carnet</b>
+        <span>Le pourquoi du plan, allures, renfo, foulée, sécurité.</span>
+      </a>
+    </div>
+
+    <p class="pdf">Versions imprimables : <a href="Christine_10K_Tracker.pdf">Tracker PDF</a> &nbsp;·&nbsp; <a href="Christine_10K_Carnet.pdf">Carnet PDF</a></p>
+  </section>
+
   <footer class="site-footer">Suivi de préparation. Données : zebris 20/08/2025, Pixel Watch 4, tests 3 juil. &amp; 23 juil. 2026.</footer>
 </div>
 

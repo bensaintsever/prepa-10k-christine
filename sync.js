@@ -1,4 +1,4 @@
-/* Synchronisation Supabase du tracker 10 km · Christine · Octobre Rose 2026
+/* Synchronisation Supabase des trackers · Christine (10 km, puis Hyrox)
  *
  * Principe : hors-ligne d'abord. localStorage reste la source d'affichage,
  * Supabase n'est qu'une couche de synchro par-dessus. Une séance cochée sans
@@ -12,6 +12,38 @@
   'use strict';
 
   /* ======================================================================
+   * PLAN SUIVI PAR LA PAGE
+   * Une page peut déclarer, AVANT <script src="sync.js">, le plan qu'elle suit :
+   *
+   *   <script>window.TRACKER_PLAN = { planId: 'christine-hyrox',
+   *                                   storagePrefix: 'trackerHyrox_christine' };</script>
+   *
+   * Sans déclaration, on retombe exactement sur le plan 10 km historique :
+   * mêmes plan_id, mêmes clés localStorage. Le 10 km n'a donc rien à changer.
+   * Les session_id ("3_2") se recoupent d'un plan à l'autre : c'est le plan_id
+   * côté serveur et le préfixe côté localStorage qui les séparent.
+   * ====================================================================== */
+  var DEFAULT_PLAN = { planId: 'christine-10k', storagePrefix: 'tracker10k_christine' };
+
+  function resolvePlan(raw) {
+    var plan = { planId: DEFAULT_PLAN.planId, storagePrefix: DEFAULT_PLAN.storagePrefix };
+    if (!raw || typeof raw !== 'object') return plan;
+    var okId = typeof raw.planId === 'string' && /^[a-z0-9][a-z0-9_-]*$/i.test(raw.planId);
+    var okPrefix = typeof raw.storagePrefix === 'string' && /^[A-Za-z0-9_-]+$/.test(raw.storagePrefix);
+    /* Un plan déclaré à moitié est refusé en bloc : un planId neuf avec les clés
+     * locales du 10 km mélangerait les files d'attente des deux plans. */
+    if (!okId || !okPrefix) {
+      if (typeof console !== 'undefined') console.warn('TRACKER_PLAN invalide, plan 10 km utilisé', raw);
+      return plan;
+    }
+    plan.planId = raw.planId;
+    plan.storagePrefix = raw.storagePrefix;
+    return plan;
+  }
+
+  var PLAN = resolvePlan(typeof window !== 'undefined' ? window.TRACKER_PLAN : null);
+
+  /* ======================================================================
    * CONFIGURATION — les deux seules valeurs à renseigner
    * Dashboard Supabase → Settings → API
    * ====================================================================== */
@@ -19,15 +51,16 @@
     url: 'https://hdrjoyrpczutjihnbbui.supabase.co',
     key: 'sb_publishable_gtta8ZCQUCqPEX696FtJ0g_UwDO3l9R',
 
-    planId: 'christine-10k',
+    planId: PLAN.planId,
     authMode: 'password',    // 'password' (RLS variante B) ou 'anon' (variante A)
     realtime: true
   };
 
   /* ====================================================================== */
 
-  var META_KEY = 'tracker10k_christine_meta';     // { "3_2": 1785658060000 }
-  var OUTBOX_KEY = 'tracker10k_christine_outbox'; // { "3_2": true }
+  // Sans TRACKER_PLAN : 'tracker10k_christine_meta' / 'tracker10k_christine_outbox'.
+  var META_KEY = PLAN.storagePrefix + '_meta';     // { "3_2": 1785658060000 }
+  var OUTBOX_KEY = PLAN.storagePrefix + '_outbox'; // { "3_2": true }
 
   var LS = null;
   try {
@@ -330,6 +363,11 @@
           var row = payload.new;
           if (!row || !row.session_id) return;
 
+          // Ceinture et bretelles : le filtre du canal suffit en principe, mais
+          // une ligne d'un autre plan appliquée ici écraserait la séance de
+          // même session_id dans ce plan-ci.
+          if (row.plan_id && row.plan_id !== CONFIG.planId) return;
+
           // Ignore l'écho de nos propres écritures encore en file d'attente.
           if (outbox[row.session_id]) return;
 
@@ -428,6 +466,9 @@
     isConfigured: isConfigured,
     needsAuth: needsAuth,
     getStatus: function () { return status; },
-    pendingCount: function () { return Object.keys(outbox).length; }
+    pendingCount: function () { return Object.keys(outbox).length; },
+
+    /* Plan effectivement suivi, utile au diagnostic et aux tests. */
+    plan: { planId: PLAN.planId, metaKey: META_KEY, outboxKey: OUTBOX_KEY }
   };
 })();

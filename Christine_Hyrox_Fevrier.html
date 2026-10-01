@@ -4,33 +4,402 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0F0814">
-<meta name="description" content="Bloc course de 18 semaines entre le 10 km d'octobre et le Hyrox Doubles de février 2027 — VMA, kilomètre haché, base aérobie.">
-<title>Bloc Février · Hyrox Doubles · Christine</title>
-<link rel="stylesheet" href="style.css">
+<meta name="description" content="Plan Hyrox Doubles Mixte de Christine avec Benjamin : 18 semaines du 5 octobre 2026 au 6 février 2027, Toulouse MEETT. VMA, allure Hyrox, stations.">
+<title>Plan Hyrox Doubles · Christine</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="view-transition" content="same-origin">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-  .proto {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 12.5px; line-height: 1.8; color: var(--txt);
-    background: var(--surface); border: 1px solid var(--border-light);
-    border-radius: var(--radius-sm); padding: 12px 14px;
-    white-space: pre; overflow-x: auto; margin: 12px 0;
-  }
-  .proto b { color: var(--brand-dk); font-weight: 600; }
-  .phase-x { color: var(--brand-dk); font-weight: 600; }
-  @media print { section { box-shadow: none; padding: 0 0 16px; border: none; } }
+:root{
+  --bg:#0F0814;
+  --surface:#17101E;
+  --card:#1C1526;
+  --card-hi:#241B30;
+  --line:rgba(255,255,255,.09);
+  --line-soft:rgba(255,255,255,.05);
+
+  --ink:#EDE8F0;
+  --ink-2:#B9AFC2;
+  --muted:#8C8195;
+
+  --new:#F04A8C;
+  --new-soft:rgba(240,74,140,.14);
+  --old:#2EA3C0;
+  --old-soft:rgba(46,163,192,.13);
+  --warn:#E0A03F;
+  --warn-soft:rgba(224,160,63,.13);
+
+  --f-disp:'Outfit',-apple-system,BlinkMacSystemFont,sans-serif;
+  --f-body:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --wrap:1080px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+body{
+  margin:0;
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(ellipse 900px 520px at 82% -8%,rgba(240,74,140,.13),transparent 62%),
+    radial-gradient(ellipse 700px 500px at 4% 22%,rgba(46,163,192,.07),transparent 58%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:15.5px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+section{padding:52px 0;border-top:1px solid var(--line-soft)}
+section:first-of-type{border-top:0}
+
+/* ---------- typography ---------- */
+h1,h2,h3,h4{font-family:var(--f-disp);text-wrap:balance;margin:0}
+h1{font-size:clamp(42px,7.2vw,76px);font-weight:800;line-height:.98;letter-spacing:-.028em}
+h2{font-size:clamp(24px,3.2vw,31px);font-weight:700;letter-spacing:-.018em}
+h3{font-size:18px;font-weight:700;letter-spacing:-.01em}
+p{margin:0}
+.lede{font-size:clamp(17px,2.1vw,19.5px);line-height:1.58;color:var(--ink-2);max-width:64ch}
+.eyebrow{
+  font-family:var(--f-mono);font-size:11.5px;font-weight:500;
+  letter-spacing:.19em;text-transform:uppercase;color:var(--muted);
+}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:30px}
+.sec-head p{color:var(--ink-2);max-width:66ch}
+em{color:var(--ink);font-style:italic}
+strong{color:var(--ink);font-weight:600}
+
+/* ---------- masthead ---------- */
+.masthead{padding:64px 0 46px}
+.mast-top{
+  display:flex;flex-wrap:wrap;gap:12px 26px;align-items:baseline;
+  padding-bottom:22px;margin-bottom:30px;border-bottom:1px solid var(--line);
+}
+.mast-top .spacer{flex:1 1 auto}
+h1 .accent{color:var(--new)}
+.mast-body{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:38px;margin-top:28px;align-items:start}
+@media (max-width:800px){.mast-body{grid-template-columns:1fr;gap:26px}}
+
+.verdict{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:20px 22px;display:flex;flex-direction:column;gap:12px;
+}
+.verdict .tag{
+  align-self:flex-start;font-family:var(--f-mono);font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--new);
+  background:var(--new-soft);border-radius:999px;padding:4px 11px;
+}
+.verdict p{font-size:14.5px;color:var(--ink-2)}
+
+/* ---------- stat tiles ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px}
+@media (max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:460px){.stats{grid-template-columns:1fr}}
+.tile{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:18px 18px 16px;display:flex;flex-direction:column;gap:7px;
+}
+.tile .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.tile .v{font-family:var(--f-disp);font-size:29px;font-weight:700;line-height:1.05;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tile .v .was{color:var(--old);font-size:19px;font-weight:600}
+.tile .v .arw{color:var(--muted);font-size:17px;margin:0 5px}
+.tile .v .unit{color:var(--muted);font-size:15px;font-weight:600}
+.tile .n{font-size:13px;color:var(--muted);line-height:1.45}
+
+/* ---------- chart ---------- */
+.chart-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:24px 22px 18px;position:relative;
+}
+.chart-head{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+.legend{display:flex;gap:18px;flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-2)}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.chart-scroll{overflow-x:auto}
+svg{display:block;width:100%;min-width:600px;height:auto}
+.tip{
+  position:absolute;pointer-events:none;opacity:0;transition:opacity .12s;
+  background:var(--card-hi);border:1px solid var(--line);border-radius:10px;
+  padding:9px 12px;font-size:13px;line-height:1.5;white-space:nowrap;
+  box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:5;
+}
+.tip .t{font-family:var(--f-disp);font-weight:700;margin-bottom:3px}
+.tip .r{display:flex;align-items:center;gap:7px;color:var(--ink-2)}
+.tip .r i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.chart-note{font-size:12.5px;color:var(--muted);margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- corrections ---------- */
+.fixes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:920px){.fixes{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.fixes{grid-template-columns:1fr}}
+.fix{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:20px;display:flex;flex-direction:column;gap:9px;
+}
+.fix h3{color:var(--ink)}
+.fix .why{font-size:13.5px;color:var(--ink-2);line-height:1.55}
+.fix .delta{
+  font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--new);
+  background:var(--new-soft);border-radius:7px;padding:6px 10px;align-self:flex-start;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ---------- ledger ---------- */
+.ledger{display:flex;flex-direction:column;gap:14px}
+.week{
+  background:var(--card);border:1px solid var(--line);border-radius:15px;overflow:hidden;
+}
+.week.peak{border-color:rgba(240,74,140,.34)}
+.wk-head{
+  display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;
+  padding:15px 20px;background:var(--card-hi);border-bottom:1px solid var(--line);
+}
+.wk-code{font-family:var(--f-disp);font-size:20px;font-weight:800;letter-spacing:-.01em}
+.wk-dates{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.03em}
+.wk-theme{font-size:13.5px;color:var(--ink-2)}
+.wk-head .spacer{flex:1 1 auto}
+.wk-vol{font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.wk-vol .was{color:var(--old)}
+.wk-vol .arw{color:var(--muted);margin:0 4px}
+.wk-vol .is{color:var(--new);font-weight:600}
+
+.cols{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:820px){.cols{grid-template-columns:1fr}}
+.col{padding:16px 20px 18px;display:flex;flex-direction:column;gap:9px}
+.col+.col{border-left:1px solid var(--line)}
+@media (max-width:820px){.col+.col{border-left:0;border-top:1px solid var(--line)}}
+.col-lab{
+  font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.17em;
+  text-transform:uppercase;margin-bottom:3px;
+}
+.col-old .col-lab{color:var(--old)}
+.col-new .col-lab{color:var(--new)}
+.col-old{background:rgba(46,163,192,.035)}
+
+.s{display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;font-size:14px;align-items:baseline}
+.s .d{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase;padding-top:2px}
+.s .t{color:var(--ink-2);line-height:1.5}
+.col-new .s .t{color:var(--ink)}
+.s .t .km{font-family:var(--f-mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.s.cut .t{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.28);color:var(--muted)}
+.s.keep .t{color:var(--muted)}
+.s.key .t{color:var(--ink);font-weight:500}
+.s .t b{color:var(--new);font-weight:600}
+.s .t .rest{color:var(--muted);font-style:italic}
+.pill{
+  font-family:var(--f-mono);font-size:10px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;border-radius:5px;padding:2px 6px;margin-left:7px;
+  vertical-align:1px;white-space:nowrap;
+}
+.pill.add{color:var(--new);background:var(--new-soft)}
+.pill.same{color:var(--muted);background:rgba(255,255,255,.06)}
+.pill.hyrox{color:var(--warn);background:var(--warn-soft)}
+.pill.gym{color:var(--ink-2);background:transparent;border:1px solid var(--line)}
+.s.rest .t{color:var(--muted)}
+.s.gym .t{color:var(--ink-2)}
+.s.gym .t b{color:var(--ink)}
+
+/* ---------- semaine type ---------- */
+.tpl-scroll{overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.16) transparent}
+.tpl-scroll::-webkit-scrollbar{height:7px}
+.tpl-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16);border-radius:99px}
+.tpl-scroll::-webkit-scrollbar-track{background:transparent}
+.tpl{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(126px,1fr);gap:8px;min-width:100%}
+.day{
+  background:var(--card);border:1px solid var(--line);border-radius:13px;
+  padding:13px 12px 14px;display:flex;flex-direction:column;gap:8px;min-height:186px;
+}
+.day.anchor{border-color:rgba(240,74,140,.36);background:linear-gradient(180deg,rgba(240,74,140,.07),transparent 62%),var(--card)}
+.day.off{background:transparent;border-style:dashed;border-color:var(--line-soft)}
+.day .dn{
+  font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);
+}
+.day.anchor .dn{color:var(--new)}
+.day .dt{font-family:var(--f-disp);font-size:14px;font-weight:700;line-height:1.28;letter-spacing:-.01em}
+.day.off .dt{color:var(--muted);font-weight:600}
+.day .dd{font-size:12px;color:var(--muted);line-height:1.42;margin-top:-2px}
+.day .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto}
+.chip{
+  font-family:var(--f-mono);font-size:9.5px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;border-radius:5px;padding:3px 6px;white-space:nowrap;
+}
+.chip.run{color:var(--new);background:var(--new-soft)}
+.chip.gym{color:var(--ink-2);border:1px solid var(--line)}
+.chip.hyrox{color:var(--warn);background:var(--warn-soft)}
+.tpl-note{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;
+}
+@media (max-width:760px){.tpl-note{grid-template-columns:1fr}}
+.tpl-note div{
+  background:var(--card);border:1px solid var(--line);border-radius:13px;padding:17px 19px;
+  font-size:13.5px;color:var(--ink-2);line-height:1.55;
+}
+.tpl-note h3{font-size:15.5px;margin-bottom:7px}
+.tpl-note b{color:var(--ink)}
+.ghostline{
+  font-size:13px;color:var(--muted);font-style:italic;
+  border-left:2px solid var(--line);padding-left:13px;margin-top:16px;
+}
+.wk-note{
+  padding:13px 20px;border-top:1px solid var(--line-soft);
+  font-size:13px;color:var(--ink-2);background:rgba(255,255,255,.015);line-height:1.55;
+}
+.wk-note b{color:var(--new)}
+
+/* ---------- tables ---------- */
+.tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:540px;font-size:14px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line-soft)}
+tr:last-child td{border-bottom:0}
+th{
+  font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);background:var(--card-hi);
+  border-bottom:1px solid var(--line);
+}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td .ev{color:var(--muted);font-size:13px}
+tr.go td:first-child{color:var(--new);font-weight:600}
+tr.mid td:first-child{color:var(--warn);font-weight:600}
+tr.no td:first-child{color:var(--old);font-weight:600}
+
+/* ---------- guardrails ---------- */
+.rails{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:760px){.rails{grid-template-columns:1fr}}
+.rail{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.rail.alert{border-color:rgba(224,160,63,.3)}
+.rail h3{font-size:16.5px}
+.rail.alert h3{color:var(--warn)}
+.rail ul{margin:0;padding-left:19px;color:var(--ink-2);font-size:14px;line-height:1.6}
+.rail li+li{margin-top:6px}
+.rail li b{color:var(--ink)}
+
+footer{padding:44px 0 70px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px}
+footer p{max-width:70ch}
+footer p+p{margin-top:10px}
+a{color:var(--new)}
+:focus-visible{outline:2px solid var(--new);outline-offset:3px;border-radius:4px}
+</style>
+<style>
+.cols.single{grid-template-columns:1fr}
+.cols.single .s{grid-template-columns:76px minmax(0,1fr)}
+.s .d{white-space:nowrap}
+.s.opt .d{color:var(--warn)}
+.week.maroc{border-style:dashed}
+.week.maroc .wk-head{background:transparent}
+.legend i.dash{background:transparent;border:1px dashed var(--muted)}
+.who{font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:5px;padding:2px 7px;white-space:nowrap}
+.who.b{color:var(--old);background:var(--old-soft)}
+.who.c{color:var(--new);background:var(--new-soft)}
+.who.s{color:var(--warn);background:var(--warn-soft)}
+.phase-tag{font-family:var(--f-mono);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border-radius:5px;padding:2px 7px;white-space:nowrap}
+.pt-recup,.pt-fetes{color:var(--ink-2);background:rgba(255,255,255,.06)}
+.pt-base{color:var(--old);background:var(--old-soft)}
+.pt-vma{color:var(--new);background:var(--new-soft)}
+.pt-spe,.pt-taper{color:var(--warn);background:var(--warn-soft)}
+.pt-maroc,.pt-reprise{color:var(--muted);border:1px dashed var(--line)}
+</style>
+<style>:root{color-scheme:dark}</style>
+<style>
+/* ===== EN-TÊTE DU SITE (header.shell) =====
+   Cette page ne charge pas style.css : ses règles globales (body, h1, .wrap,
+   section, table, .tip…) entreraient en collision avec celles du plan.
+   On recopie donc ici uniquement les règles de l'en-tête, valeurs en dur et
+   variables préfixées --sh-*, pour ne pas dépendre des tokens du plan.
+   Source : style.css, sections « SHELL NAVIGATION » et « TABLES → CARTES ».
+   À garder synchronisé si la nav change dans style.css. */
+:root{--shell-h:56px}
+html{scroll-padding-top:calc(var(--shell-h) + env(safe-area-inset-top) + 12px)}
+.shell{
+  position:sticky;top:0;z-index:50;
+  background:rgba(15,8,20,.7);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding-top:env(safe-area-inset-top);
+  height:calc(var(--shell-h) + env(safe-area-inset-top));
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  line-height:1.6;
+}
+.shell-inner{
+  display:flex;align-items:center;gap:12px;height:100%;
+  padding:0 max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left));
+  max-width:1000px;margin:0 auto;
+}
+.shell a{text-decoration:none;transition:color .2s}
+.shell-brand{
+  font-family:'Outfit',-apple-system,sans-serif;font-weight:800;text-transform:uppercase;
+  letter-spacing:.08em;font-size:18px;white-space:nowrap;
+  background:linear-gradient(120deg,#FF5E9F,#FF3D7F);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  text-shadow:0 2px 10px rgba(255,61,127,.2);
+}
+.shell-nav{display:flex;gap:6px;margin-left:auto}
+.shell-tab{
+  display:inline-flex;align-items:center;height:36px;padding:0 16px;border-radius:20px;
+  color:#958B9C;font-size:14px;font-weight:600;white-space:nowrap;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+}
+.shell-tab:hover{background:rgba(255,255,255,.06);color:#EAE6EE}
+.shell-tab.active{
+  background:linear-gradient(120deg,rgba(214,0,108,.15),rgba(255,61,127,.15));
+  color:#FF3D7F;border:1px solid rgba(255,61,127,.3);
+  box-shadow:0 0 12px rgba(255,61,127,.1) inset;pointer-events:none;
+}
+.shell-tab .tab-short{display:none}
+@media (min-width:720px){.shell-inner{padding-left:24px;padding-right:24px}}
+@media (max-width:719px){
+  .shell-brand{font-size:16px;letter-spacing:.05em;min-width:0;overflow:hidden;text-overflow:clip}
+  .shell-nav{margin-left:auto;gap:2px;flex:none}
+  .shell-tab{padding:0 11px;font-size:13.5px}
+  .shell-tab .tab-long{display:none}
+  .shell-tab .tab-short{display:inline}
+}
+@media (max-width:599px){
+  .shell-brand{display:none}
+  .shell-nav{margin:0 auto}
+}
+@media (max-width:419px){
+  .shell-nav{gap:1px}
+  .shell-tab{padding:0 9px;font-size:13px}
+}
+@media (max-width:339px){.shell-tab{padding:0 7px;font-size:12.5px}}
+@media print{.shell{display:none}}
+
+/* Lien vers le tracker, dans le masthead du plan */
+.mast-main{display:flex;flex-direction:column;align-items:flex-start;gap:22px}
+.plan-cta{
+  display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 20px;
+  border-radius:999px;background:var(--new);color:#1A0812;text-decoration:none;
+  font-family:var(--f-disp);font-weight:700;font-size:16px;letter-spacing:.01em;
+  box-shadow:0 8px 24px rgba(240,74,140,.28);transition:transform .15s,box-shadow .15s;
+}
+.plan-cta:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(240,74,140,.38);color:#1A0812}
+.plan-cta:focus-visible{outline:2px solid #fff;outline-offset:3px}
+/* Encoches en paysage : le contenu du plan garde ses 24 px, safe-area en plus si besoin. */
+.wrap{padding-left:max(24px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right))}
 </style>
 </head>
 <body>
 
 <header class="shell">
   <div class="shell-inner">
-    <a class="shell-brand" href="index.html">10K Christine</a>
+    <a class="shell-brand" href="index.html">Prépa Christine</a>
     <nav class="shell-nav" aria-label="Navigation">
       <a href="index.html" class="shell-tab">Accueil</a>
-      <a href="Christine_10K_Tracker.html" class="shell-tab">Tracker</a>
+      <a href="Christine_Hyrox_Tracker.html" class="shell-tab">Hyrox</a>
+      <a href="Christine_Hyrox_Fevrier.html" class="shell-tab active" aria-current="page"><span class="tab-long">Plan Hyrox</span><span class="tab-short">Plan</span></a>
+      <a href="Christine_10K_Tracker.html" class="shell-tab">10 km</a>
       <a href="Christine_10K_Carnet.html" class="shell-tab">Carnet</a>
     </nav>
   </div>
@@ -38,155 +407,651 @@
 
 <div class="wrap">
 
-  <div class="hero">
-    <div class="k">Après le 10 km · objectif suivant</div>
-    <h1>Bloc Février</h1>
-    <p>Hyrox Doubles, dimanche 7 février 2027. 18 semaines à partir du 5 octobre.</p>
-  </div>
+  <header class="masthead">
+    <div class="mast-top">
+      <span class="eyebrow">Prépa Hyrox · Christine · Doubles Mixte avec Benjamin</span>
+      <span class="spacer"></span>
+      <span class="eyebrow mono">1er octobre 2026 · J−128</span>
+    </div>
 
-  <p class="lead">En Doubles, les 8 kilomètres se courent <b>ensemble</b> : l'allure de l'équipe est donc la sienne, et Benjamin ne peut pas la compenser — il attend. Sur les stations, l'inverse : il prend le début et la fin de chacune, donc une partie de la charge est absorbable. <b>Ce bloc ne traite que la course</b>, parce que c'est le seul poste où chaque seconde gagnée est une seconde d'équipe, multipliée par huit. Les stations se travaillent à la séance du coach, avec le vrai matériel.</p>
+    <h1>Prépa Hyrox<br><span class="accent">Doubles</span></h1>
 
-  <section id="f1">
-    <div class="sech"><span class="num disp">01</span><h2>Pourquoi la VMA, et pourquoi pas tout de suite sous fatigue</h2></div>
-    <p>Sur le 10 km, le facteur limitant était le seuil : un effort d'une heure à intensité constante. Sur un Hyrox, la course est <b>8 × 1 km entrecoupés de stations</b>, chaque station la renvoyant au-dessus du seuil. Ce qui compte devient la vitesse à laquelle elle redescend vers un état stable après chaque pic — et le plafond au-dessus duquel elle ne peut pas monter. Ce plafond, c'est VO2max : 37,5 aujourd'hui, c'est bas, et c'est enfin le bon moment pour s'en occuper.</p>
+    <div class="mast-body">
+      <div class="mast-main">
+      <p class="lede">
+        Dix-huit semaines entre le 10 km et le Hyrox de Toulouse. En Doubles, les deux partenaires
+        courent les 8 km ensemble&nbsp;: <em>l'équipe court à l'allure de Christine</em>. Le plan
+        monte donc sa VMA jusqu'à Noël, puis lui apprend à tenir son allure en sortant des stations.
+      </p>
+        <a class="plan-cta" href="Christine_Hyrox_Tracker.html">Cocher les séances <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="verdict">
+        <span class="tag">Cible · samedi 6 février</span>
+        <p>
+          <strong>Date à confirmer.</strong> Le Doubles Mixte est programmé le samedi 6 février au MEETT,
+          mais aussi possible du mercredi au vendredi. L'affûtage est calé sur le samedi et se décale
+          de quelques jours une fois le créneau connu. Deux tests VMA et une simulation recalent le plan
+          en route.
+        </p>
+      </div>
+    </div>
 
-    <div class="co">
-      <h4>Deux choses différentes derrière « sous fatigue »</h4>
-      <p><b>La fatigue aérobie</b> — courir vite en fin de sortie longue. Utile, mais ce n'est pas le sujet du Hyrox.</p>
-      <p><b>Le <i>compromised running</i></b> — courir quand les jambes viennent d'être détruites par une station. C'est neuromusculaire et métabolique, et c'est ça, la course.</p>
-      <p>Le piège est de vouloir fusionner les deux dès octobre. La VMA ne se développe que si elle peut réellement atteindre vVO2max : arrivée cramée à l'intervalle, elle court à 90 % en croyant faire de la VMA, et ne travaille aucune des deux qualités. Donc <b>deux chantiers séparés jusqu'en janvier</b>, fusionnés seulement quand les deux existent.</p>
+    <div class="stats">
+      <div class="tile">
+        <span class="k">VMA</span>
+        <span class="v"><span class="was">≈ 12</span><span class="arw">→</span>12,5<span class="unit"> km/h</span></span>
+        <span class="n">Estimée depuis le 10 km, mesurée le 14 octobre. Gain visé +0,5 à +1</span>
+      </div>
+      <div class="tile">
+        <span class="k">Allure km Hyrox</span>
+        <span class="v"><span class="was">6′20</span><span class="arw">→</span>6′00</span>
+        <span class="n">−20″/km, environ 2′40 gagnées sur les 8 km</span>
+      </div>
+      <div class="tile">
+        <span class="k">Pic de volume</span>
+        <span class="v">27,5<span class="unit"> km</span></span>
+        <span class="n">Jamais plus de +20 % d'une semaine à l'autre</span>
+      </div>
+      <div class="tile">
+        <span class="k">Qualité / semaine</span>
+        <span class="v">1<span class="unit"> séance</span></span>
+        <span class="n">Le mercredi, toujours seule dans sa journée</span>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Profil de charge</span>
+      <h2>Une montée, une coupure, une deuxième montée</h2>
+      <p>
+        Le volume monte jusqu'au Maroc, s'interrompt deux semaines, repart d'environ 65 % puis remonte
+        par paliers de moins de 20 %. Les deux pics tombent mi-décembre (fin du bloc VMA) et mi-janvier
+        (dernière semaine pleine), à trois semaines de la course.
+      </p>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-head">
+        <span class="eyebrow">Kilomètres de course par semaine, hors Hyrox du jeudi</span>
+        <div class="legend">
+          <span><i style="background:#F04A8C"></i>Plan</span>
+          <span><i class="dash"></i>Maroc, facultatif</span>
+          <span><i style="background:#E0A03F;height:2px;border-radius:0"></i>Plafond TFL</span>
+        </div>
+      </div>
+      <div class="chart-scroll">
+        <svg id="chart" viewBox="0 0 780 310" role="img"
+             aria-label="Volume hebdomadaire de S1 à S18 : 13, 23, 24, 27, Maroc 0 à 8, 0 à 8, 17,5, 20,5, 24, 27, 27,5, 21,5, 23, 26,5, 22,5, 27, 22,5 et 11,5 km."></svg>
+      </div>
+      <div class="tip" id="tip"></div>
+      <p class="chart-note">
+        Le plafond à 24 km s'applique uniquement si le TFL se réveille, jusqu'à 10 jours sans gêne.
+        La semaine de simulation (S15) compte 8 km de plus, courus pendant la simulation elle-même.
+        La semaine de course est comptée hors course.
+      </p>
     </div>
   </section>
 
-  <section id="f2">
-    <div class="sech"><span class="num disp">02</span><h2>Les 18 semaines</h2></div>
-    <p>La prépa 10 km plafonnait à 28 km parce que la bandelette imposait la prudence et que la course arrivait vite. Ici il y a quatre mois, et le facteur limitant est le même : la base. Donc on la construit — <b>+29 % de volume de pointe</b>, une décharge toutes les quatre semaines, et les fêtes planifiées plutôt que subies.</p>
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Six principes</span>
+      <h2>Ce qui guide le plan</h2>
+    </div>
+    <div class="fixes">
 
-    <div class="tw"><table>
-      <thead>
-      <tr><th>Phase</th><th class="ctr">Dates</th><th class="ctr">Volume</th><th>Contenu</th></tr>
-      </thead><tbody>
-      <tr><td class="l" data-label="Phase">Transition</td><td class="ctr" data-label="Dates">5 – 18 oct.</td><td class="ctr pk" data-label="Volume">16 → 20 km</td><td data-label="Contenu">Rien de structuré. Récupération réelle après le 10 km, et point kiné sur le TFL avant d'entrer dans un bloc plus agressif.</td></tr>
-      <tr><td class="l" data-label="Phase">B1 · base + VMA courte</td><td class="ctr" data-label="Dates">19 oct. – 22 nov.</td><td class="ctr pk" data-label="Volume">24 → 31 km</td><td data-label="Contenu">Le volume remonte. VMA ouverte par le format court (30/30, 45/45), le moins traumatisant pour la bandelette. Une séance de seuil maintenue.</td></tr>
-      <tr><td class="l" data-label="Phase">B2 · VMA longue</td><td class="ctr" data-label="Dates">23 nov. – 20 déc.</td><td class="ctr pk" data-label="Volume">29 → 36 km</td><td data-label="Contenu">Intervalles de 3 et 4 min, le format qui maximise le temps passé à VO2max. Premiers kilomètres hachés en fin de sortie longue.</td></tr>
-      <tr><td class="l" data-label="Phase">Fêtes</td><td class="ctr" data-label="Dates">21 – 27 déc.</td><td class="ctr pk" data-label="Volume">26 km</td><td data-label="Contenu">Décharge planifiée. Faire semblant qu'elle n'existera pas, c'est la garantie de la subir au mauvais endroit.</td></tr>
-      <tr class="hi"><td class="l" data-label="Phase">B3 · spécifique run</td><td class="ctr" data-label="Dates">28 déc. – 31 jan.</td><td class="ctr pk" data-label="Volume">30 → 36 km</td><td data-label="Contenu">Le kilomètre haché devient la séance du mardi. VMA en entretien. Simulation complète le dimanche 17 janvier.</td></tr>
-      <tr><td class="l" data-label="Phase">Affûtage</td><td class="ctr" data-label="Dates">1 – 7 fév.</td><td class="ctr pk" data-label="Volume">17 km</td><td data-label="Contenu">Volume −50 %, intensité maintenue. Course le dimanche 7.</td></tr>
-      </tbody>
-    </table></div>
+      <article class="fix">
+        <h3>La VMA avant Noël</h3>
+        <p class="why">
+          Sur les kilomètres d'un Hyrox, on court vers 80 % de sa VMA. Monter le plafond rend cette
+          allure plus facile. La VMA se développe loin de l'échéance&nbsp;: d'où un bloc dédié en
+          novembre-décembre, et du spécifique en janvier.
+        </p>
+        <span class="delta">Côtes → 30/30 → 400 m · S8 à S11</span>
+      </article>
 
-    <div class="tip"><b>Trois rebonds dépassent +20 %</b> (semaines 2, 11 et 13), et c'est voulu : chacun sort d'une décharge et reste <i>sous</i> le pic précédent. C'est l'inverse de la rampe à +67 % du plan 10 km, qui montait au-dessus du pic après une semaine creuse — et qui reproduisait le scénario ayant rallumé le TFL fin juillet.</div>
+      <article class="fix">
+        <h3>La qualité seule dans sa journée</h3>
+        <p class="why">
+          Un jour où il y a muscu et course, la course est un EF court. La séance de qualité tombe
+          donc le mercredi, sur des jambes reposées depuis 48 heures, et rien d'autre ce jour-là.
+        </p>
+        <span class="delta">Muscu + course = EF court</span>
+      </article>
 
-    <div class="tip"><b>La simulation du 17 janvier a besoin des huit stations</b>, donc de matériel. Elle se cale avec le coach <b>dès octobre</b>. Découvrir en janvier qu'aucun créneau n'est libre, c'est perdre la seule vraie répétition générale.</div>
+      <article class="fix">
+        <h3>Le Maroc comme coupure assumée</h3>
+        <p class="why">
+          Deux semaines où courir n'est pas possible. On ne cherche pas à compenser&nbsp;: tout ce qui
+          est fait est un bonus. Le vrai risque est la reprise, déjà responsable du réveil du TFL fin juillet.
+        </p>
+        <span class="delta">Reprise à ≈ 65 % du volume de S4</span>
+      </article>
+
+      <article class="fix">
+        <h3>Christine donne l'allure</h3>
+        <p class="why">
+          En Doubles Mixte, toutes les stations sont aux charges hommes. Chaque effort lourd qu'elle évite
+          se retrouve en secondes sur le kilomètre suivant. Benjamin prend les charges, elle garde ses jambes.
+        </p>
+        <span class="delta">Sleds, farmers, fentes → Benjamin</span>
+      </article>
+
+      <article class="fix">
+        <h3>Courir en sortant des stations</h3>
+        <p class="why">
+          Le temps se perd surtout sur les kilomètres qui suivent le sled ou les fentes. Janvier sert à
+          ça&nbsp;: des enchaînements course + station, puis une simulation complète à deux.
+        </p>
+        <span class="delta">Enchaînements S14 · simulation 14 janv.</span>
+      </article>
+
+      <article class="fix">
+        <h3>Le Hyrox du jeudi compte à part</h3>
+        <p class="why">
+          La séance Hyrox hebdomadaire est du cross-training&nbsp;: elle n'entre pas dans le volume de
+          course. Technique en octobre, stations à intensité normale ensuite, relais à deux en janvier.
+        </p>
+        <span class="delta">Hors km · jamais la veille d'une qualité</span>
+      </article>
+
+    </div>
   </section>
 
-  <section id="f3">
-    <div class="sech"><span class="num disp">03</span><h2>Les quatre séances</h2></div>
-    <p>Rien d'autre n'est nécessaire. Les allures sont en pourcentage de VMA, pour rester valables quel que soit le résultat du test d'octobre.</p>
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Semaine type</span>
+      <h2>Mercredi qualité, jeudi Hyrox</h2>
+      <p>
+        Les deux sollicitations lourdes des jambes, muscu le lundi et Hyrox le jeudi, sont espacées de
+        72 heures. La qualité tombe entre les deux, sur des jambes fraîches.
+      </p>
+    </div>
 
-    <h3>Le kilomètre haché — la séance reine</h3>
-    <p>La demande exacte de l'épreuve : courir un kilomètre, s'arrêter, repartir. Ce n'est pas la même chose que courir 8 km d'affilée — le coût est dans la reprise, pas dans la distance. Et ça ne demande <b>aucun matériel</b>.</p>
-    <div class="proto">B2   longue 85' dont <b>3 à 4 × 1 km</b> en fin
-     récup 90 s marche
+    <div class="tpl-scroll">
+      <div class="tpl">
+        <div class="day">
+          <span class="dn">Lun</span>
+          <span class="dt">EF court<br>+ jambes lourdes</span>
+          <span class="dd">25 à 35′ très facile. Muscu séparée, 3 à 6 répétitions.</span>
+          <span class="chips"><i class="chip run">EF</i><i class="chip gym">Jambes</i></span>
+        </div>
+        <div class="day off">
+          <span class="dn">Mar</span>
+          <span class="dt">Repos</span>
+          <span class="dd">Haut du corps et tirage en option, sans course.</span>
+        </div>
+        <div class="day anchor">
+          <span class="dn">Mer · qualité</span>
+          <span class="dt">Séance clé</span>
+          <span class="dd">VMA, seuil ou allure Hyrox selon la phase. Seule dans sa journée.</span>
+          <span class="chips"><i class="chip run">Qualité</i></span>
+        </div>
+        <div class="day">
+          <span class="dn">Jeu</span>
+          <span class="dt">Hyrox</span>
+          <span class="dd">Stations, puis relais à deux. En janvier, la simulation.</span>
+          <span class="chips"><i class="chip hyrox">Hyrox</i></span>
+        </div>
+        <div class="day off">
+          <span class="dn">Ven</span>
+          <span class="dt">Repos complet</span>
+          <span class="dd">Le seul jour vraiment off. Il absorbe mercredi et jeudi.</span>
+        </div>
+        <div class="day">
+          <span class="dn">Sam</span>
+          <span class="dt">EF + lignes droites<br>+ spécifique running</span>
+          <span class="dd">Gammes, abducteurs, Rathleff. Faible impact.</span>
+          <span class="chips"><i class="chip run">EF</i><i class="chip gym">Spécifique</i></span>
+        </div>
+        <div class="day anchor">
+          <span class="dn">Dim</span>
+          <span class="dt">Sortie longue</span>
+          <span class="dd">50 à 75′. En fin de bloc, un final au seuil ou à l'allure Hyrox.</span>
+          <span class="chips"><i class="chip run">Longue</i></span>
+        </div>
+      </div>
+    </div>
 
-B3   <b>8 × 1 km</b> à l'allure course
-     récup 60 à 90 s, active</div>
-    <div class="tip"><b>Règle absolue :</b> le premier kilomètre n'est jamais le plus rapide. S'il l'est, la séance est ratée même si la moyenne est bonne.</div>
+    <div class="tpl-note">
+      <div>
+        <h3>Pourquoi mercredi et jeudi se suivent</h3>
+        Deux jours durs d'affilée, puis <b>vendredi off et samedi facile</b>. C'est ce qui laisse le reste
+        de la semaine vraiment facile. Les semaines de simulation, le mercredi passe en EF&nbsp;: qualité
+        puis simulation le lendemain, ce serait trop.
+      </div>
+      <div>
+        <h3>Ce qu'on met dans la muscu</h3>
+        <b>Lundi jambes&nbsp;:</b> squat, hip thrust, fente arrière, mollets. Lourd et court.
+        À partir de décembre, <b>wall balls à 6 kg sur cible à 3 m</b>, la norme du Doubles Mixte.
+        <b>Mardi haut (option)&nbsp;:</b> tirage, rowing haltère, gainage, pour le SkiErg, le rameur et le sled pull.
+      </div>
+    </div>
 
-    <h3>La VMA — le plafond</h3>
-    <p>Toujours <b>à jambes fraîches</b>. Le format court ouvre le bloc parce qu'il donne le plus de temps à VO2max pour le moins de charge au sol — donc le moins de risque pour la bandelette.</p>
-    <div class="proto">B1   <b>30/30</b> à 100-105 % VMA    2×6 → 2×8
-     <b>45/45</b> à 100 % VMA       12 → 16
-
-B2   <b>3'</b> à 92-95 % VMA    5× → 6×   (r 2')
-     <b>4'</b> à 90-92 % VMA    4× → 5×   (r 2'30)
-
-B3   entretien : 6 × 30/30 en fin de samedi</div>
-
-    <h3>La sortie longue — la base</h3>
-    <p>Le facteur limitant n'a pas changé depuis août : son allure EF à FC constante est plate. C'est la longue qui la fait bouger, et c'est elle qui amène la durée jusqu'à celle de l'épreuve — <b>70' → 100'</b>, allure libre, FC ≤ 140.</p>
-    <div class="tip"><b>Jamais supprimée, seulement ralentie.</b> Si le WOD du jeudi a été lourd, la longue reste : elle se court plus doucement.</div>
-
-    <h3>Les lignes droites — le geste</h3>
-    <p>6 à 8 × 20 s, récupération marche complète. C'est là que sa cadence monte naturellement à 170+, et c'est le seul travail qui prépare la reprise après arrêt. Coût aérobie nul, donc on les garde même les semaines chargées.</p>
+    <p class="ghostline">
+      Jamais de jambes lourdes le samedi ni la veille d'une séance de qualité. Première gêne au TFL&nbsp;:
+      les fentes chargées sortent de la séance en premier, en muscu comme au Hyrox.
+    </p>
   </section>
 
-  <section id="f4">
-    <div class="sech"><span class="num disp">04</span><h2>La semaine type</h2></div>
-    <p>Le mardi porte le dur, le vendredi est off, le dimanche porte la longue. Le jeudi appartient au coach — c'est la seule case qu'on ne contrôle pas, donc la seule qu'on entoure de jours souples.</p>
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Semaine par semaine</span>
+      <h2>Le plan, séance par séance</h2>
+      <p>
+        En rose&nbsp;: les séances de course, avec leur durée de référence. Les km sont indicatifs à allure EF.
+        Les allures VMA sont estimées sur une VMA de 12 km/h et seront recalées après le test du 14 octobre.
+      </p>
+    </div>
 
-    <div class="tw"><table>
-      <thead>
-      <tr><th>Jour</th><th>B1</th><th>B2</th><th>B3</th></tr>
-      </thead><tbody>
-      <tr><td class="l" data-label="Jour">Lun</td><td data-label="B1">Repos ou vélo 45' z2</td><td data-label="B2">Repos ou vélo 45' z2</td><td data-label="B3">Repos ou vélo 45' z2</td></tr>
-      <tr class="hi"><td class="l" data-label="Jour">Mar</td><td data-label="B1"><span class="phase-x">VMA courte</span> 30/30<br>+ jambes l'après-midi</td><td data-label="B2"><span class="phase-x">VMA longue</span> 3-4'<br>+ jambes l'après-midi</td><td data-label="B3"><span class="phase-x">8 × 1 km hachés</span><br>+ jambes l'après-midi</td></tr>
-      <tr><td class="l" data-label="Jour">Mer</td><td data-label="B1">EF 30-35' + renfo running</td><td data-label="B2">EF 35' + renfo running</td><td data-label="B3">EF 30' + renfo running</td></tr>
-      <tr><td class="l" data-label="Jour">Jeu</td><td data-label="B1">Hyrox coach</td><td data-label="B2">Hyrox coach<br>+ finisher 1 km si possible</td><td data-label="B3">Hyrox coach<br>+ finisher 1 km</td></tr>
-      <tr><td class="l" data-label="Jour">Ven</td><td data-label="B1">Repos complet</td><td data-label="B2">Repos complet</td><td data-label="B3">Repos complet</td></tr>
-      <tr><td class="l" data-label="Jour">Sam</td><td data-label="B1">EF 40-45' + lignes droites<br>+ bras</td><td data-label="B2">EF 40' + lignes droites<br>+ bras</td><td data-label="B3">EF 35' + <span class="phase-x">6 × 30/30</span><br>+ bras</td></tr>
-      <tr class="hi"><td class="l" data-label="Jour">Dim</td><td data-label="B1"><span class="phase-x">Longue</span> 70' → 85'</td><td data-label="B2"><span class="phase-x">Longue</span> 85-90'<br>dont 3-4 × 1 km hachés</td><td data-label="B3"><span class="phase-x">Longue</span> 75-100'<br>relâchée, le dur est mardi</td></tr>
-      </tbody>
-    </table></div>
-
-    <div class="tip"><b>Le WOD du jeudi n'est pas sous contrôle</b> — c'est le coach qui l'écrit. S'il a été lourd, le samedi passe en EF pur (on retire les lignes droites) et la longue du dimanche reste, mais ralentie.</div>
+    <div class="ledger">
+<article class="week">
+<div class="wk-head"><span class="wk-code">S1</span><span class="wk-dates">5 – 11 oct.</span><span class="wk-theme">Récupération post-10 km</span><span class="spacer"></span><span class="phase-tag pt-recup">Récupération</span><span class="wk-vol"><span class="is">13 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s rest"><span class="d">Lun 5</span><span class="t">Repos complet — lendemain du 10 km</span></div>
+<div class="s rest"><span class="d">Mar 6</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 7</span><span class="t"><b>EF 25′ très facile</b> <span class="km">≈ 3 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 8</span><span class="t">Hyrox léger — technique uniquement<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 9</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 10</span><span class="t"><b>EF 30′ + spécifique running</b> <span class="km">≈ 4 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 11</span><span class="t"><b>EF 45′</b> à la sensation <span class="km">≈ 6 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>Aucune intensité cette semaine.</b> Bilan du 10 km (allure, FC, TFL) et fin de la maladie. Les allures du plan seront recalées sur ce résultat.</p></article>
+<article class="week peak">
+<div class="wk-head"><span class="wk-code">S2</span><span class="wk-dates">12 – 18 oct.</span><span class="wk-theme">Test VMA · retour de la muscu</span><span class="spacer"></span><span class="phase-tag pt-base">Base + force</span><span class="wk-vol"><span class="is">23 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 12</span><span class="t"><b>EF 30′</b> très facile <span class="km">≈ 4 km</span></span></div>
+<div class="s gym"><span class="d">Lun 12</span><span class="t"><b>Jambes</b> — séparée de la course, à 80 % des charges<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 13</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 14</span><span class="t"><b>TEST VMA demi-Cooper</b> — 20′ éch. + 6′ max + 10′ retour <span class="km">≈ 6 km</span><span class="pill add">test</span></span></div>
+<div class="s keep"><span class="d">Jeu 15</span><span class="t">Hyrox — technique des stations<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 16</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 17</span><span class="t"><b>EF 40′ + 4 lignes droites + spécifique running</b> <span class="km">≈ 5 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 18</span><span class="t"><b>Longue 60′</b> à la sensation <span class="km">≈ 8 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>Le test du mercredi fixe toutes les allures VMA du plan.</b> Sur le plat, 6 minutes le plus loin possible. VMA en km/h = distance en mètres ÷ 100. Voir le tableau de décision plus bas.</p></article>
+<article class="week">
+<div class="wk-head"><span class="wk-code">S3</span><span class="wk-dates">19 – 25 oct.</span><span class="wk-theme">Base · côtes</span><span class="spacer"></span><span class="phase-tag pt-base">Base + force</span><span class="wk-vol"><span class="is">24 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 19</span><span class="t"><b>EF 30′</b> <span class="km">≈ 4 km</span></span></div>
+<div class="s gym"><span class="d">Lun 19</span><span class="t"><b>Jambes</b> — séparée de la course<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 20</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 21</span><span class="t"><b>Côtes 8 × 30″</b> à 5-8 % (retour trot) · 50′ <span class="km">≈ 6 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 22</span><span class="t">Hyrox<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 23</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 24</span><span class="t"><b>EF 40′ + 5 lignes droites + spécifique running</b> <span class="km">≈ 5 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 25</span><span class="t"><b>Longue 70′</b> <span class="km">≈ 9 km</span></span></div>
+</div></div>
+<p class="wk-note">Les côtes apportent l'intensité VMA avec moins d'impact que le plat. <b>C'est la porte d'entrée la plus sûre pour le TFL.</b></p></article>
+<article class="week peak">
+<div class="wk-head"><span class="wk-code">S4</span><span class="wk-dates">26 oct. – 1er nov.</span><span class="wk-theme">Base · seuil · avant le départ</span><span class="spacer"></span><span class="phase-tag pt-base">Base + force</span><span class="wk-vol"><span class="is">27 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 26</span><span class="t"><b>EF 35′</b> <span class="km">≈ 4,5 km</span></span></div>
+<div class="s gym"><span class="d">Lun 26</span><span class="t"><b>Jambes</b> — séparée de la course<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 27</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 28</span><span class="t"><b>Seuil 3 × 8′ à 6′00</b> (r = 2′ trot) · 60′ <span class="km">≈ 8 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 29</span><span class="t">Hyrox<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 30</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 31</span><span class="t"><b>EF 40′ + 5 lignes droites + spécifique running</b> <span class="km">≈ 5 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 1er</span><span class="t"><b>Longue 75′</b> <span class="km">≈ 10 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>Pic de la phase de base</b>, juste avant le Maroc. Elle part avec du capital plutôt qu'en pleine montée de charge.</p></article>
+<article class="week maroc">
+<div class="wk-head"><span class="wk-code">S5</span><span class="wk-dates">2 – 8 nov.</span><span class="wk-theme">Maroc · en pointillé</span><span class="spacer"></span><span class="phase-tag pt-maroc">Maroc</span><span class="wk-vol"><span class="is">0–8 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key opt"><span class="d">Au choix</span><span class="t"><b>Tapis ou rameur 20 à 30′ faciles</b>, 2 à 3 fois si l'hôtel a une salle <span class="km">0–8 km</span><span class="pill same">facultatif</span></span></div>
+<div class="s gym opt"><span class="d">Au choix</span><span class="t"><b>Circuit en chambre 20′</b> — squats, fentes, pompes, gainage, abducteurs<span class="pill same">facultatif</span></span></div>
+<div class="s keep"><span class="d">Chaque j.</span><span class="t">Marcher beaucoup. C'est déjà de l'endurance fondamentale.</span></div>
+<div class="s gym"><span class="d">Chaque j.</span><span class="t"><b>Prévention TFL 10′</b> — abducteurs + Rathleff<span class="pill gym">à garder</span></span></div>
+</div></div>
+<p class="wk-note"><b>Coupure assumée, rien n'est obligatoire.</b> Deux semaines à ce stade coûtent peu&nbsp;: c'est la façon de reprendre qui compte.</p></article>
+<article class="week maroc">
+<div class="wk-head"><span class="wk-code">S6</span><span class="wk-dates">9 – 15 nov.</span><span class="wk-theme">Maroc · en pointillé</span><span class="spacer"></span><span class="phase-tag pt-maroc">Maroc</span><span class="wk-vol"><span class="is">0–8 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key opt"><span class="d">Au choix</span><span class="t"><b>Tapis ou rameur 20 à 30′ faciles</b>, 2 à 3 fois si l'hôtel a une salle <span class="km">0–8 km</span><span class="pill same">facultatif</span></span></div>
+<div class="s gym opt"><span class="d">Au choix</span><span class="t"><b>Circuit en chambre 20′</b> — squats, fentes, pompes, gainage, abducteurs<span class="pill same">facultatif</span></span></div>
+<div class="s keep"><span class="d">Chaque j.</span><span class="t">Marcher beaucoup. C'est déjà de l'endurance fondamentale.</span></div>
+<div class="s gym"><span class="d">Chaque j.</span><span class="t"><b>Prévention TFL 10′</b> — abducteurs + Rathleff<span class="pill gym">à garder</span></span></div>
+</div></div>
+<p class="wk-note">Même consigne. <b>Noter la FC de repos les derniers matins</b>&nbsp;: elle sert de référence pour la reprise.</p></article>
+<article class="week">
+<div class="wk-head"><span class="wk-code">S7</span><span class="wk-dates">16 – 22 nov.</span><span class="wk-theme">Reprise · sans intensité</span><span class="spacer"></span><span class="phase-tag pt-reprise">Reprise</span><span class="wk-vol"><span class="is">17,5 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 16</span><span class="t"><b>EF 25′</b> <span class="km">≈ 3 km</span></span></div>
+<div class="s gym"><span class="d">Lun 16</span><span class="t"><b>Jambes</b> — séparée de la course, à 70 % des charges<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 17</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 18</span><span class="t"><b>EF 30′ + 4 lignes droites</b> — pas de qualité <span class="km">≈ 4 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 19</span><span class="t">Hyrox léger<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 20</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 21</span><span class="t"><b>EF 30′ + spécifique running</b> <span class="km">≈ 4 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 22</span><span class="t"><b>Longue 50′</b> <span class="km">≈ 6,5 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>Environ 65 % du volume d'avant le départ.</b> Si la FC de repos dépasse 60 ou si le TFL se manifeste, on refait cette semaine une deuxième fois.</p></article>
+<article class="week">
+<div class="wk-head"><span class="wk-code">S8</span><span class="wk-dates">23 – 29 nov.</span><span class="wk-theme">Bloc VMA 1 · côtes</span><span class="spacer"></span><span class="phase-tag pt-vma">Bloc VMA</span><span class="wk-vol"><span class="is">20,5 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 23</span><span class="t"><b>EF 30′</b> <span class="km">≈ 4 km</span></span></div>
+<div class="s gym"><span class="d">Lun 23</span><span class="t"><b>Jambes</b> — séparée de la course<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 24</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 25</span><span class="t"><b>Côtes 10 × 30″</b> (retour trot) · 45′ <span class="km">≈ 5,5 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 26</span><span class="t">Hyrox<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 27</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 28</span><span class="t"><b>EF 30′ + 5 lignes droites + spécifique running</b> <span class="km">≈ 4 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 29</span><span class="t"><b>Longue 55′</b> <span class="km">≈ 7 km</span></span></div>
+</div></div>
+<p class="wk-note">Entrée dans le bloc par les côtes, un terrain déjà connu en octobre. <b>+17 % de volume</b>, pas plus.</p></article>
+<article class="week">
+<div class="wk-head"><span class="wk-code">S9</span><span class="wk-dates">30 nov. – 6 déc.</span><span class="wk-theme">Bloc VMA 2 · 30/30</span><span class="spacer"></span><span class="phase-tag pt-vma">Bloc VMA</span><span class="wk-vol"><span class="is">24 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 30</span><span class="t"><b>EF 30′</b> <span class="km">≈ 4 km</span></span></div>
+<div class="s gym"><span class="d">Lun 30</span><span class="t"><b>Jambes</b> — séparée de la course<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 1er</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 2</span><span class="t"><b>2 × 8 × 30/30 à 4′50</b> (r = 30″ trot, 3′ entre séries) · 50′ <span class="km">≈ 7 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 3</span><span class="t">Hyrox<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 4</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 5</span><span class="t"><b>EF 35′ + 5 lignes droites + spécifique running</b> <span class="km">≈ 4,5 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 6</span><span class="t"><b>Longue 65′ dont les 10 dernières à 6′00</b> <span class="km">≈ 8,5 km</span></span></div>
+</div></div>
+<p class="wk-note">Le 30/30 accumule du temps près de la VMA sans l'usure d'un fractionné long. <b>Si les dernières répétitions ralentissent de plus de 5 %, la série s'arrête là.</b></p></article>
+<article class="week peak">
+<div class="wk-head"><span class="wk-code">S10</span><span class="wk-dates">7 – 13 déc.</span><span class="wk-theme">Bloc VMA 3 · 30/30</span><span class="spacer"></span><span class="phase-tag pt-vma">Bloc VMA</span><span class="wk-vol"><span class="is">27 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 7</span><span class="t"><b>EF 35′</b> <span class="km">≈ 4,5 km</span></span></div>
+<div class="s gym"><span class="d">Lun 7</span><span class="t"><b>Jambes</b> — séparée de la course + <b>wall balls 4 × 8 à 6 kg</b><span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 8</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 9</span><span class="t"><b>2 × 10 × 30/30 à 4′50</b> (r = 30″ trot, 3′ entre séries) · 55′ <span class="km">≈ 7,5 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 10</span><span class="t">Hyrox<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 11</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 12</span><span class="t"><b>EF 40′ + 6 lignes droites + spécifique running</b> <span class="km">≈ 5 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 13</span><span class="t"><b>Longue 75′ dont les 15 dernières à 6′00</b> <span class="km">≈ 10 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>Les wall balls à 6 kg arrivent dans la séance jambes</b>&nbsp;: c'est la charge et la cible à 3 m du Doubles Mixte. Technique d'abord.</p></article>
+<article class="week peak">
+<div class="wk-head"><span class="wk-code">S11</span><span class="wk-dates">14 – 20 déc.</span><span class="wk-theme">Bloc VMA 4 · 400 m</span><span class="spacer"></span><span class="phase-tag pt-vma">Bloc VMA</span><span class="wk-vol"><span class="is">27,5 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 14</span><span class="t"><b>EF 35′</b> <span class="km">≈ 4,5 km</span></span></div>
+<div class="s gym"><span class="d">Lun 14</span><span class="t"><b>Jambes</b> — séparée de la course + wall balls 4 × 8<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 15</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 16</span><span class="t"><b>8 × 400 m en 2′03</b> (r = 1′30 trot) · 55′ <span class="km">≈ 8 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 17</span><span class="t">Hyrox<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 18</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 19</span><span class="t"><b>EF 40′ + 6 lignes droites + spécifique running</b> <span class="km">≈ 5 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 20</span><span class="t"><b>Longue 75′ dont les 15 dernières à 6′00</b> <span class="km">≈ 10 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>Dernière semaine de charge de l'année.</b> Le 400 m tient la VMA plus longtemps que le 30/30&nbsp;: c'est la séance qui montre si le bloc a pris.</p></article>
+<article class="week">
+<div class="wk-head"><span class="wk-code">S12</span><span class="wk-dates">21 – 27 déc.</span><span class="wk-theme">Fêtes · allégé</span><span class="spacer"></span><span class="phase-tag pt-fetes">Fêtes</span><span class="wk-vol"><span class="is">21,5 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 21</span><span class="t"><b>EF 30′</b> <span class="km">≈ 4 km</span></span></div>
+<div class="s gym"><span class="d">Lun 21</span><span class="t"><b>Jambes</b> — séparée de la course, charges réduites<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 22</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 23</span><span class="t"><b>12 × 30/30 à 4′50</b> — entretien · 40′ <span class="km">≈ 5,5 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 24</span><span class="t">Hyrox si la salle est ouverte, sinon EF 30′<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 25</span><span class="t">Repos complet — Noël</span></div>
+<div class="s key"><span class="d">Sam 26</span><span class="t"><b>EF 30′</b> <span class="km">≈ 4 km</span></span></div>
+<div class="s key"><span class="d">Dim 27</span><span class="t"><b>Longue 60′</b> <span class="km">≈ 8 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>−22 % de volume.</b> Une seule séance structurée pour entretenir. Le reste s'adapte à l'agenda des fêtes.</p></article>
+<article class="week">
+<div class="wk-head"><span class="wk-code">S13</span><span class="wk-dates">28 déc. – 3 janv.</span><span class="wk-theme">Fêtes · test VMA n°2</span><span class="spacer"></span><span class="phase-tag pt-fetes">Fêtes</span><span class="wk-vol"><span class="is">23 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 28</span><span class="t"><b>EF 30′</b> <span class="km">≈ 4 km</span></span></div>
+<div class="s gym"><span class="d">Lun 28</span><span class="t"><b>Jambes</b> — séparée de la course<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 29</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 30</span><span class="t"><b>TEST VMA n°2 demi-Cooper</b> — même protocole que le 14 octobre <span class="km">≈ 6 km</span><span class="pill add">test</span></span></div>
+<div class="s keep"><span class="d">Jeu 31</span><span class="t">Hyrox ou EF 30′<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 1er</span><span class="t">Repos complet — jour de l'an</span></div>
+<div class="s key"><span class="d">Sam 2</span><span class="t"><b>EF 35′ + spécifique running</b> <span class="km">≈ 4,5 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 3</span><span class="t"><b>Longue 65′</b> <span class="km">≈ 8,5 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>Le test mesure le gain du bloc</b> et recale les allures de janvier. Cible&nbsp;: +0,5 à +1 km/h par rapport au 14 octobre.</p></article>
+<article class="week">
+<div class="wk-head"><span class="wk-code">S14</span><span class="wk-dates">4 – 10 janv.</span><span class="wk-theme">Spécifique 1 · enchaînements</span><span class="spacer"></span><span class="phase-tag pt-spe">Spécifique</span><span class="wk-vol"><span class="is">26,5 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 4</span><span class="t"><b>EF 35′</b> <span class="km">≈ 4,5 km</span></span></div>
+<div class="s gym"><span class="d">Lun 4</span><span class="t"><b>Jambes</b> — séparée de la course + wall balls 4 × 8<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 5</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 6</span><span class="t"><b>5 × (1 km à 6′10 + 1′ de station)</b> (r = 2′) · 60′ — alterner 15 fentes marchées et 8 burpees broad jump <span class="km">≈ 8 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 7</span><span class="t">Hyrox à deux — relais et zone de tag<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 8</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 9</span><span class="t"><b>EF 40′ + lignes droites + spécifique running</b> <span class="km">≈ 5 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 10</span><span class="t"><b>Longue 70′</b> <span class="km">≈ 9 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>Premier travail de compromised running.</b> Le kilomètre qui suit la station doit sortir à la même allure que le premier. C'est la compétence qui fait gagner le plus de temps en Hyrox.</p></article>
+<article class="week peak">
+<div class="wk-head"><span class="wk-code">S15</span><span class="wk-dates">11 – 17 janv.</span><span class="wk-theme">Simulation complète</span><span class="spacer"></span><span class="phase-tag pt-spe">Spécifique</span><span class="wk-vol"><span class="is">22,5 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 11</span><span class="t"><b>EF 35′</b> <span class="km">≈ 4,5 km</span></span></div>
+<div class="s gym"><span class="d">Lun 11</span><span class="t"><b>Jambes</b> — séparée de la course, sans wall balls<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 12</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 13</span><span class="t"><b>EF 35′</b> — semaine de simulation <span class="km">≈ 4,5 km</span></span></div>
+<div class="s key"><span class="d">Jeu 14</span><span class="t"><b>SIMULATION COMPLÈTE Doubles Mixte</b> — 8 × 1 km + 8 stations aux charges officielles, à deux <span class="km">+ 8 km</span><span class="pill hyrox">simulation</span></span></div>
+<div class="s rest"><span class="d">Ven 15</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 16</span><span class="t"><b>EF 35′ souple</b> <span class="km">≈ 4,5 km</span></span></div>
+<div class="s key"><span class="d">Dim 17</span><span class="t"><b>Longue 70′</b> <span class="km">≈ 9 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>Le mercredi passe en EF</b>&nbsp;: qualité puis simulation le lendemain, ce serait trop. La simulation fixe la répartition des stations et le temps cible du 6 février.</p></article>
+<article class="week peak">
+<div class="wk-head"><span class="wk-code">S16</span><span class="wk-dates">18 – 24 janv.</span><span class="wk-theme">Spécifique 2 · allure Hyrox</span><span class="spacer"></span><span class="phase-tag pt-spe">Spécifique</span><span class="wk-vol"><span class="is">27 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 18</span><span class="t"><b>EF 35′</b> <span class="km">≈ 4,5 km</span></span></div>
+<div class="s gym"><span class="d">Lun 18</span><span class="t"><b>Jambes</b> — séparée de la course + wall balls 4 × 8<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 19</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 20</span><span class="t"><b>5 × 1 km à 6′05</b> (r = 1′30 trot) · 55′ <span class="km">≈ 8 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 21</span><span class="t">Hyrox — répartition validée en simulation<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 22</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 23</span><span class="t"><b>EF 40′ + lignes droites + spécifique running</b> <span class="km">≈ 5 km</span><span class="pill gym">spécifique</span></span></div>
+<div class="s key"><span class="d">Dim 24</span><span class="t"><b>Longue 70′ dont les 15 dernières à 6′05</b> <span class="km">≈ 9,5 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>Dernière semaine pleine.</b> L'allure Hyrox arrive dans la longue&nbsp;: tenir l'allure de course sur des jambes fatiguées, c'est la répétition générale.</p></article>
+<article class="week">
+<div class="wk-head"><span class="wk-code">S17</span><span class="wk-dates">25 – 31 janv.</span><span class="wk-theme">Affûtage</span><span class="spacer"></span><span class="phase-tag pt-taper">Affûtage</span><span class="wk-vol"><span class="is">22,5 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 25</span><span class="t"><b>EF 30′</b> <span class="km">≈ 4 km</span></span></div>
+<div class="s gym"><span class="d">Lun 25</span><span class="t"><b>Jambes — dernière séance lourde</b>, à J−12<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 26</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 27</span><span class="t"><b>4 × 1 km à 6′05</b> (r = 2′ trot) · 50′ <span class="km">≈ 7 km</span></span></div>
+<div class="s keep"><span class="d">Jeu 28</span><span class="t">Hyrox léger — transitions à deux<span class="pill hyrox">Hyrox</span></span></div>
+<div class="s rest"><span class="d">Ven 29</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 30</span><span class="t"><b>EF 35′ + lignes droites</b> <span class="km">≈ 4,5 km</span></span></div>
+<div class="s key"><span class="d">Dim 31</span><span class="t"><b>Longue 55′</b> <span class="km">≈ 7 km</span></span></div>
+</div></div>
+<p class="wk-note"><b>−17 % de volume, intensité conservée.</b> La dernière séance lourde tombe à douze jours de la course, comme pour le 10 km.</p></article>
+<article class="week peak">
+<div class="wk-head"><span class="wk-code">S18</span><span class="wk-dates">1er – 7 fév.</span><span class="wk-theme">Semaine de course</span><span class="spacer"></span><span class="phase-tag pt-taper">Affûtage</span><span class="wk-vol"><span class="is">11,5 km</span></span></div>
+<div class="cols single"><div class="col col-new">
+<div class="s key"><span class="d">Lun 1er</span><span class="t"><b>EF 25′</b> <span class="km">≈ 3 km</span></span></div>
+<div class="s gym"><span class="d">Lun 1er</span><span class="t"><b>Activation jambes</b> — charges réduites, zéro courbature<span class="pill gym">muscu</span></span></div>
+<div class="s rest"><span class="d">Mar 2</span><span class="t">Repos · haut du corps en option, sans course</span></div>
+<div class="s key"><span class="d">Mer 3</span><span class="t"><b>3 × 1 km à 6′05</b> (r = 2′) · 40′ <span class="km">≈ 5,5 km</span></span></div>
+<div class="s key"><span class="d">Jeu 4</span><span class="t"><b>EF 20′ + 4 lignes droites</b> — pas de Hyrox <span class="km">≈ 3 km</span></span></div>
+<div class="s rest"><span class="d">Ven 5</span><span class="t">Repos complet</span></div>
+<div class="s key"><span class="d">Sam 6</span><span class="t">HYROX DOUBLES MIXTE · Toulouse MEETT<span class="pill same">jour J</span></span></div>
+<div class="s rest"><span class="d">Dim 7</span><span class="t">Marche, récupération</span></div>
+</div></div>
+<p class="wk-note">Hypothèse <b>samedi 6</b>. Si le créneau tombe en semaine, tout recule d'autant de jours&nbsp;: séance d'allure à J−3, lignes droites à J−2, repos la veille.</p></article>
+    </div>
   </section>
 
-  <section id="f5">
-    <div class="sech"><span class="num disp">05</span><h2>Mesurer la VMA avant de prescrire</h2></div>
-    <p><b>Demi-Cooper (6 min max) à la mi-octobre</b>, après la transition, sur plat ou sur piste. Simple, fiable, peu traumatisant. Puis contrôle fin novembre et mi-janvier — trois points suffisent pour voir une tendance. Tant que le test n'est pas fait, les deux colonnes de droite ne sont que des ordres de grandeur.</p>
-
-    <div class="tw"><table>
-      <thead>
-      <tr><th>Séance</th><th class="ctr">% VMA</th><th class="ctr">Si 11,5 km/h</th><th class="ctr">Si 12,5 km/h</th></tr>
-      </thead><tbody>
-      <tr><td class="l" data-label="Séance">30/30</td><td class="ctr" data-label="% VMA">100 – 105 %</td><td class="ctr pk" data-label="11,5">4'58 – 5'13</td><td class="ctr pk" data-label="12,5">4'34 – 4'48</td></tr>
-      <tr><td class="l" data-label="Séance">45/45</td><td class="ctr" data-label="% VMA">100 %</td><td class="ctr pk" data-label="11,5">5'13</td><td class="ctr pk" data-label="12,5">4'48</td></tr>
-      <tr><td class="l" data-label="Séance">Intervalles 3'</td><td class="ctr" data-label="% VMA">92 – 95 %</td><td class="ctr pk" data-label="11,5">5'30 – 5'40</td><td class="ctr pk" data-label="12,5">5'03 – 5'13</td></tr>
-      <tr><td class="l" data-label="Séance">Intervalles 4'</td><td class="ctr" data-label="% VMA">90 – 92 %</td><td class="ctr pk" data-label="11,5">5'40 – 5'48</td><td class="ctr pk" data-label="12,5">5'13 – 5'20</td></tr>
-      <tr class="hi"><td class="l" data-label="Séance">Kilomètre haché</td><td class="ctr" data-label="% VMA">allure 10 km</td><td class="ctr pk" data-label="Allure" colspan="2">Donnée par le chrono du 4 octobre</td></tr>
-      <tr><td class="l" data-label="Séance">EF et longue</td><td class="ctr" data-label="% VMA">FC ≤ 140</td><td class="ctr" data-label="Allure" colspan="2">À la sensation, l'allure suivra</td></tr>
-      </tbody>
-    </table></div>
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Doubles Mixte</span>
+      <h2>Benjamin prend les charges, Christine garde ses jambes</h2>
+      <p>
+        Toutes les stations sont aux charges hommes, cible wall ball à 3 m comprise. Un seul partenaire
+        travaille à la fois et les relais sont libres. Répartition de départ, à valider pendant la
+        simulation du 14 janvier.
+      </p>
+    </div>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Station</th><th>Charge</th><th>Répartition</th><th>Pourquoi</th></tr></thead>
+        <tbody>
+          <tr><td>SkiErg 1000 m</td><td class="num">—</td><td><span class="who s">50 / 50</span> blocs de 250 m</td><td><span class="ev">Pas de charge, Christine y est efficace.</span></td></tr>
+          <tr><td>Sled push 50 m</td><td class="num">152 kg</td><td><span class="who b">Benjamin ≈ 80 %</span></td><td><span class="ev">La station qui coûte le plus aux jambes avant un kilomètre.</span></td></tr>
+          <tr><td>Sled pull 50 m</td><td class="num">103 kg</td><td><span class="who b">Benjamin ≈ 75 %</span></td><td><span class="ev">Christine récupère dans la zone de relais.</span></td></tr>
+          <tr><td>Burpee broad jump 80 m</td><td class="num">—</td><td><span class="who s">50 / 50</span> blocs de 10 m</td><td><span class="ev">Cardio pur&nbsp;: des relais courts gardent la FC sous contrôle.</span></td></tr>
+          <tr><td>Rameur 1000 m</td><td class="num">—</td><td><span class="who s">50 / 50</span> blocs de 250 m</td><td><span class="ev">Même logique que le SkiErg.</span></td></tr>
+          <tr><td>Farmers carry 200 m</td><td class="num">2 × 24 kg</td><td><span class="who b">Benjamin ≈ 75 %</span></td><td><span class="ev">Limité par la prise plus que par les jambes.</span></td></tr>
+          <tr><td>Fentes sandbag 100 m</td><td class="num">20 kg</td><td><span class="who b">Benjamin ≈ 70 %</span></td><td><span class="ev">La station la plus risquée pour le TFL, juste avant le dernier km.</span></td></tr>
+          <tr><td>Wall balls × 100</td><td class="num">6 kg · 3 m</td><td><span class="who c">Christine blocs de 5 à 8</span></td><td><span class="ev">Plus de course derrière&nbsp;: elle peut y mettre ce qu'il lui reste.</span></td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
-  <section id="f6">
-    <div class="sech"><span class="num disp">06</span><h2>Deux compétences qui coûtent des minutes</h2></div>
-
-    <h3>Le pacing du premier kilomètre</h3>
-    <p>Run 1 se court frais, avec l'adrénaline du départ et tout le monde autour qui part trop vite. Vingt secondes au kilomètre de trop sur le premier se paient sur les sept suivants — et chez quelqu'un dont la base aérobie est le point faible, elles se paient cher. C'est une compétence, pas un trait de caractère : elle se travaille à chaque séance de kilomètres hachés. <b>Critère de réussite : km 1 ≤ km 2</b>, jamais l'inverse.</p>
-
-    <h3>La reprise après arrêt</h3>
-    <p>Ce n'est pas au milieu du kilomètre qu'on perd du temps, c'est dans les <b>150 premiers mètres</b>. Les jambes sont raides, la cadence s'effondre, et essayer de reprendre l'allure d'un coup ne fait que crisper. La bonne consigne est l'inverse : repartir <b>à cadence haute et petites foulées</b>, laisser la longueur revenir seule sur 100 m.</p>
-    <div class="tip">Ses données d'août : <b>157</b> pas/min en endurance, <b>170-172</b> à l'allure. Après une station, la cadence tombe. C'est elle qu'on relance, pas l'allure.</div>
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Allures de référence</span>
+      <h2>Dérivées de ses données, recalées à chaque test</h2>
+      <p>
+        FC max ≈ 182, FC de repos 57. Le seuil vient de la séance du 14 août et sera recalé sur le 10 km.
+        Les allures VMA sont estimées sur 12 km/h en attendant le test.
+      </p>
+    </div>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Zone</th><th>Allure</th><th>FC</th><th>Usage</th></tr></thead>
+        <tbody>
+          <tr><td>Endurance fondamentale</td><td class="num">7′20 – 8′00</td><td class="num">128 – 140</td><td><span class="ev">Lundi, samedi, sortie longue. Marcher les côtes si besoin.</span></td></tr>
+          <tr><td>Seuil</td><td class="num">5′55 – 6′05</td><td class="num">158 – 165</td><td><span class="ev">Phase de base et final des longues de décembre.</span></td></tr>
+          <tr><td>Allure Hyrox</td><td class="num">6′05 – 6′10</td><td class="num">≈ 160 – 168</td><td><span class="ev">Janvier. Cible définitive fixée après la simulation.</span></td></tr>
+          <tr><td>400 m (95-100 % VMA)</td><td class="num">≈ 2′03 au 400</td><td class="num">—</td><td><span class="ev">S11. Récupération 1′30 trot.</span></td></tr>
+          <tr><td>30/30 (100-105 % VMA)</td><td class="num">4′46 – 5′00</td><td class="num">—</td><td><span class="ev">S9, S10, S12. Récupération 30″ trot lent.</span></td></tr>
+          <tr><td>Côtes courtes</td><td class="num">30″ fort</td><td class="num">—</td><td><span class="ev">Pente 5 à 8 %, retour trot. Jamais chronométré.</span></td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
-  <section id="f7">
-    <div class="sech"><span class="num disp">07</span><h2>Garde-fous et indicateurs</h2></div>
-
-    <h3>Bandelette : le risque se déplace</h3>
-    <ul>
-      <li><b>Abducteurs en quotidien dès le B2</b>, dès qu'on introduit le travail sous fatigue.</li>
-      <li><b>Les 30/30 sont sûrs</b> — courts, cadence haute, peu de volume à haute charge. C'est pour ça qu'ils ouvrent le bloc.</li>
-      <li><b>Le risque est dans la reprise fatiguée</b>, pas dans la vitesse : fessiers cramés → adduction de hanche → compression latérale.</li>
-      <li><b>Première gêne :</b> les hachés sautent, la VMA repasse en 30/30 sur plat, la longue est ralentie. Le volume, lui, ne descend pas.</li>
-      <li><b>Si de la pliométrie est ajoutée</b> à la séance jambes : en ouverture, faible amplitude, et suspendue au premier signe.</li>
-    </ul>
-
-    <h3>Les trois indicateurs</h3>
-    <ul>
-      <li><b>Écart run 1 → run 8</b> sur chaque séance hachée. Cible ≤ 30 s/km. C'est le juge de la prépa : tout le monde ralentit sur un Hyrox, ceux qui performent ralentissent moins.</li>
-      <li><b>Allure EF à FC 135.</b> Plate depuis juillet. Si elle n'a pas bougé en décembre, le volume n'est pas au rendez-vous — c'est le premier signal, avant le chrono.</li>
-      <li><b>Demi-Cooper</b> mi-octobre, fin novembre, mi-janvier.</li>
-    </ul>
-
-    <div class="tip"><b>Le Doubles du 19 septembre donne la ligne de base gratuitement.</b> Il faudra en sortir les splits de course section par section et le ressenti station par station — c'est le vrai livrable de cette journée, plus que le chrono final.</div>
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Mercredi 14 octobre</span>
+      <h2>La règle de décision</h2>
+      <p>
+        Test demi-Cooper&nbsp;: 6 minutes le plus loin possible. VMA en km/h = distance en mètres ÷ 100.
+        Le résultat recale toutes les allures du bloc VMA et l'allure Hyrox visée. Même test le 30 décembre.
+      </p>
+    </div>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Distance en 6′</th><th>VMA</th><th>30/30</th><th>400 m</th><th>Allure Hyrox (80 %)</th></tr></thead>
+        <tbody>
+          <tr class="go"><td class="num">≥ 1250 m</td><td class="num">12,5 km/h</td><td class="num">4′34 – 4′48</td><td class="num">1′55 – 2′01</td><td class="num">6′00</td></tr>
+          <tr class="go"><td class="num">1200 m</td><td class="num">12 km/h</td><td class="num">4′46 – 5′00</td><td class="num">2′00 – 2′06</td><td class="num">6′15</td></tr>
+          <tr class="mid"><td class="num">1150 m</td><td class="num">11,5 km/h</td><td class="num">4′58 – 5′13</td><td class="num">2′05 – 2′12</td><td class="num">6′31</td></tr>
+          <tr class="no"><td class="num">≤ 1100 m</td><td class="num">11 km/h</td><td class="num">5′12 – 5′27</td><td class="num">2′11 – 2′18</td><td class="num">6′49</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
-  <p class="lead">Ce qui n'est pas dans cette page : les stations. C'est volontaire — elles se travaillent à la séance du coach, avec le vrai matériel, et une partie de leur charge est absorbée par Benjamin. Le run, lui, n'est transférable à personne.</p>
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">Garde-fous</span>
+      <h2>Ce qui déclenche un ajustement</h2>
+    </div>
+    <div class="rails">
+      <div class="rail alert">
+        <h3>Si le TFL se réveille</h3>
+        <ul>
+          <li><b>Première gêne</b> — les deux séances suivantes en EF court et plat, séance VMA reportée d'une semaine.</li>
+          <li><b>Plafond 24 km</b> tant que ce n'est pas éteint depuis 10 jours.</li>
+          <li><b>Côtes plutôt que plat</b> pour la VMA pendant toute période sensible.</li>
+          <li><b>Fentes chargées suspendues</b>, en muscu comme au Hyrox du jeudi.</li>
+          <li><b>Abducteurs en quotidien</b> pendant la période active.</li>
+        </ul>
+      </div>
+      <div class="rail">
+        <h3>Les signaux à surveiller</h3>
+        <ul>
+          <li><b>FC de repos</b> — au-dessus de 60 trois matins de suite, la qualité de la semaine passe en EF.</li>
+          <li><b>Maladie</b> — symptômes au-dessus du cou&nbsp;: EF court possible. Fièvre ou courbatures&nbsp;: repos jusqu'à 48 h sans symptôme.</li>
+          <li><b>Séries qui se dégradent</b> — plus de 5 % de ralentissement sur les dernières répétitions, on arrête la série.</li>
+          <li><b>Dérive de FC sur la longue</b> — au-dessus de 8 %, la longue est trop rapide.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-  <footer class="site-footer">Bloc établi le 20 août 2026 · cible dimanche 7 février 2027 · <a href="Christine_10K_Carnet.html">Carnet 10 km</a></footer>
+  <footer>
+    <p>
+      <strong>Ce qui est repris du plan 10 km.</strong> Le renfo préventif (abducteurs, Rathleff, contrôle
+      rotationnel), les lignes droites à la place du métronome, la logique de la séance jambes lourde et
+      courte, et la dernière séance lourde à douze jours de la course.
+    </p>
+    <p>
+      <strong>Ce qui reste à recaler.</strong> Le seuil après le 10 km, les allures VMA après le test du
+      14 octobre, l'affûtage une fois le créneau connu, la répartition des stations après la simulation.
+    </p>
+    <p>
+      <strong>Sources pour le format.</strong> Dates et programme&nbsp;: page officielle Lucis Hyrox Toulouse
+      (MEETT, 3 au 7 février 2027). Charges du Doubles Mixte (charges hommes, wall ball 6 kg à 3 m)&nbsp;:
+      guides de la saison, à vérifier dans le règlement officiel à l'inscription.
+    </p>
+    <p class="mono" style="margin-top:22px;font-size:12px;letter-spacing:.05em">
+      Établi le 1er octobre 2026 · à la suite de la Révision Sub-60.
+    </p>
+  </footer>
+
 </div>
+
+<script>
+(function () {
+  var VOLS = [13, 23, 24, 27, null, null, 17.5, 20.5, 24, 27, 27.5, 21.5, 23, 26.5, 22.5, 27, 22.5, 11.5];
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.getElementById('chart');
+  var tip = document.getElementById('tip');
+  var card = svg.closest('.chart-card');
+  var W = 780, H = 310, L = 44, R = 14, T = 26, B = 46;
+  var pw = W - L - R, ph = H - T - B, YMAX = 30;
+  function y(v) { return T + ph - (v / YMAX) * ph; }
+  function el(n, a) { var e = document.createElementNS(NS, n); for (var k in a) e.setAttribute(k, a[k]); return e; }
+  function fmt(v) { return v == null ? '0 à 8 km, facultatif' : String(v).replace('.', ',') + ' km'; }
+
+  [0, 10, 20, 30].forEach(function (v) {
+    svg.appendChild(el('line', { x1: L, x2: L + pw, y1: y(v), y2: y(v),
+      stroke: v === 0 ? 'rgba(255,255,255,.20)' : 'rgba(255,255,255,.055)', 'stroke-width': 1 }));
+    var t = el('text', { x: L - 11, y: y(v) + 4, 'text-anchor': 'end', fill: '#8C8195', 'font-size': 11, 'font-family': "'IBM Plex Mono',monospace" });
+    t.textContent = v; svg.appendChild(t);
+  });
+  svg.appendChild(el('line', { x1: L, x2: L + pw, y1: y(24), y2: y(24), stroke: '#E0A03F', 'stroke-width': 1, 'stroke-dasharray': '4 4', opacity: .6 }));
+
+  var gw = pw / VOLS.length, bw = 22;
+  VOLS.forEach(function (v, i) {
+    var cx = L + gw * i + gw / 2, x = cx - bw / 2, k = 'S' + (i + 1);
+    if (v == null) {
+      svg.appendChild(el('rect', { x: x, y: y(8), width: bw, height: y(0) - y(8), rx: 4, fill: 'transparent', stroke: '#8C8195', 'stroke-dasharray': '3 3' }));
+      var m = el('text', { x: cx, y: y(8) - 9, 'text-anchor': 'middle', fill: '#8C8195', 'font-size': 10.5, 'font-family': "'IBM Plex Mono',monospace" });
+      m.textContent = '0–8'; svg.appendChild(m);
+    } else {
+      svg.appendChild(el('path', {
+        d: 'M' + x + ' ' + (T + ph) + ' L' + x + ' ' + (y(v) + 4) + ' Q' + x + ' ' + y(v) + ' ' + (x + 4) + ' ' + y(v) +
+           ' L' + (x + bw - 4) + ' ' + y(v) + ' Q' + (x + bw) + ' ' + y(v) + ' ' + (x + bw) + ' ' + (y(v) + 4) +
+           ' L' + (x + bw) + ' ' + (T + ph) + ' Z', fill: '#F04A8C' }));
+      var lbl = el('text', { x: cx, y: y(v) - 9, 'text-anchor': 'middle', fill: '#F04A8C', 'font-size': 11, 'font-weight': 600, 'font-family': "'IBM Plex Mono',monospace" });
+      lbl.textContent = String(v).replace('.', ','); svg.appendChild(lbl);
+    }
+    var xl = el('text', { x: cx, y: T + ph + 22, 'text-anchor': 'middle', fill: '#B9AFC2', 'font-size': 11.5, 'font-weight': 600, 'font-family': "'Outfit',sans-serif" });
+    xl.textContent = k; svg.appendChild(xl);
+    var hit = el('rect', { x: L + gw * i, y: T, width: gw, height: ph, fill: 'transparent', tabindex: 0, role: 'button', 'aria-label': k + ' : ' + fmt(v) });
+    function show() {
+      tip.innerHTML = '<div class="t">' + k + '</div><div class="r"><i style="background:#F04A8C"></i><span class="mono">' + fmt(v) + '</span></div>';
+      tip.style.opacity = 1;
+      var box = card.getBoundingClientRect(), sb = svg.getBoundingClientRect();
+      var px = sb.left - box.left + (cx / W) * sb.width;
+      tip.style.left = Math.max(8, Math.min(px - 62, box.width - 170)) + 'px';
+      tip.style.top = (sb.top - box.top + (y(v == null ? 8 : v) / H) * sb.height - 62) + 'px';
+    }
+    function hide() { tip.style.opacity = 0; }
+    hit.addEventListener('mouseenter', show); hit.addEventListener('mousemove', show);
+    hit.addEventListener('mouseleave', hide); hit.addEventListener('focus', show); hit.addEventListener('blur', hide);
+    svg.appendChild(hit);
+  });
+  var u = el('text', { x: L - 11, y: T - 9, 'text-anchor': 'end', fill: '#8C8195', 'font-size': 10.5, 'font-family': "'IBM Plex Mono',monospace", 'letter-spacing': '.12em' });
+  u.textContent = 'KM'; svg.appendChild(u);
+})();
+</script>
 
 <script>
 if ('serviceWorker' in navigator) {
@@ -195,5 +1060,6 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+
 </body>
 </html>

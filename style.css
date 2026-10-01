@@ -141,6 +141,11 @@ li::marker { color: var(--hot); }
   pointer-events: none;
 }
 
+/* Libellé long / court d'un onglet (« Plan Hyrox » / « Plan ») : un seul des
+   deux est affiché, l'autre est en display:none, donc ignoré des lecteurs
+   d'écran aussi. */
+.shell-tab .tab-short { display: none; }
+
 /* ===== WRAP ===== */
 .wrap {
   max-width: 1000px;
@@ -305,23 +310,30 @@ tr.hi td.l, tr.hi .pk { color: var(--hot); }
   /* Onglets resserrés et insécables : la cible tactile reste à 36 px de haut. */
   .shell-nav { margin-left: auto; gap: 2px; flex: none; }
   .shell-tab { padding: 0 11px; font-size: 13.5px; white-space: nowrap; }
+  .shell-tab .tab-long { display: none; }
+  .shell-tab .tab-short { display: inline; }
 }
 
-/* Entre 360 et 420 px — la plupart des téléphones — la signature complète ne
-   tient qu'en la réduisant encore. On préfère « 10K CHRISTINE » en petit à un
-   « 10K CHRISTI… » tronqué. */
+/* Cinq onglets depuis l'arrivée du Hyrox (Accueil · Hyrox · Plan · 10 km ·
+   Carnet) : ils réclament à eux seuls ~330 px. Marque et onglets ne tiennent
+   plus ensemble sous 600 px ; plutôt qu'une signature tronquée, on escamote la
+   marque — l'onglet actif dit déjà où l'on est, et « Accueil » remplace le
+   lien de la marque. Les onglets restent intégralement atteignables jusqu'à
+   320 px. */
+@media (max-width: 599px) {
+  .shell-brand { display: none; }
+  .shell-nav { margin: 0 auto; }
+}
+
 @media (max-width: 419px) {
-  .shell-brand { font-size: 13.5px; letter-spacing: .03em; }
   .shell-nav { gap: 1px; }
   .shell-tab { padding: 0 9px; font-size: 13px; }
 }
 
-/* Sous 360 px (iPhone SE et assimilés), marque et onglets ne tiennent plus
-   ensemble. Plutôt qu'une signature tronquée en « 10K CHI », on l'escamote :
-   les onglets portent la navigation et « Tracker » est déjà mis en évidence. */
-@media (max-width: 359px) {
-  .shell-brand { display: none; }
-  .shell-nav { margin: 0 auto; }
+/* Sous 340 px (anciens iPhone SE à 320 px), on gagne encore quelques pixels
+   sur les onglets ; la cible tactile garde ses 36 px de haut. */
+@media (max-width: 339px) {
+  .shell-tab { padding: 0 7px; font-size: 12.5px; }
 }
 
 @media (max-width: 719px) {
