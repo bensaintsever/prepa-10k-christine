@@ -1,6 +1,7 @@
 # Préparation 10 km · Christine · Octobre Rose 2026
 
 Objectif : **10 km en moins d'une heure** le dimanche 4 octobre 2026 (cible 59'30, repli 1 h 02).
+**Résultat : 58'30, objectif atteint** (5'51/km, une minute sous la cible).
 Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et des données Pixel Watch 4.
 
 ## Contenu
