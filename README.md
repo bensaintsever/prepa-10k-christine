@@ -567,6 +567,15 @@ femmes ; créneau exact à confirmer, l'affûtage se décale d'autant).
   à la séance jambes à partir de décembre (la salle de Christine en a une).
 - Repères : test VMA demi-Cooper mer. 14 oct. et mer. 30 déc., simulation complète jeu. 14 janv.
 
+**Ajouts du 4 octobre 2026**
+- **Séance bras spécifique Hyrox le mardi** (jour sans course) : base 3 × 10-12 en octobre,
+  force 4 × 6-8 en novembre-décembre, circuit SkiErg / rowing / pompes / farmer en janvier,
+  dernière séance le mardi 26 janvier.
+- **Retour du Maroc le mercredi 11 novembre** : reprise dès le jeudi 12 (Hyrox léger, EF samedi,
+  longue 45′ dimanche), S6 à 10 km.
+- Le tracker passe à 118 séances. Les index de séance ont bougé (lignes bras ajoutées le mardi)
+  avant le début du plan, donc sans enregistrement à corriger.
+
 **Multi-plan dans `sync.js`**
 - Une page déclare son plan avant `sync.js` :
   `window.TRACKER_PLAN = { planId: 'christine-hyrox', storagePrefix: 'trackerHyrox_christine' };`
