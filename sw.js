@@ -9,7 +9,7 @@
  * Bumper CACHE ne sert qu'à évincer d'anciennes entrées — un fichier retiré
  * de CORE, ou un cache qu'on veut reconstruire de zéro.
  */
-const CACHE = 'tracker10k-v6';
+const CACHE = 'tracker10k-v7';
 
 const CORE = [
   './',
@@ -22,7 +22,9 @@ const CORE = [
   './sync.js',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './icon-maskable-512.png',
+  './apple-touch-icon.png'
 ];
 
 // Le client Supabase vient d'un CDN : en mode no-cors la réponse est opaque,
