@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F0814">
+<meta name="description" content="Tous les exercices de renfo de Christine : échauffements, renfo course et prévention TFL, muscu jambes, bras Hyrox, mobilité post-séance.">
+<title>Renfo · Christine · Hyrox Doubles 2027</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Hyrox">
+<link rel="icon" type="image/png" href="icon-192.png">
+<!-- View Transitions API -->
+<meta name="view-transition" content="same-origin">
+<style>
+  /* ===== TOC BAR (même barre d'ancres que le carnet) ===== */
+  .toc-bar {
+    position: sticky; top: var(--shell-h); z-index: 40;
+    background: rgba(15, 8, 20, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .toc-nav {
+    display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px;
+    scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; max-width: 1000px; margin: 0 auto;
+  }
+  .toc-nav::-webkit-scrollbar { display: none; }
+  .toc-nav a {
+    scroll-snap-align: start; flex: 0 0 auto;
+    display: inline-flex; align-items: center; min-height: 34px;
+    padding: 0 16px; border-radius: 20px;
+    background: rgba(255,255,255,0.05); color: var(--muted);
+    border: 1px solid transparent;
+    text-decoration: none; font-size: 13.5px; font-weight: 600; white-space: nowrap;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .toc-nav a:hover { background: rgba(255,255,255,0.1); color: var(--txt); }
+  .toc-nav a:active { transform: scale(0.96); }
+  .toc-nav a.on {
+    background: linear-gradient(120deg, rgba(214,0,108,0.15), rgba(255,61,127,0.15));
+    color: var(--hot); border-color: rgba(255,61,127,0.3);
+    box-shadow: 0 0 12px rgba(255,61,127,0.1) inset;
+  }
+
+  .lead { font-size: 17px; margin: 24px 2px; color: rgba(255,255,255,0.85); line-height: 1.7; }
+  .lead b { color: #fff; font-weight: 600; }
+
+  section {
+    scroll-margin-top: calc(var(--shell-h) + 60px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px 24px;
+    margin: 24px 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .sech {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--border-light);
+    padding: 16px 0 12px; margin-bottom: 16px;
+  }
+  .sech .num {
+    font-family: var(--font-disp); color: rgba(255,61,127,0.8);
+    font-weight: 900; font-size: 32px; line-height: 1;
+    text-shadow: 0 0 12px rgba(255,61,127,0.2);
+  }
+  .sech h2 {
+    font-family: var(--font-disp); text-transform: uppercase;
+    letter-spacing: .02em; color: #fff; font-size: 22px; margin: 0; font-weight: 700;
+  }
+  .sech .when {
+    margin-left: auto; font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .05em; color: var(--muted);
+  }
+  h3 { color: var(--hot); font-size: 17px; margin: 28px 0 12px; font-weight: 600; }
+  h3::before {
+    content: ""; display: inline-block; width: 6px; height: 16px;
+    background: linear-gradient(180deg, var(--hot), var(--brand));
+    margin-right: 10px; vertical-align: -1px; border-radius: 4px;
+  }
+  h3 .dur { color: var(--muted); font-weight: 500; font-size: 14px; }
+
+  /* ===== ÉCHAUFFEMENTS : trois cartes ===== */
+  .warm { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 8px 0 0; }
+  .warm-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-top: 4px solid var(--brand); border-radius: var(--radius-sm);
+    padding: 16px 18px 6px;
+  }
+  .warm-card h4 { margin: 0 0 10px; font-family: var(--font-disp); color: #fff; font-size: 17px; }
+  .warm-card ol { margin: 0 0 10px; padding-left: 20px; }
+  .warm-card li { margin-bottom: 6px; }
+  .warm-card li::marker { color: var(--hot); font-weight: 700; }
+  .t { color: var(--muted); white-space: nowrap; }
+
+  td .t { display: block; font-size: 13px; }
+
+  @media (min-width: 720px) {
+    .toc-nav { padding: 12px 24px; }
+    section { padding: 24px 40px 32px; }
+    .sech h2 { font-size: 26px; } .sech .num { font-size: 36px; }
+    .warm { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media print {
+    .toc-bar { display: none; } section { box-shadow: none; padding: 0 0 16px; border: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="shell">
+  <div class="shell-inner">
+    <a class="shell-brand" href="index.html">Prépa Christine</a>
+    <nav class="shell-nav" aria-label="Navigation">
+      <a href="index.html" class="shell-tab">Accueil</a>
+      <a href="Christine_Hyrox_Tracker.html" class="shell-tab">Hyrox</a>
+      <a href="Christine_Hyrox_Fevrier.html" class="shell-tab"><span class="tab-long">Plan Hyrox</span><span class="tab-short">Plan</span></a>
+      <a href="Christine_Renfo.html" class="shell-tab active" aria-current="page">Renfo</a>
+      <a href="Christine_10K_Carnet.html" class="shell-tab">Carnet</a>
+    </nav>
+  </div>
+</header>
+
+<div class="toc-bar">
+  <nav class="toc-nav" aria-label="Aller à une section">
+    <a href="#echauffements">Échauffements</a><a href="#renfo-course">Renfo course</a>
+    <a href="#jambes">Jambes</a><a href="#bras">Bras Hyrox</a><a href="#mobilite">Mobilité</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="k">Renfo · Hyrox Doubles Mixte 2027</div>
+    <h1>Tous les exercices</h1>
+    <p>Échauffements, renfo course, jambes, bras et mobilité, au même endroit. Le planning reste dans le tracker Hyrox.</p>
+  </div>
+
+  <p class="lead">Chaque séance commence par <b>5 minutes d'échauffement adapté</b> et se termine par <b>10 minutes de mobilité</b>. Fil rouge de tout le renfo&nbsp;: <b>protéger le TFL</b>, sentir le côté et l'arrière de la hanche, jamais l'avant.</p>
+
+  <!-- ===== 01 · ÉCHAUFFEMENTS ===== -->
+  <section id="echauffements">
+    <div class="sech"><span class="num disp">01</span><h2>Échauffements 5 min</h2><span class="when">Avant chaque séance</span></div>
+    <div class="warm">
+      <div class="warm-card">
+        <h4>Course</h4>
+        <ol>
+          <li>Marche rapide puis footing lent <span class="t">· 1 min</span></li>
+          <li>Leg Swing, 10 par jambe <span class="t">· 1 min</span></li>
+          <li>Fentes marchées + rotation buste <span class="t">· 1 min</span></li>
+          <li>Montées de genoux, talons-fesses, skipping <span class="t">· 20 s chacun</span></li>
+          <li>2 accélérations de 20 s à 80 % <span class="t">· 1 min</span></li>
+        </ol>
+      </div>
+      <div class="warm-card">
+        <h4>Jambes</h4>
+        <ol>
+          <li>Rameur ou SkiErg facile <span class="t">· 1 min</span></li>
+          <li>Pont fessier ×10 <span class="t">· 1 min</span></li>
+          <li>Active Deep Squat ×8 lents <span class="t">· 1 min</span></li>
+          <li>Fentes arrière ×6 par jambe + Leg Swing ×6 <span class="t">· 1 min</span></li>
+          <li>5 squats sautés légers + série d'approche à 40-50 % <span class="t">· 1 min</span></li>
+        </ol>
+      </div>
+      <div class="warm-card">
+        <h4>Bras</h4>
+        <ol>
+          <li>Rameur ou SkiErg facile <span class="t">· 1 min</span></li>
+          <li>Cercles de bras ×10 dans chaque sens + poignets <span class="t">· 1 min</span></li>
+          <li>Élastique&nbsp;: rotations externes + face pull ×10 (sinon pompes scapulaires) <span class="t">· 1 min</span></li>
+          <li>Pompes lentes sur genoux ou surélevées ×8 <span class="t">· 1 min</span></li>
+          <li>Série d'approche du 1<sup>er</sup> exercice à 40-50 %, ×10 <span class="t">· 1 min</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 02 · RENFO COURSE / TFL ===== -->
+  <section id="renfo-course">
+    <div class="sech"><span class="num disp">02</span><h2>Renfo course · prévention TFL</h2><span class="when">30 min · élastique + poids du corps</span></div>
+    <p>Deux séances par semaine, après une sortie facile ou un jour de repos, <b>24 à 48 h avant une séance de qualité</b>.</p>
+
+    <h3>Échauffement <span class="dur">· 3 min</span></h3>
+    <div class="tw"><table>
+      <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Consigne</th></tr></thead>
+      <tbody>
+        <tr><td class="l" data-label="Exercice">Pont fessier</td><td class="ctr pk" data-label="Dose">×10</td><td data-label="Consigne">2 s de contraction en haut</td></tr>
+        <tr><td class="l" data-label="Exercice">Abductions debout</td><td class="ctr pk" data-label="Dose">×8 / côté</td><td data-label="Consigne">Élastique aux chevilles</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Bloc 1 · moyen fessier <span class="dur">· 8 min</span></h3>
+    <div class="tw"><table>
+      <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Consigne</th></tr></thead>
+      <tbody>
+        <tr><td class="l" data-label="Exercice">Abduction couchée sur le côté, élastique</td><td class="ctr pk" data-label="Dose">3 × 12 / côté</td><td data-label="Consigne">Jambe un peu en arrière, pointe de pied vers le bas</td></tr>
+        <tr><td class="l" data-label="Exercice">Pont sur une jambe</td><td class="ctr pk" data-label="Dose">3 × 8-10 / côté</td><td data-label="Consigne">Pause 2 s en haut</td></tr>
+      </tbody>
+    </table></div>
+    <p class="t">Récup 45 s, en alternant les côtés.</p>
+
+    <h3>Bloc 2 · chaîne postérieure <span class="dur">· 7 min</span></h3>
+    <div class="tw"><table>
+      <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Consigne</th></tr></thead>
+      <tbody>
+        <tr><td class="l" data-label="Exercice">RDL sur une jambe sans charge</td><td class="ctr pk" data-label="Dose">3 × 8 / côté</td><td data-label="Consigne">3 s en descente, bassin horizontal. Option&nbsp;: élastique sous le pied de l'autre jambe</td></tr>
+        <tr><td class="l" data-label="Exercice">Leg curl en pont glissé</td><td class="ctr pk" data-label="Dose">2 × 8-10</td><td data-label="Consigne">Récup 60 s</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Bloc 3 · stabilité du bassin <span class="dur">· 7 min</span></h3>
+    <div class="tw"><table>
+      <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Consigne</th></tr></thead>
+      <tbody>
+        <tr><td class="l" data-label="Exercice">Planche latérale</td><td class="ctr pk" data-label="Dose">3 × 25-40 s / côté</td><td data-label="Consigne">—</td></tr>
+        <tr><td class="l" data-label="Exercice">Marche latérale, élastique au-dessus des genoux</td><td class="ctr pk" data-label="Dose">2 × 10 pas / côté</td><td data-label="Consigne">Genoux un peu fléchis</td></tr>
+      </tbody>
+    </table></div>
+    <p class="t">Récup 30 à 45 s.</p>
+
+    <h3>Finisher <span class="dur">· 5 min</span></h3>
+    <div class="tw"><table>
+      <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Consigne</th></tr></thead>
+      <tbody>
+        <tr><td class="l" data-label="Exercice">Mollet sur une jambe</td><td class="ctr pk" data-label="Dose">2 × 10-12 / côté</td><td data-label="Consigne">3 s en descente, 1 tour genou fléchi pour le soléaire</td></tr>
+        <tr><td class="l" data-label="Exercice">Psoas avec élastique</td><td class="ctr pk" data-label="Dose">2 × 8-10 / côté</td><td data-label="Consigne">—</td></tr>
+        <tr><td class="l" data-label="Exercice">Chevilles avec élastique</td><td class="ctr pk" data-label="Dose">2 × 8-10 / côté</td><td data-label="Consigne">—</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="co">
+      <h4>Règles TFL</h4>
+      <ul>
+        <li>Sentir le côté et l'arrière de la hanche, pas l'avant. Sinon, ajuster la position.</li>
+        <li>Pas d'étirement agressif du TFL juste avant la course.</li>
+        <li>Progression&nbsp;: tempo 4 s en descente ou pause en bas quand le haut de la fourchette est atteint.</li>
+        <li>Cadence légèrement plus haute (3 à 5 %) pour soulager le TFL.</li>
+        <li>Douleur qui persiste plus de 2 semaines&nbsp;: voir un kiné du sport.</li>
+      </ul>
+    </div>
+
+    <h3>Les incontournables du pied et de la hanche</h3>
+    <p>Repris du carnet 10 km, à garder dans le spécifique running du samedi et pendant le Maroc.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Pourquoi</th></tr></thead>
+      <tbody>
+        <tr><td class="l" data-label="Exercice">Abducteurs de hanche unilatéral + contrôle de la chute du bassin</td><td class="ctr pk" data-label="Dose">3 × / sem.</td><td data-label="Pourquoi">Facteur n° 1 du TFL.</td></tr>
+        <tr><td class="l" data-label="Exercice">Excentrique de mollet, orteils en extension (Rathleff)</td><td class="ctr pk" data-label="Dose">3 × 12, 1 j / 2</td><td data-label="Pourquoi">Spécifique à l'aponévrose&nbsp;: les orteils en extension chargent le fascia.</td></tr>
+        <tr><td class="l" data-label="Exercice">Contrôle rotationnel de hanche (rotation interne élastique, SDT unipodal)</td><td class="ctr pk" data-label="Dose">2-3 × / sem.</td><td data-label="Pourquoi">Cible l'angle de Fick droit.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tip"><b>Hyperlaxité&nbsp;:</b> ne pas étirer davantage, le problème est le contrôle, pas l'amplitude. Pas de rouleau ni d'étirement passif sur la bandelette. Tempo lent et contrôlé.</div>
+  </section>
+
+  <!-- ===== 03 · JAMBES ===== -->
+  <section id="jambes">
+    <div class="sech"><span class="num disp">03</span><h2>Muscu jambes</h2><span class="when">Lundi · lourd et court</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>Exercice</th><th class="ctr">Format</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td class="l" data-label="Exercice">Squat</td><td class="ctr pk" data-label="Format">3 à 6 reps lourdes</td><td data-label="Note">Le format qui améliore l'économie de course</td></tr>
+        <tr><td class="l" data-label="Exercice">Hip thrust</td><td class="ctr pk" data-label="Format">3 à 6 reps lourdes</td><td data-label="Note">—</td></tr>
+        <tr><td class="l" data-label="Exercice">Fente arrière</td><td class="ctr pk" data-label="Format">3 à 6 reps / jambe</td><td data-label="Note">Sort en premier à la moindre gêne au TFL</td></tr>
+        <tr><td class="l" data-label="Exercice">Mollets</td><td class="ctr pk" data-label="Format">3 à 6 reps lourdes</td><td data-label="Note">—</td></tr>
+        <tr class="hi"><td class="l" data-label="Exercice">Wall balls 6 kg, cible à 3 m</td><td class="ctr pk" data-label="Format">4 × 8</td><td data-label="Note">À partir de décembre, la norme du Doubles Mixte</td></tr>
+      </tbody>
+    </table></div>
+    <div class="co">
+      <h4>Ce qui ne bouge pas</h4>
+      <ul>
+        <li>Rester lourd et court&nbsp;: si la séance dérive vers le circuit, elle fatigue autant sans rien rendre.</li>
+        <li>Jamais de jambes lourdes le samedi ni la veille d'une séance de qualité.</li>
+        <li>Un jour avec muscu et course, la course est un EF court.</li>
+        <li>Dernière séance lourde le lundi 25 janvier, à J−12.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 04 · BRAS HYROX ===== -->
+  <section id="bras">
+    <div class="sech"><span class="num disp">04</span><h2>Bras spécifique Hyrox</h2><span class="when">Mardi · 30 à 45 min, sans course</span></div>
+    <p>Chaque exercice sert une station. Base en octobre, force en novembre-décembre, circuit en janvier.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Exercice</th><th>Station servie</th><th class="ctr">Base · oct.</th><th class="ctr">Force · nov.-déc.</th></tr></thead>
+      <tbody>
+        <tr><td class="l" data-label="Exercice">Rowing haltère un bras</td><td data-label="Station">Sled pull, rameur</td><td class="ctr pk" data-label="Base">3 × 12</td><td class="ctr pk" data-label="Force">4 × 8 lourd</td></tr>
+        <tr><td class="l" data-label="Exercice">Tirage poulie bras tendus</td><td data-label="Station">SkiErg</td><td class="ctr pk" data-label="Base">3 × 12</td><td class="ctr pk" data-label="Force">4 × 10</td></tr>
+        <tr><td class="l" data-label="Exercice">Développé haltères debout</td><td data-label="Station">Wall balls, sled push</td><td class="ctr pk" data-label="Base">3 × 10</td><td class="ctr pk" data-label="Force">4 × 6</td></tr>
+        <tr><td class="l" data-label="Exercice">Pompes</td><td data-label="Station">Sled push, burpees</td><td class="ctr pk" data-label="Base">3 × max</td><td class="ctr pk" data-label="Force">4 × 8 pieds surélevés</td></tr>
+        <tr><td class="l" data-label="Exercice">Face pull ou tirage corde</td><td data-label="Station">Sled pull, posture</td><td class="ctr pk" data-label="Base">3 × 15</td><td class="ctr pk" data-label="Force">3 × 12</td></tr>
+        <tr><td class="l" data-label="Exercice">Farmer hold + suspension barre</td><td data-label="Station">Farmers carry, prise</td><td class="ctr pk" data-label="Base">3 × 30″ / 3 × 20″</td><td class="ctr pk" data-label="Force">3 × 45″ lourd / 3 × max</td></tr>
+        <tr><td class="l" data-label="Exercice">Pallof press</td><td data-label="Station">Fentes sandbag, farmers</td><td class="ctr pk" data-label="Base">3 × 10 / côté</td><td class="ctr pk" data-label="Force">3 × 12 / côté</td></tr>
+      </tbody>
+    </table></div>
+    <div class="co">
+      <h4>Janvier · circuit spécifique</h4>
+      <p><b>4 tours</b>&nbsp;: 250 m SkiErg + 10 rowing haltère + 10 pompes + 40 m farmer carry, 2′ de repos entre les tours. <b>3 tours</b> la semaine de simulation et la semaine d'affûtage.</p>
+      <p>Pas de rameur le mardi (il charge les jambes). Dernière séance le mardi 26 janvier, puis seulement de la mobilité d'épaules.</p>
+    </div>
+  </section>
+
+  <!-- ===== 05 · MOBILITÉ ===== -->
+  <section id="mobilite">
+    <div class="sech"><span class="num disp">05</span><h2>Mobilité post-séance</h2><span class="when">10 min · Gowod</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>Exercice</th><th class="ctr">Durée</th></tr></thead>
+      <tbody>
+        <tr><td class="l" data-label="Exercice">Leg Swing</td><td class="ctr pk" data-label="Durée">1 min</td></tr>
+        <tr><td class="l" data-label="Exercice">Bottom Squat Transfer</td><td class="ctr pk" data-label="Durée">1 min</td></tr>
+        <tr><td class="l" data-label="Exercice">Active Deep Squat</td><td class="ctr pk" data-label="Durée">2 min</td></tr>
+        <tr><td class="l" data-label="Exercice">90 to 90</td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
+        <tr><td class="l" data-label="Exercice">T-Hip Opener</td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
+        <tr><td class="l" data-label="Exercice">The Knight to Hamstring Stretch</td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tip"><b>Jour de course&nbsp;:</b> remplacer Active Deep Squat par Seated Piriformis Stretch. 4 à 5 fois par semaine, jamais en douleur.</div>
+  </section>
+
+  <footer class="site-footer">Renfo · Hyrox Doubles Mixte 2027 · Christine.</footer>
+
+</div>
+
+<button id="top-btn" aria-label="Revenir en haut">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<script>
+  /* Anchor nav: highlight current section */
+  var links = {};
+  document.querySelectorAll('.toc-nav a').forEach(function(a) {
+    links[a.getAttribute('href').slice(1)] = a;
+  });
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es) {
+      es.forEach(function(e) {
+        if (e.isIntersecting) {
+          Object.keys(links).forEach(function(k) { links[k].classList.remove('on'); });
+          var l = links[e.target.id];
+          if (l) {
+            l.classList.add('on');
+            l.scrollIntoView({ inline: 'center', block: 'nearest' });
+          }
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('section[id]').forEach(function(s) { io.observe(s); });
+  }
+
+  /* Back-to-top button */
+  var topBtn = document.getElementById('top-btn');
+  window.addEventListener('scroll', function() {
+    topBtn.classList.toggle('show', window.scrollY > 500);
+  }, { passive: true });
+  topBtn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () { /* pas bloquant */ });
+    });
+  }
+</script>
+</body>
+</html>
