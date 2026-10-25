@@ -98,6 +98,23 @@
 
   td .t { display: block; font-size: 13px; }
 
+  /* ===== LIENS DÉMO (vidéos hébergées par les sources, ouvertes à part) ===== */
+  .demo {
+    display: inline-flex; align-items: center; gap: 4px; vertical-align: 1px;
+    min-height: 24px; min-width: 24px; padding: 0 7px; border-radius: 12px;
+    background: rgba(255,61,127,0.12); border: 1px solid rgba(255,61,127,0.3);
+    color: var(--hot); font-size: 11.5px; font-weight: 600; line-height: 1; white-space: nowrap;
+    text-decoration: none; justify-content: center;
+  }
+  .demo::before {
+    content: ""; width: 0; height: 0;
+    border-left: 7px solid currentColor; border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent;
+  }
+  .demo:hover { background: rgba(255,61,127,0.22); color: #fff; }
+  .ex .demo { margin-left: 2px; }
+  .demo-note { display: inline-block; margin-top: 8px; font-size: 14px; color: var(--muted); }
+  @media (max-width: 719px) { td .ex { text-align: right; } }
+
   @media (min-width: 720px) {
     .toc-nav { padding: 12px 24px; }
     section { padding: 24px 40px 32px; }
@@ -139,7 +156,7 @@
     <p>Échauffements, renfo course, jambes, bras et mobilité, au même endroit. Le planning reste dans le tracker Hyrox.</p>
   </div>
 
-  <p class="lead">Chaque séance commence par <b>5 minutes d'échauffement adapté</b> et se termine par <b>10 minutes de mobilité</b>. Fil rouge de tout le renfo&nbsp;: <b>protéger le TFL</b>, sentir le côté et l'arrière de la hanche, jamais l'avant.</p>
+  <p class="lead">Chaque séance commence par <b>5 minutes d'échauffement adapté</b> et se termine par <b>10 minutes de mobilité</b>. Fil rouge de tout le renfo&nbsp;: <b>protéger le TFL</b>, sentir le côté et l'arrière de la hanche, jamais l'avant.<br><span class="demo-note">Le bouton <span class="demo" aria-hidden="true"></span> ouvre une démo vidéo du mouvement (GOWOD, MuscleWiki, Physitrack, The Prehab Guys).</span></p>
 
   <!-- ===== 01 · ÉCHAUFFEMENTS ===== -->
   <section id="echauffements">
@@ -149,9 +166,9 @@
         <h4>Course</h4>
         <ol>
           <li>Marche rapide puis footing lent <span class="t">· 1 min</span></li>
-          <li>Leg Swing, 10 par jambe <span class="t">· 1 min</span></li>
-          <li>Fentes marchées + rotation buste <span class="t">· 1 min</span></li>
-          <li>Montées de genoux, talons-fesses, skipping <span class="t">· 20 s chacun</span></li>
+          <li>Leg Swing, 10 par jambe <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/leg-swing" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a> <span class="t">· 1 min</span></li>
+          <li>Fentes marchées + rotation buste <a class="demo" href="https://us.physitrack.com/home-exercise-video/walking-lunge-with-a-twist" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a> <span class="t">· 1 min</span></li>
+          <li>Montées de genoux, talons-fesses, skipping <a class="demo" href="https://us.physitrack.com/home-exercise-video/high-knees-jog" target="_blank" rel="noopener" title="Voir la démo : genoux (nouvel onglet)" aria-label="Voir la démo : genoux (nouvel onglet)"><span>genoux</span></a> <a class="demo" href="https://musclewiki.com/fr-fr/exercise/butt-kick" target="_blank" rel="noopener" title="Voir la démo : talons (nouvel onglet)" aria-label="Voir la démo : talons (nouvel onglet)"><span>talons</span></a> <a class="demo" href="https://au.physitrack.com/home-exercise-video/symmetrical-skipping-high-knee-march-%2528arm-swing%2529" target="_blank" rel="noopener" title="Voir la démo : skipping (nouvel onglet)" aria-label="Voir la démo : skipping (nouvel onglet)"><span>skipping</span></a> <span class="t">· 20 s chacun</span></li>
           <li>2 accélérations de 20 s à 80 % <span class="t">· 1 min</span></li>
         </ol>
       </div>
@@ -159,19 +176,19 @@
         <h4>Jambes</h4>
         <ol>
           <li>Rameur ou SkiErg facile <span class="t">· 1 min</span></li>
-          <li>Pont fessier ×10 <span class="t">· 1 min</span></li>
-          <li>Active Deep Squat ×8 lents <span class="t">· 1 min</span></li>
-          <li>Fentes arrière ×6 par jambe + Leg Swing ×6 <span class="t">· 1 min</span></li>
-          <li>5 squats sautés légers + série d'approche à 40-50 % <span class="t">· 1 min</span></li>
+          <li>Pont fessier ×10 <a class="demo" href="https://musclewiki.com/fr-fr/exercise/glute-bridge" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a> <span class="t">· 1 min</span></li>
+          <li>Active Deep Squat ×8 lents <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/active-deep-squat" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a> <span class="t">· 1 min</span></li>
+          <li>Fentes arrière ×6 par jambe + Leg Swing ×6 <a class="demo" href="https://musclewiki.com/fr-fr/exercise/bodyweight-reverse-lunge" target="_blank" rel="noopener" title="Voir la démo : fente (nouvel onglet)" aria-label="Voir la démo : fente (nouvel onglet)"><span>fente</span></a> <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/leg-swing" target="_blank" rel="noopener" title="Voir la démo : swing (nouvel onglet)" aria-label="Voir la démo : swing (nouvel onglet)"><span>swing</span></a> <span class="t">· 1 min</span></li>
+          <li>5 squats sautés légers + série d'approche à 40-50 % <a class="demo" href="https://musclewiki.com/fr-fr/exercise/jump-squats" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a> <span class="t">· 1 min</span></li>
         </ol>
       </div>
       <div class="warm-card">
         <h4>Bras</h4>
         <ol>
           <li>Rameur ou SkiErg facile <span class="t">· 1 min</span></li>
-          <li>Cercles de bras ×10 dans chaque sens + poignets <span class="t">· 1 min</span></li>
-          <li>Élastique&nbsp;: rotations externes + face pull ×10 (sinon pompes scapulaires) <span class="t">· 1 min</span></li>
-          <li>Pompes lentes sur genoux ou surélevées ×8 <span class="t">· 1 min</span></li>
+          <li>Cercles de bras ×10 dans chaque sens + poignets <a class="demo" href="https://musclewiki.com/fr-fr/exercise/forward-arm-circle" target="_blank" rel="noopener" title="Voir la démo : bras (nouvel onglet)" aria-label="Voir la démo : bras (nouvel onglet)"><span>bras</span></a> <a class="demo" href="https://us.physitrack.com/home-exercise-video/wrist-circles" target="_blank" rel="noopener" title="Voir la démo : poignets (nouvel onglet)" aria-label="Voir la démo : poignets (nouvel onglet)"><span>poignets</span></a> <span class="t">· 1 min</span></li>
+          <li>Élastique&nbsp;: rotations externes + face pull ×10 (sinon pompes scapulaires) <a class="demo" href="https://musclewiki.com/fr-fr/exercise/mini-band-external-rotation" target="_blank" rel="noopener" title="Voir la démo : rotation (nouvel onglet)" aria-label="Voir la démo : rotation (nouvel onglet)"><span>rotation</span></a> <a class="demo" href="https://musclewiki.com/fr-fr/exercise/band-face-pull" target="_blank" rel="noopener" title="Voir la démo : face pull (nouvel onglet)" aria-label="Voir la démo : face pull (nouvel onglet)"><span>face pull</span></a> <a class="demo" href="https://us.physitrack.com/home-exercise-video/push-up-plus" target="_blank" rel="noopener" title="Voir la démo : scapulaires (nouvel onglet)" aria-label="Voir la démo : scapulaires (nouvel onglet)"><span>scapulaires</span></a> <span class="t">· 1 min</span></li>
+          <li>Pompes lentes sur genoux ou surélevées ×8 <a class="demo" href="https://musclewiki.com/fr-fr/exercise/bodyweight-knee-push-ups" target="_blank" rel="noopener" title="Voir la démo : genoux (nouvel onglet)" aria-label="Voir la démo : genoux (nouvel onglet)"><span>genoux</span></a> <a class="demo" href="https://musclewiki.com/fr-fr/exercise/incline-push-up" target="_blank" rel="noopener" title="Voir la démo : surélevées (nouvel onglet)" aria-label="Voir la démo : surélevées (nouvel onglet)"><span>surélevées</span></a> <span class="t">· 1 min</span></li>
           <li>Série d'approche du 1<sup>er</sup> exercice à 40-50 %, ×10 <span class="t">· 1 min</span></li>
         </ol>
       </div>
@@ -187,8 +204,8 @@
     <div class="tw"><table>
       <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Consigne</th></tr></thead>
       <tbody>
-        <tr><td class="l" data-label="Exercice">Pont fessier</td><td class="ctr pk" data-label="Dose">×10</td><td data-label="Consigne">2 s de contraction en haut</td></tr>
-        <tr><td class="l" data-label="Exercice">Abductions debout</td><td class="ctr pk" data-label="Dose">×8 / côté</td><td data-label="Consigne">Élastique aux chevilles</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Pont fessier <a class="demo" href="https://musclewiki.com/fr-fr/exercise/glute-bridge" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Dose">×10</td><td data-label="Consigne">2 s de contraction en haut</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Abductions debout <a class="demo" href="https://musclewiki.com/fr-fr/exercise/mini-band-standing-hip-abduction" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Dose">×8 / côté</td><td data-label="Consigne">Élastique aux chevilles</td></tr>
       </tbody>
     </table></div>
 
@@ -196,8 +213,8 @@
     <div class="tw"><table>
       <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Consigne</th></tr></thead>
       <tbody>
-        <tr><td class="l" data-label="Exercice">Abduction couchée sur le côté, élastique</td><td class="ctr pk" data-label="Dose">3 × 12 / côté</td><td data-label="Consigne">Jambe un peu en arrière, pointe de pied vers le bas</td></tr>
-        <tr><td class="l" data-label="Exercice">Pont sur une jambe</td><td class="ctr pk" data-label="Dose">3 × 8-10 / côté</td><td data-label="Consigne">Pause 2 s en haut</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Abduction couchée sur le côté, élastique <a class="demo" href="https://musclewiki.com/fr-fr/exercise/mini-band-side-laying-hip-abduction" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Dose">3 × 12 / côté</td><td data-label="Consigne">Jambe un peu en arrière, pointe de pied vers le bas</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Pont sur une jambe <a class="demo" href="https://musclewiki.com/fr-fr/exercise/single-leg-glute-bridge" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Dose">3 × 8-10 / côté</td><td data-label="Consigne">Pause 2 s en haut</td></tr>
       </tbody>
     </table></div>
     <p class="t">Récup 45 s, en alternant les côtés.</p>
@@ -206,8 +223,8 @@
     <div class="tw"><table>
       <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Consigne</th></tr></thead>
       <tbody>
-        <tr><td class="l" data-label="Exercice">RDL sur une jambe sans charge</td><td class="ctr pk" data-label="Dose">3 × 8 / côté</td><td data-label="Consigne">3 s en descente, bassin horizontal. Option&nbsp;: élastique sous le pied de l'autre jambe</td></tr>
-        <tr><td class="l" data-label="Exercice">Leg curl en pont glissé</td><td class="ctr pk" data-label="Dose">2 × 8-10</td><td data-label="Consigne">Récup 60 s</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">RDL sur une jambe sans charge <a class="demo" href="https://musclewiki.com/fr-fr/exercise/single-legged-romanian-deadlifts" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Dose">3 × 8 / côté</td><td data-label="Consigne">3 s en descente, bassin horizontal. Option&nbsp;: élastique sous le pied de l'autre jambe</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Leg curl en pont glissé <a class="demo" href="https://musclewiki.com/fr-fr/exercise/hamstring-curl-supine-bilateral-slider" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Dose">2 × 8-10</td><td data-label="Consigne">Récup 60 s</td></tr>
       </tbody>
     </table></div>
 
@@ -215,8 +232,8 @@
     <div class="tw"><table>
       <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Consigne</th></tr></thead>
       <tbody>
-        <tr><td class="l" data-label="Exercice">Planche latérale</td><td class="ctr pk" data-label="Dose">3 × 25-40 s / côté</td><td data-label="Consigne">—</td></tr>
-        <tr><td class="l" data-label="Exercice">Marche latérale, élastique au-dessus des genoux</td><td class="ctr pk" data-label="Dose">2 × 10 pas / côté</td><td data-label="Consigne">Genoux un peu fléchis</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Planche latérale <a class="demo" href="https://musclewiki.com/fr-fr/exercise/elbow-side-plank" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Dose">3 × 25-40 s / côté</td><td data-label="Consigne">—</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Marche latérale, élastique au-dessus des genoux <a class="demo" href="https://musclewiki.com/fr-fr/exercise/mini-band-walking-side-to-side" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Dose">2 × 10 pas / côté</td><td data-label="Consigne">Genoux un peu fléchis</td></tr>
       </tbody>
     </table></div>
     <p class="t">Récup 30 à 45 s.</p>
@@ -225,9 +242,9 @@
     <div class="tw"><table>
       <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Consigne</th></tr></thead>
       <tbody>
-        <tr><td class="l" data-label="Exercice">Mollet sur une jambe</td><td class="ctr pk" data-label="Dose">2 × 10-12 / côté</td><td data-label="Consigne">3 s en descente, 1 tour genou fléchi pour le soléaire</td></tr>
-        <tr><td class="l" data-label="Exercice">Psoas avec élastique</td><td class="ctr pk" data-label="Dose">2 × 8-10 / côté</td><td data-label="Consigne">—</td></tr>
-        <tr><td class="l" data-label="Exercice">Chevilles avec élastique</td><td class="ctr pk" data-label="Dose">2 × 8-10 / côté</td><td data-label="Consigne">—</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Mollet sur une jambe <a class="demo" href="https://musclewiki.com/fr-fr/exercise/calf-raise-2b-unilateral-floor" target="_blank" rel="noopener" title="Voir la démo : tendu (nouvel onglet)" aria-label="Voir la démo : tendu (nouvel onglet)"><span>tendu</span></a> <a class="demo" href="https://musclewiki.com/fr-fr/exercise/calf-raise-3b-soleus-bias-unilateral" target="_blank" rel="noopener" title="Voir la démo : fléchi (nouvel onglet)" aria-label="Voir la démo : fléchi (nouvel onglet)"><span>fléchi</span></a></span></td><td class="ctr pk" data-label="Dose">2 × 10-12 / côté</td><td data-label="Consigne">3 s en descente, 1 tour genou fléchi pour le soléaire</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Psoas avec élastique <a class="demo" href="https://theprehabguys.com/vimeo-video/psoas-march-band/" target="_blank" rel="noopener" title="Voir la démo : allongé (nouvel onglet)" aria-label="Voir la démo : allongé (nouvel onglet)"><span>allongé</span></a> <a class="demo" href="https://theprehabguys.com/vimeo-video/standing-psoas-march-band-2/" target="_blank" rel="noopener" title="Voir la démo : debout (nouvel onglet)" aria-label="Voir la démo : debout (nouvel onglet)"><span>debout</span></a></span></td><td class="ctr pk" data-label="Dose">2 × 8-10 / côté</td><td data-label="Consigne">—</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Chevilles avec élastique <a class="demo" href="https://theprehabguys.com/vimeo-video/ankle-eversion-band/" target="_blank" rel="noopener" title="Voir la démo : éversion (nouvel onglet)" aria-label="Voir la démo : éversion (nouvel onglet)"><span>éversion</span></a> <a class="demo" href="https://musclewiki.com/fr-fr/exercise/band-seated-inversions" target="_blank" rel="noopener" title="Voir la démo : inversion (nouvel onglet)" aria-label="Voir la démo : inversion (nouvel onglet)"><span>inversion</span></a></span></td><td class="ctr pk" data-label="Dose">2 × 8-10 / côté</td><td data-label="Consigne">—</td></tr>
       </tbody>
     </table></div>
 
@@ -247,9 +264,9 @@
     <div class="tw"><table>
       <thead><tr><th>Exercice</th><th class="ctr">Dose</th><th>Pourquoi</th></tr></thead>
       <tbody>
-        <tr><td class="l" data-label="Exercice">Abducteurs de hanche unilatéral + contrôle de la chute du bassin</td><td class="ctr pk" data-label="Dose">3 × / sem.</td><td data-label="Pourquoi">Facteur n° 1 du TFL.</td></tr>
-        <tr><td class="l" data-label="Exercice">Excentrique de mollet, orteils en extension (Rathleff)</td><td class="ctr pk" data-label="Dose">3 × 12, 1 j / 2</td><td data-label="Pourquoi">Spécifique à l'aponévrose&nbsp;: les orteils en extension chargent le fascia.</td></tr>
-        <tr><td class="l" data-label="Exercice">Contrôle rotationnel de hanche (rotation interne élastique, SDT unipodal)</td><td class="ctr pk" data-label="Dose">2-3 × / sem.</td><td data-label="Pourquoi">Cible l'angle de Fick droit.</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Abducteurs de hanche unilatéral + contrôle de la chute du bassin <a class="demo" href="https://musclewiki.com/fr-fr/exercise/mini-band-standing-hip-abduction" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Dose">3 × / sem.</td><td data-label="Pourquoi">Facteur n° 1 du TFL.</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Excentrique de mollet, orteils en extension (Rathleff) <a class="demo" href="https://us.physitrack.com/home-exercise-video/single-leg-heel-raise-with-plantar-fascia-stretch" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Dose">3 × 12, 1 j / 2</td><td data-label="Pourquoi">Spécifique à l'aponévrose&nbsp;: les orteils en extension chargent le fascia.</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Contrôle rotationnel de hanche (rotation interne élastique, SDT unipodal) <a class="demo" href="https://us.physitrack.com/home-exercise-video/resisted-hip-internal-rotation-in-sitting" target="_blank" rel="noopener" title="Voir la démo : rotation (nouvel onglet)" aria-label="Voir la démo : rotation (nouvel onglet)"><span>rotation</span></a> <a class="demo" href="https://us.physitrack.com/home-exercise-video/single-leg-deadlift" target="_blank" rel="noopener" title="Voir la démo : SDT (nouvel onglet)" aria-label="Voir la démo : SDT (nouvel onglet)"><span>SDT</span></a></span></td><td class="ctr pk" data-label="Dose">2-3 × / sem.</td><td data-label="Pourquoi">Cible l'angle de Fick droit.</td></tr>
       </tbody>
     </table></div>
     <div class="tip"><b>Hyperlaxité&nbsp;:</b> ne pas étirer davantage, le problème est le contrôle, pas l'amplitude. Pas de rouleau ni d'étirement passif sur la bandelette. Tempo lent et contrôlé.</div>
@@ -261,11 +278,11 @@
     <div class="tw"><table>
       <thead><tr><th>Exercice</th><th class="ctr">Format</th><th>Note</th></tr></thead>
       <tbody>
-        <tr><td class="l" data-label="Exercice">Squat</td><td class="ctr pk" data-label="Format">3 à 6 reps lourdes</td><td data-label="Note">Le format qui améliore l'économie de course</td></tr>
-        <tr><td class="l" data-label="Exercice">Hip thrust</td><td class="ctr pk" data-label="Format">3 à 6 reps lourdes</td><td data-label="Note">—</td></tr>
-        <tr><td class="l" data-label="Exercice">Fente arrière</td><td class="ctr pk" data-label="Format">3 à 6 reps / jambe</td><td data-label="Note">Sort en premier à la moindre gêne au TFL</td></tr>
-        <tr><td class="l" data-label="Exercice">Mollets</td><td class="ctr pk" data-label="Format">3 à 6 reps lourdes</td><td data-label="Note">—</td></tr>
-        <tr class="hi"><td class="l" data-label="Exercice">Wall balls 6 kg, cible à 3 m</td><td class="ctr pk" data-label="Format">4 × 8</td><td data-label="Note">À partir de décembre, la norme du Doubles Mixte</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Squat <a class="demo" href="https://musclewiki.com/fr-fr/exercise/barbell-squat" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Format">3 à 6 reps lourdes</td><td data-label="Note">Le format qui améliore l'économie de course</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Hip thrust <a class="demo" href="https://musclewiki.com/fr-fr/exercise/barbell-hip-thrust" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Format">3 à 6 reps lourdes</td><td data-label="Note">—</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Fente arrière <a class="demo" href="https://musclewiki.com/fr-fr/exercise/dumbbell-reverse-lunge" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Format">3 à 6 reps / jambe</td><td data-label="Note">Sort en premier à la moindre gêne au TFL</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Mollets <a class="demo" href="https://musclewiki.com/fr-fr/exercise/calf-raises" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Format">3 à 6 reps lourdes</td><td data-label="Note">—</td></tr>
+        <tr class="hi"><td class="l" data-label="Exercice"><span class="ex">Wall balls 6 kg, cible à 3 m <a class="demo" href="https://musclewiki.com/fr-fr/exercise/wall-ball" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Format">4 × 8</td><td data-label="Note">À partir de décembre, la norme du Doubles Mixte</td></tr>
       </tbody>
     </table></div>
     <div class="co">
@@ -286,13 +303,13 @@
     <div class="tw"><table>
       <thead><tr><th>Exercice</th><th>Station servie</th><th class="ctr">Base · oct.</th><th class="ctr">Force · nov.-déc.</th></tr></thead>
       <tbody>
-        <tr><td class="l" data-label="Exercice">Rowing haltère un bras</td><td data-label="Station">Sled pull, rameur</td><td class="ctr pk" data-label="Base">3 × 12</td><td class="ctr pk" data-label="Force">4 × 8 lourd</td></tr>
-        <tr><td class="l" data-label="Exercice">Tirage poulie bras tendus</td><td data-label="Station">SkiErg</td><td class="ctr pk" data-label="Base">3 × 12</td><td class="ctr pk" data-label="Force">4 × 10</td></tr>
-        <tr><td class="l" data-label="Exercice">Développé haltères debout</td><td data-label="Station">Wall balls, sled push</td><td class="ctr pk" data-label="Base">3 × 10</td><td class="ctr pk" data-label="Force">4 × 6</td></tr>
-        <tr><td class="l" data-label="Exercice">Pompes</td><td data-label="Station">Sled push, burpees</td><td class="ctr pk" data-label="Base">3 × max</td><td class="ctr pk" data-label="Force">4 × 8 pieds surélevés</td></tr>
-        <tr><td class="l" data-label="Exercice">Face pull ou tirage corde</td><td data-label="Station">Sled pull, posture</td><td class="ctr pk" data-label="Base">3 × 15</td><td class="ctr pk" data-label="Force">3 × 12</td></tr>
-        <tr><td class="l" data-label="Exercice">Farmer hold + suspension barre</td><td data-label="Station">Farmers carry, prise</td><td class="ctr pk" data-label="Base">3 × 30″ / 3 × 20″</td><td class="ctr pk" data-label="Force">3 × 45″ lourd / 3 × max</td></tr>
-        <tr><td class="l" data-label="Exercice">Pallof press</td><td data-label="Station">Fentes sandbag, farmers</td><td class="ctr pk" data-label="Base">3 × 10 / côté</td><td class="ctr pk" data-label="Force">3 × 12 / côté</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Rowing haltère un bras <a class="demo" href="https://musclewiki.com/fr-fr/exercise/dumbbell-single-arm-row" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td data-label="Station">Sled pull, rameur</td><td class="ctr pk" data-label="Base">3 × 12</td><td class="ctr pk" data-label="Force">4 × 8 lourd</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Tirage poulie bras tendus <a class="demo" href="https://musclewiki.com/fr-fr/exercise/cable-standing-bilateral-straight-arm-pull-in" target="_blank" rel="noopener" title="Voir la démo : poulie (nouvel onglet)" aria-label="Voir la démo : poulie (nouvel onglet)"><span>poulie</span></a> <a class="demo" href="https://ie.physitrack.com/home-exercise-video/resisted-bent-over-straight-arm-pull-down" target="_blank" rel="noopener" title="Voir la démo : élastique (nouvel onglet)" aria-label="Voir la démo : élastique (nouvel onglet)"><span>élastique</span></a></span></td><td data-label="Station">SkiErg</td><td class="ctr pk" data-label="Base">3 × 12</td><td class="ctr pk" data-label="Force">4 × 10</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Développé haltères debout <a class="demo" href="https://musclewiki.com/fr-fr/exercise/dumbbell-overhead-press" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td data-label="Station">Wall balls, sled push</td><td class="ctr pk" data-label="Base">3 × 10</td><td class="ctr pk" data-label="Force">4 × 6</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Pompes <a class="demo" href="https://musclewiki.com/fr-fr/exercise/push-up" target="_blank" rel="noopener" title="Voir la démo : sol (nouvel onglet)" aria-label="Voir la démo : sol (nouvel onglet)"><span>sol</span></a> <a class="demo" href="https://musclewiki.com/fr-fr/exercise/decline-push-up" target="_blank" rel="noopener" title="Voir la démo : pieds surélevés (nouvel onglet)" aria-label="Voir la démo : pieds surélevés (nouvel onglet)"><span>pieds surélevés</span></a></span></td><td data-label="Station">Sled push, burpees</td><td class="ctr pk" data-label="Base">3 × max</td><td class="ctr pk" data-label="Force">4 × 8 pieds surélevés</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Face pull ou tirage corde <a class="demo" href="https://musclewiki.com/fr-fr/exercise/band-face-pull" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td data-label="Station">Sled pull, posture</td><td class="ctr pk" data-label="Base">3 × 15</td><td class="ctr pk" data-label="Force">3 × 12</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Farmer hold + suspension barre <a class="demo" href="https://musclewiki.com/fr-fr/exercise/dumbbell-farmer-walk" target="_blank" rel="noopener" title="Voir la démo : farmer (nouvel onglet)" aria-label="Voir la démo : farmer (nouvel onglet)"><span>farmer</span></a> <a class="demo" href="https://musclewiki.com/fr-fr/exercise/dead-hang" target="_blank" rel="noopener" title="Voir la démo : suspension (nouvel onglet)" aria-label="Voir la démo : suspension (nouvel onglet)"><span>suspension</span></a></span></td><td data-label="Station">Farmers carry, prise</td><td class="ctr pk" data-label="Base">3 × 30″ / 3 × 20″</td><td class="ctr pk" data-label="Force">3 × 45″ lourd / 3 × max</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Pallof press <a class="demo" href="https://musclewiki.com/fr-fr/exercise/band-pallof-press" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td data-label="Station">Fentes sandbag, farmers</td><td class="ctr pk" data-label="Base">3 × 10 / côté</td><td class="ctr pk" data-label="Force">3 × 12 / côté</td></tr>
       </tbody>
     </table></div>
     <div class="co">
@@ -308,15 +325,15 @@
     <div class="tw"><table>
       <thead><tr><th>Exercice</th><th class="ctr">Durée</th></tr></thead>
       <tbody>
-        <tr><td class="l" data-label="Exercice">Leg Swing</td><td class="ctr pk" data-label="Durée">1 min</td></tr>
-        <tr><td class="l" data-label="Exercice">Bottom Squat Transfer</td><td class="ctr pk" data-label="Durée">1 min</td></tr>
-        <tr><td class="l" data-label="Exercice">Active Deep Squat</td><td class="ctr pk" data-label="Durée">2 min</td></tr>
-        <tr><td class="l" data-label="Exercice">90 to 90</td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
-        <tr><td class="l" data-label="Exercice">T-Hip Opener</td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
-        <tr><td class="l" data-label="Exercice">The Knight to Hamstring Stretch</td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Leg Swing <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/leg-swing" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">1 min</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Bottom Squat Transfer <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/bottom-squat-transfer" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">1 min</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Active Deep Squat <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/active-deep-squat" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">2 min</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">90 to 90 <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/90-to-90" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">T-Hip Opener <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/t-hip-opener" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">The Knight to Hamstring Stretch <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/the-knight-to-hamstring-stretch" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
       </tbody>
     </table></div>
-    <div class="tip"><b>Jour de course&nbsp;:</b> remplacer Active Deep Squat par Seated Piriformis Stretch. 4 à 5 fois par semaine, jamais en douleur.</div>
+    <div class="tip"><b>Jour de course&nbsp;:</b> remplacer Active Deep Squat par Seated Piriformis Stretch <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/seated-piriformis-stretch" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a>. 4 à 5 fois par semaine, jamais en douleur.</div>
   </section>
 
   <footer class="site-footer">Renfo · Hyrox Doubles Mixte 2027 · Christine.</footer>
