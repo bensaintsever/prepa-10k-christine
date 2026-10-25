@@ -112,6 +112,17 @@
   }
   .demo:hover { background: rgba(255,61,127,0.22); color: #fff; }
   .ex .demo { margin-left: 2px; }
+  /* ===== LECTEUR VIDÉO (fenêtre sur la page) ===== */
+  .vid { padding: 0; border: 1px solid var(--border); border-radius: var(--radius); background: #000;
+         width: min(92vw, 860px); max-height: 92vh; color: var(--txt); }
+  .vid::backdrop { background: rgba(8,4,12,0.8); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+  .vid-bar { display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 16px; background: var(--bg); }
+  .vid-bar b { flex: 1; font-size: 15px; font-family: var(--font-disp); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vid-bar a { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .vid-close { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+               background: rgba(255,255,255,0.06); color: #fff; font-size: 20px; line-height: 1; cursor: pointer; }
+  .vid-frame { position: relative; aspect-ratio: 16 / 9; }
+  .vid-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
   .demo-note { display: inline-block; margin-top: 8px; font-size: 14px; color: var(--muted); }
   @media (max-width: 719px) { td .ex { text-align: right; } }
 
@@ -156,7 +167,7 @@
     <p>Échauffements, renfo course, jambes, bras et mobilité, au même endroit. Le planning reste dans le tracker Hyrox.</p>
   </div>
 
-  <p class="lead">Chaque séance commence par <b>5 minutes d'échauffement adapté</b> et se termine par <b>10 minutes de mobilité</b>. Fil rouge de tout le renfo&nbsp;: <b>protéger le TFL</b>, sentir le côté et l'arrière de la hanche, jamais l'avant.<br><span class="demo-note">Le bouton <span class="demo" aria-hidden="true"></span> ouvre une démo vidéo du mouvement (GOWOD, MuscleWiki, Physitrack, The Prehab Guys).</span></p>
+  <p class="lead">Chaque séance commence par <b>5 minutes d'échauffement adapté</b> et se termine par <b>10 minutes de mobilité</b>. Fil rouge de tout le renfo&nbsp;: <b>protéger le TFL</b>, sentir le côté et l'arrière de la hanche, jamais l'avant.<br><span class="demo-note">Le bouton <span class="demo" aria-hidden="true"></span> ouvre une démo vidéo du mouvement&nbsp;: directement sur la page pour la mobilité (GOWOD), dans un nouvel onglet pour le reste (MuscleWiki, Physitrack, The Prehab Guys).</span></p>
 
   <!-- ===== 01 · ÉCHAUFFEMENTS ===== -->
   <section id="echauffements">
@@ -166,7 +177,7 @@
         <h4>Course</h4>
         <ol>
           <li>Marche rapide puis footing lent <span class="t">· 1 min</span></li>
-          <li>Leg Swing, 10 par jambe <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/leg-swing" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a> <span class="t">· 1 min</span></li>
+          <li>Leg Swing, 10 par jambe <a class="demo" data-yt="A2x0oG58nD8" data-name="Leg Swing" href="https://www.gowod.app/fr/mobility-exercises/leg-swing" target="_blank" rel="noopener" title="Lire la démo vidéo" aria-label="Lire la démo vidéo"></a> <span class="t">· 1 min</span></li>
           <li>Fentes marchées + rotation buste <a class="demo" href="https://us.physitrack.com/home-exercise-video/walking-lunge-with-a-twist" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a> <span class="t">· 1 min</span></li>
           <li>Montées de genoux, talons-fesses, skipping <a class="demo" href="https://us.physitrack.com/home-exercise-video/high-knees-jog" target="_blank" rel="noopener" title="Voir la démo : genoux (nouvel onglet)" aria-label="Voir la démo : genoux (nouvel onglet)"><span>genoux</span></a> <a class="demo" href="https://musclewiki.com/fr-fr/exercise/butt-kick" target="_blank" rel="noopener" title="Voir la démo : talons (nouvel onglet)" aria-label="Voir la démo : talons (nouvel onglet)"><span>talons</span></a> <a class="demo" href="https://au.physitrack.com/home-exercise-video/symmetrical-skipping-high-knee-march-%2528arm-swing%2529" target="_blank" rel="noopener" title="Voir la démo : skipping (nouvel onglet)" aria-label="Voir la démo : skipping (nouvel onglet)"><span>skipping</span></a> <span class="t">· 20 s chacun</span></li>
           <li>2 accélérations de 20 s à 80 % <span class="t">· 1 min</span></li>
@@ -177,8 +188,8 @@
         <ol>
           <li>Rameur ou SkiErg facile <span class="t">· 1 min</span></li>
           <li>Pont fessier ×10 <a class="demo" href="https://musclewiki.com/fr-fr/exercise/glute-bridge" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a> <span class="t">· 1 min</span></li>
-          <li>Active Deep Squat ×8 lents <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/active-deep-squat" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a> <span class="t">· 1 min</span></li>
-          <li>Fentes arrière ×6 par jambe + Leg Swing ×6 <a class="demo" href="https://musclewiki.com/fr-fr/exercise/bodyweight-reverse-lunge" target="_blank" rel="noopener" title="Voir la démo : fente (nouvel onglet)" aria-label="Voir la démo : fente (nouvel onglet)"><span>fente</span></a> <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/leg-swing" target="_blank" rel="noopener" title="Voir la démo : swing (nouvel onglet)" aria-label="Voir la démo : swing (nouvel onglet)"><span>swing</span></a> <span class="t">· 1 min</span></li>
+          <li>Active Deep Squat ×8 lents <a class="demo" data-yt="_kTB1ilKMuA" data-name="Active Deep Squat" href="https://www.gowod.app/fr/mobility-exercises/active-deep-squat" target="_blank" rel="noopener" title="Lire la démo vidéo" aria-label="Lire la démo vidéo"></a> <span class="t">· 1 min</span></li>
+          <li>Fentes arrière ×6 par jambe + Leg Swing ×6 <a class="demo" href="https://musclewiki.com/fr-fr/exercise/bodyweight-reverse-lunge" target="_blank" rel="noopener" title="Voir la démo : fente (nouvel onglet)" aria-label="Voir la démo : fente (nouvel onglet)"><span>fente</span></a> <a class="demo" data-yt="A2x0oG58nD8" data-name="Leg Swing" href="https://www.gowod.app/fr/mobility-exercises/leg-swing" target="_blank" rel="noopener" title="Lire la démo vidéo : swing" aria-label="Lire la démo vidéo : swing"><span>swing</span></a> <span class="t">· 1 min</span></li>
           <li>5 squats sautés légers + série d'approche à 40-50 % <a class="demo" href="https://musclewiki.com/fr-fr/exercise/jump-squats" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a> <span class="t">· 1 min</span></li>
         </ol>
       </div>
@@ -325,20 +336,25 @@
     <div class="tw"><table>
       <thead><tr><th>Exercice</th><th class="ctr">Durée</th></tr></thead>
       <tbody>
-        <tr><td class="l" data-label="Exercice"><span class="ex">Leg Swing <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/leg-swing" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">1 min</td></tr>
-        <tr><td class="l" data-label="Exercice"><span class="ex">Bottom Squat Transfer <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/bottom-squat-transfer" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">1 min</td></tr>
-        <tr><td class="l" data-label="Exercice"><span class="ex">Active Deep Squat <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/active-deep-squat" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">2 min</td></tr>
-        <tr><td class="l" data-label="Exercice"><span class="ex">90 to 90 <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/90-to-90" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
-        <tr><td class="l" data-label="Exercice"><span class="ex">T-Hip Opener <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/t-hip-opener" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
-        <tr><td class="l" data-label="Exercice"><span class="ex">The Knight to Hamstring Stretch <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/the-knight-to-hamstring-stretch" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a></span></td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Leg Swing <a class="demo" data-yt="A2x0oG58nD8" data-name="Leg Swing" href="https://www.gowod.app/fr/mobility-exercises/leg-swing" target="_blank" rel="noopener" title="Lire la démo vidéo" aria-label="Lire la démo vidéo"></a></span></td><td class="ctr pk" data-label="Durée">1 min</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Bottom Squat Transfer <a class="demo" data-yt="wDs--jm2jho" data-name="Bottom Squat Transfer" href="https://www.gowod.app/fr/mobility-exercises/bottom-squat-transfer" target="_blank" rel="noopener" title="Lire la démo vidéo" aria-label="Lire la démo vidéo"></a></span></td><td class="ctr pk" data-label="Durée">1 min</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">Active Deep Squat <a class="demo" data-yt="_kTB1ilKMuA" data-name="Active Deep Squat" href="https://www.gowod.app/fr/mobility-exercises/active-deep-squat" target="_blank" rel="noopener" title="Lire la démo vidéo" aria-label="Lire la démo vidéo"></a></span></td><td class="ctr pk" data-label="Durée">2 min</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">90 to 90 <a class="demo" data-yt="_I6vFSlcyPY" data-name="90 to 90" href="https://www.gowod.app/fr/mobility-exercises/90-to-90" target="_blank" rel="noopener" title="Lire la démo vidéo" aria-label="Lire la démo vidéo"></a></span></td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">T-Hip Opener <a class="demo" data-yt="CKj_0TdVcsQ" data-name="T-Hip Opener" href="https://www.gowod.app/fr/mobility-exercises/t-hip-opener" target="_blank" rel="noopener" title="Lire la démo vidéo" aria-label="Lire la démo vidéo"></a></span></td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
+        <tr><td class="l" data-label="Exercice"><span class="ex">The Knight to Hamstring Stretch <a class="demo" data-yt="lpBEzFQlpYo" data-name="The Knight to Hamstring Stretch" href="https://www.gowod.app/fr/mobility-exercises/the-knight-to-hamstring-stretch" target="_blank" rel="noopener" title="Lire la démo vidéo" aria-label="Lire la démo vidéo"></a></span></td><td class="ctr pk" data-label="Durée">2 min (1 / côté)</td></tr>
       </tbody>
     </table></div>
-    <div class="tip"><b>Jour de course&nbsp;:</b> remplacer Active Deep Squat par Seated Piriformis Stretch <a class="demo" href="https://www.gowod.app/fr/mobility-exercises/seated-piriformis-stretch" target="_blank" rel="noopener" title="Voir la démo (nouvel onglet)" aria-label="Voir la démo (nouvel onglet)"></a>. 4 à 5 fois par semaine, jamais en douleur.</div>
+    <div class="tip"><b>Jour de course&nbsp;:</b> remplacer Active Deep Squat par Seated Piriformis Stretch <a class="demo" data-yt="6sx9hFoP1lg" data-name="Seated Piriformis Stretch" href="https://www.gowod.app/fr/mobility-exercises/seated-piriformis-stretch" target="_blank" rel="noopener" title="Lire la démo vidéo" aria-label="Lire la démo vidéo"></a>. 4 à 5 fois par semaine, jamais en douleur.</div>
   </section>
 
   <footer class="site-footer">Renfo · Hyrox Doubles Mixte 2027 · Christine.</footer>
 
 </div>
+
+<dialog class="vid" id="vid" aria-label="Démo vidéo">
+  <div class="vid-bar"><b id="vid-title"></b><a id="vid-src" href="#" target="_blank" rel="noopener">Voir sur GOWOD</a><button class="vid-close" id="vid-close" aria-label="Fermer la vidéo" autofocus>×</button></div>
+  <div class="vid-frame" id="vid-frame"></div>
+</dialog>
 
 <button id="top-btn" aria-label="Revenir en haut">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
@@ -375,6 +391,29 @@
   topBtn.addEventListener('click', function() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+
+  /* Démos YouTube (GOWOD) : lecture dans une fenêtre sur la page.
+     Sans <dialog> ou sans JS, le lien ouvre simplement la page source. */
+  var vid = document.getElementById('vid');
+  if (vid && typeof vid.showModal === 'function') {
+    var frame = document.getElementById('vid-frame');
+    var stop = function () { frame.innerHTML = ''; };
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a.demo[data-yt]');
+      if (!a) return;
+      e.preventDefault();
+      var id = a.getAttribute('data-yt');
+      document.getElementById('vid-title').textContent = a.getAttribute('data-name') || 'Démo';
+      document.getElementById('vid-src').href = a.href;
+      frame.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) +
+        '?autoplay=1&mute=1&loop=1&playlist=' + encodeURIComponent(id) + '&playsinline=1&rel=0"' +
+        ' title="Démo vidéo" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+      vid.showModal();
+    });
+    document.getElementById('vid-close').addEventListener('click', function () { vid.close(); });
+    vid.addEventListener('click', function (e) { if (e.target === vid) vid.close(); });
+    vid.addEventListener('close', stop);
+  }
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
