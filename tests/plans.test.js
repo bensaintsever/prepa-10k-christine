@@ -224,7 +224,7 @@ const NEW_ISO = new Date(Date.now() + 60000).toISOString();
     check('tous des lundis', WEEK_STARTS.every(d => d.getDay() === 1), true);
     check('jour J : samedi 6 février 2027', [toISODate(RACE_DAY), RACE_DAY.getDay()], ['2027-02-06', 6]);
     check('totaux de semaine entiers', W.every(w => /^\d+$/.test(w[2])), true);
-    check('S5 à 0 km (Maroc), S6 à 10 km (reprise jeudi 12)', [W[4][2], W[5][2]], ['0', '10']);
+    check('S5 à 0 km (Maroc), S6 à 14 km (reprise avancée au mardi 10)', [W[4][2], W[5][2]], ['0', '14']);
 
     let bad = [], missing = [];
     W.forEach((w, wi) => w[5].forEach((s, si) => {
@@ -274,7 +274,7 @@ const NEW_ISO = new Date(Date.now() + 60000).toISOString();
       check(label + ' : aucun NaN / Infinity', /NaN|Infinity|undefined/.test(txt), false);
       check(label + ' : jauge bornée', /^\d+%$/.test(els['vol-fill'].style.width || '0%'), true);
       if (label !== 'avant le début') {
-        check(label + ' : prochain jalon = côtes S8', /Côtes 10 × 30″/.test(els['vol-next'].innerHTML), true);
+        check(label + ' : prochain jalon = côtes S7', /Côtes 8 × 30″/.test(els['vol-next'].innerHTML), true);
       } else {
         check(label + ' : prochain jalon = test VMA', /TEST VMA demi-Cooper/.test(els['vol-next'].innerHTML), true);
       }
