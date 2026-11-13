@@ -1,7 +1,7 @@
 {
   "name": "Hyrox",
   "short_name": "Hyrox",
-  "description": "Préparation de Christine au Hyrox Doubles Mixte du 6 février 2027 à Toulouse (et archives du 10 km).",
+  "description": "Préparation de Christine au Hyrox Doubles Mixte du 4 février 2027 à Toulouse (et archives du 10 km).",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0F0814",

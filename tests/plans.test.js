@@ -222,7 +222,7 @@ const NEW_ISO = new Date(Date.now() + 60000).toISOString();
     check('premier lundi', toISODate(WEEK_STARTS[0]), '2026-10-05');
     check('dernier lundi', toISODate(WEEK_STARTS[17]), '2027-02-01');
     check('tous des lundis', WEEK_STARTS.every(d => d.getDay() === 1), true);
-    check('jour J : samedi 6 février 2027', [toISODate(RACE_DAY), RACE_DAY.getDay()], ['2027-02-06', 6]);
+    check('jour J : jeudi 4 février 2027', [toISODate(RACE_DAY), RACE_DAY.getDay()], ['2027-02-04', 4]);
     check('totaux de semaine entiers', W.every(w => /^\d+$/.test(w[2])), true);
     check('S5 à 0 km (Maroc), S6 à 14 km (reprise avancée au mardi 10)', [W[4][2], W[5][2]], ['0', '14']);
 
@@ -236,7 +236,7 @@ const NEW_ISO = new Date(Date.now() + 60000).toISOString();
     check('étiquettes datées sur le bon quantième', bad, []);
     check('toute séance a une date (Maroc compris)', missing, []);
     const race = W[17][5].find(s => /HYROX DOUBLES MIXTE/.test(s[1]));
-    check('l\'épreuve tombe le jour J', toISODate(plannedDate(17, race[0])), '2027-02-06');
+    check('l\'épreuve tombe le jour J', toISODate(plannedDate(17, race[0])), '2027-02-04');
   }
 
   console.log('\n8. Jauge et prochain jalon pendant le Maroc (S5-S6) : pas de NaN');

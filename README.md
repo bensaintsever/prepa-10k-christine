@@ -10,7 +10,7 @@ Plan sur 11 semaines, construit à partir de l'analyse de foulée (zebris) et de
 |---|---|
 | `Christine_10K_Tracker.html` | Le **tracker** : 11 semaines à cocher (cases mémorisées dans le navigateur). |
 | `Christine_10K_Carnet.html` | Le **carnet** : le pourquoi du plan, allures, renfo, foulée, sécurité. |
-| `Christine_Hyrox_Fevrier.html` | Le **plan Hyrox Doubles Mixte** (refait le 1er octobre 2026) : 18 semaines vers le samedi 6 février 2027. |
+| `Christine_Hyrox_Fevrier.html` | Le **plan Hyrox Doubles Mixte** (refait le 1er octobre 2026) : 18 semaines vers le jeudi 4 février 2027. |
 | `Christine_Hyrox_Tracker.html` | Le **tracker Hyrox** : même moteur que le tracker 10 km, plan Supabase `christine-hyrox`. |
 | `Christine_10K_Tracker.pdf` | Tracker imprimable — **périmé depuis le recalage du 20 août**, à regénérer. |
 | `Christine_10K_Carnet.pdf` | Carnet imprimable — **périmé depuis le recalage du 20 août**, à regénérer. |
@@ -553,8 +553,8 @@ Décision à confirmer avant de répercuter le repli dans le tracker et le carne
 ## Bloc Hyrox Doubles Mixte (1er octobre 2026)
 
 Le plan du 20 août est remplacé. Épreuve : **Doubles Mixte, Lucis Hyrox Toulouse, MEETT**,
-calée sur le **samedi 6 février 2027** (le dimanche 7 n'accueille que les Doubles hommes et
-femmes ; créneau exact à confirmer, l'affûtage se décale d'autant).
+calée sur le **jeudi 4 février 2027** (date confirmée le 13 novembre 2026 ; le plan visait
+d'abord le samedi 6, l'affûtage a été avancé de deux jours).
 
 **Ce qui change par rapport au 20 août**
 - **Maroc du 2 au 15 novembre** : deux semaines en pointillé (options sans date), reprise à
