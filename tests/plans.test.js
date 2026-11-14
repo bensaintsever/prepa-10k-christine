@@ -228,6 +228,7 @@ const NEW_ISO = new Date(Date.now() + 60000).toISOString();
 
     let bad = [], missing = [];
     W.forEach((w, wi) => w[5].forEach((s, si) => {
+      if (!s) return;
       const d = plannedDate(wi, s[0]);
       if (!d) { missing.push(wi + '_' + si); return; }
       const m = s[0].match(/(\d+)/);
@@ -235,7 +236,7 @@ const NEW_ISO = new Date(Date.now() + 60000).toISOString();
     }));
     check('étiquettes datées sur le bon quantième', bad, []);
     check('toute séance a une date (Maroc compris)', missing, []);
-    const race = W[17][5].find(s => /HYROX DOUBLES MIXTE/.test(s[1]));
+    const race = W[17][5].find(s => s && /HYROX DOUBLES MIXTE/.test(s[1]));
     check('l\'épreuve tombe le jour J', toISODate(plannedDate(17, race[0])), '2027-02-04');
   }
 
@@ -262,6 +263,7 @@ const NEW_ISO = new Date(Date.now() + 60000).toISOString();
       vm.runInContext(`
         var ALL_IDS = [], SESSIONS = {};
         W.forEach(function (w, wi) { w[5].forEach(function (s, si) {
+          if (!s) return;
           var id = wi + '_' + si; ALL_IDS.push(id);
           SESSIONS[id] = { wi: wi, si: si, day: s[0], label: s[1], key: !!s[3],
             km: s[2] ? Number(s[2]) : null, planned: plannedDate(wi, s[0]) };
